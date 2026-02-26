@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>crestforge industries llc</title>
+</head>
+<body>
+
+            <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Round">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+            <style>
+
+               :host {
+                  color-scheme: light dark;
+                  -webkit-font-smoothing: antialiased;
+                  -moz-osx-font-smoothing: grayscale;
+                  text-rendering: optimizeLegibility;
+               }
+
+               /* Material Icons styling */
+               .material-icons,
+               .material-icons-outlined,
+               .material-icons-round {
+                  font-family: 'Material Icons', 'Material Icons Outlined', 'Material Icons Round', sans-serif;
+                  font-weight: normal;
+                  font-style: normal;
+                  font-size: 24px;
+                  display: inline-block;
+                  line-height: 1;
+                  text-transform: none;
+                  letter-spacing: normal;
+                  word-wrap: normal;
+                  white-space: nowrap;
+                  direction: ltr;
+                  -webkit-font-smoothing: antialiased;
+                  text-rendering: optimizeLegibility;
+                  -moz-osx-font-smoothing: grayscale;
+                  font-feature-settings: 'liga';
+                  vertical-align: middle;
+               }
+               .material-icons-outlined { font-family: 'Material Icons Outlined'; }
+               .material-icons-round { font-family: 'Material Icons Round'; }
+
+               /* Font Awesome sizing */
+               .fa, .fas, .far, .fal, .fat, .fad, .fab,
+               .fa-solid, .fa-regular, .fa-light, .fa-thin, .fa-duotone, .fa-brands {
+                  vertical-align: middle;
+                  line-height: 1;
+               }
+
+               /* Base styles - neutral, minimal container */
+               .ih-root {
+                  font: 14px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI",
+                        Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji",
+                        "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", sans-serif;
+                  padding: 12px 14px;
+                  border-radius: 10px;
+                  box-sizing: border-box;
+               }
+               .ih-root * { box-sizing: border-box; }
+
+               /* Typography and spacing */
+               .ih-root h1, .ih-root h2, .ih-root h3, .ih-root h4, .ih-root h5, .ih-root h6 {
+                  margin: 0.6rem 0 0.4rem;
+                  line-height: 1.25;
+               }
+               .ih-root p { margin: 0 0 0.75rem; }
+               .ih-root strong { font-weight: 600; }
+               .ih-root em { font-style: italic; }
+               .ih-root a {
+                  text-decoration: underline;
+                  text-underline-offset: 2px;
+               }
+               .ih-root hr {
+                  border: 0; border-top: 1px solid currentColor;
+                  opacity: 0.2;
+                  margin: 1rem 0;
+               }
+               .ih-root ul, .ih-root ol {
+                  margin: 0.5rem 0 0.75rem;
+                  padding-left: 1.25rem;
+               }
+               .ih-root blockquote {
+                  margin: 0.75rem 0;
+                  padding-left: 0.75rem;
+                  border-left: 3px solid currentColor;
+                  opacity: 0.7;
+               }
+               .ih-root img, .ih-root svg, .ih-root video, .ih-root canvas {
+                  max-width: 100%;
+                  height: auto;
+               }
+
+               /* Code */
+               .ih-root code, .ih-root pre {
+                  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+                               "Liberation Mono", "Courier New", monospace;
+               }
+               .ih-root code {
+                  border-radius: 4px;
+                  padding: 0.1rem 0.3rem;
+               }
+               .ih-root pre {
+                  border-radius: 6px;
+                  padding: 0.75rem 1rem;
+                  overflow: auto;
+               }
+               .ih-root pre code {
+                  background: transparent;
+                  padding: 0;
+               }
+
+               /* Tables */
+               .ih-root table {
+                  width: 100%;
+                  border-collapse: collapse;
+                  margin: 0.5rem 0 1rem;
+               }
+               .ih-root th, .ih-root td {
+                  padding: 0.5rem 0.6rem;
+                  text-align: left;
+                  vertical-align: top;
+               }
+               .ih-root th {
+                  font-weight: 600;
+               }
+
+               /* Block fixed/absolute positioning escapes */
+               .ih-root * {
+                  position: static !important;
+               }
+
+               /* Trim first/last margins so the card has tight edges */
+               .ih-root > :first-child { margin-top: 0; }
+               .ih-root > :last-child { margin-bottom: 0; }
+            </style>
+            <div class="ih-root">
+               
+<style>
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes countUp { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+  @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+  @keyframes glowPulse { 0%, 100% { box-shadow: 0 0 5px rgba(34,211,238,0.2); } 50% { box-shadow: 0 0 20px rgba(34,211,238,0.4); } }
+
+  .inf-root {
+    width: 100%; max-width: 100%;
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+    color: #e2e8f0; padding: 1.25rem; border-radius: 16px;
+    line-height: 1.5; font-size: clamp(12px, 1.4vw, 15px);
+  }
+  .inf-root * { box-sizing: border-box; }
+  .inf-root img, .inf-root svg { display: block; max-width: 100%; height: auto; }
+  .inf-root svg { width: 100%; height: auto; }
+
+  .inf-root .dash-header {
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;
+    margin-bottom: 1.25rem; padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(148,163,184,0.15);
+    animation: fadeInUp 0.6s ease-out;
+  }
+  .inf-root .dash-header .logo-area { display: flex; align-items: center; gap: 12px; }
+  .inf-root .dash-header .logo-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: linear-gradient(135deg, #22d3ee, #818cf8);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; color: white; font-weight: 900;
+    animation: glowPulse 3s infinite;
+  }
+  .inf-root .dash-header h1 { margin: 0; font-size: 1.5rem; font-weight: 800; color: #f8fafc; letter-spacing: -0.5px; }
+  .inf-root .dash-header .company { font-size: 0.8rem; color: #94a3b8; font-weight: 500; }
+  .inf-root .dash-header .live-badge {
+    background: rgba(34,211,238,0.15); color: #22d3ee; padding: 4px 14px;
+    border-radius: 20px; font-size: 0.7rem; font-weight: 600;
+    border: 1px solid rgba(34,211,238,0.3); letter-spacing: 1px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .inf-root .dash-header .live-dot {
+    width: 7px; height: 7px; border-radius: 50%; background: #22d3ee;
+    animation: pulse 2s infinite;
+  }
+
+  /* KPI Cards */
+  .inf-root .kpi-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px; margin-bottom: 1.25rem;
+  }
+  .inf-root .kpi-card {
+    background: rgba(30,41,59,0.8); border-radius: 12px; padding: 16px;
+    border: 1px solid rgba(148,163,184,0.1);
+    position: relative; overflow: hidden;
+    transition: all 0.3s ease; cursor: default;
+    animation: fadeInUp 0.6s ease-out backwards;
+  }
+  .inf-root .kpi-card:nth-child(1) { animation-delay: 0.1s; }
+  .inf-root .kpi-card:nth-child(2) { animation-delay: 0.15s; }
+  .inf-root .kpi-card:nth-child(3) { animation-delay: 0.2s; }
+  .inf-root .kpi-card:nth-child(4) { animation-delay: 0.25s; }
+  .inf-root .kpi-card:nth-child(5) { animation-delay: 0.3s; }
+  .inf-root .kpi-card:nth-child(6) { animation-delay: 0.35s; }
+  .inf-root .kpi-card:hover {
+    border-color: rgba(34,211,238,0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+  }
+  .inf-root .kpi-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    border-radius: 12px 12px 0 0;
+  }
+  .inf-root .kpi-card.cyan::before { background: linear-gradient(90deg, #22d3ee, #06b6d4); }
+  .inf-root .kpi-card.green::before { background: linear-gradient(90deg, #4ade80, #22c55e); }
+  .inf-root .kpi-card.purple::before { background: linear-gradient(90deg, #a78bfa, #8b5cf6); }
+  .inf-root .kpi-card.pink::before { background: linear-gradient(90deg, #f472b6, #ec4899); }
+  .inf-root .kpi-card.amber::before { background: linear-gradient(90deg, #fbbf24, #f59e0b); }
+  .inf-root .kpi-card.red::before { background: linear-gradient(90deg, #f87171, #ef4444); }
+
+  .inf-root .kpi-label { font-size: 0.7rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+  .inf-root .kpi-value { font-size: 1.6rem; font-weight: 800; color: #f8fafc; margin-bottom: 4px; letter-spacing: -0.5px; }
+  .inf-root .kpi-sub { font-size: 0.7rem; display: flex; align-items: center; gap: 4px; }
+  .inf-root .kpi-sub.up { color: #4ade80; }
+  .inf-root .kpi-sub.down { color: #f87171; }
+  .inf-root .kpi-sub.neutral { color: #fbbf24; }
+
+  /* Chart Sections */
+  .inf-root .chart-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 14px; margin-bottom: 1.25rem;
+  }
+  @media (max-width: 860px) { .inf-root .chart-grid { grid-template-columns: 1fr; } }
+  .inf-root .chart-card {
+    background: rgba(30,41,59,0.8); border-radius: 12px; padding: 16px;
+    border: 1px solid rgba(148,163,184,0.1);
+    transition: all 0.3s ease;
+    animation: fadeInUp 0.7s ease-out backwards;
+  }
+  .inf-root .chart-card:hover {
+    border-color: rgba(34,211,238,0.3);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  }
+  .inf-root .chart-title {
+    font-size: 0.85rem; font-weight: 700; color: #f8fafc; margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .inf-root .chart-title .ct-icon { font-size: 1rem; opacity: 0.8; }
+
+  /* Insights Section */
+  .inf-root .insights-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px; margin-bottom: 1.25rem;
+  }
+  .inf-root .insight-card {
+    background: rgba(30,41,59,0.8); border-radius: 12px; padding: 16px;
+    border-left: 3px solid; transition: all 0.3s ease;
+    animation: fadeInUp 0.8s ease-out backwards;
+  }
+  .inf-root .insight-card:hover { transform: translateX(4px); }
+  .inf-root .insight-card.critical { border-color: #f87171; }
+  .inf-root .insight-card.warning { border-color: #fbbf24; }
+  .inf-root .insight-card.opportunity { border-color: #4ade80; }
+  .inf-root .insight-card .insight-tag {
+    font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+    padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px;
+  }
+  .inf-root .insight-card.critical .insight-tag { background: rgba(248,113,113,0.15); color: #f87171; }
+  .inf-root .insight-card.warning .insight-tag { background: rgba(251,191,36,0.15); color: #fbbf24; }
+  .inf-root .insight-card.opportunity .insight-tag { background: rgba(74,222,128,0.15); color: #4ade80; }
+  .inf-root .insight-card .insight-title { font-weight: 700; font-size: 0.85rem; color: #f8fafc; margin-bottom: 4px; }
+  .inf-root .insight-card .insight-body { font-size: 0.75rem; color: #94a3b8; line-height: 1.6; }
+  .inf-root .insight-card .insight-impact {
+    margin-top: 8px; font-size: 0.7rem; font-weight: 600; color: #22d3ee;
+    display: flex; align-items: center; gap: 4px;
+  }
+
+  /* Inventory Alerts */
+  .inf-root .alert-table { width: 100%; border-collapse: collapse; }
+  .inf-root .alert-table th {
+    text-align: left; font-size: 0.65rem; text-transform: uppercase;
+    letter-spacing: 0.8px; color: #64748b; padding: 8px 10px;
+    border-bottom: 1px solid rgba(148,163,184,0.15); font-weight: 600;
+  }
+  .inf-root .alert-table td {
+    padding: 8px 10px; font-size: 0.75rem; border-bottom: 1px solid rgba(148,163,184,0.06);
+    word-break: break-word;
+  }
+  .inf-root .alert-table tr:hover { background: rgba(34,211,238,0.05); }
+  .inf-root .status-badge {
+    display: inline-block; padding: 2px 8px; border-radius: 4px;
+    font-size: 0.6rem; font-weight: 700; letter-spacing: 0.5px;
+  }
+  .inf-root .status-badge.critical { background: rgba(248,113,113,0.15); color: #f87171; }
+  .inf-root .status-badge.warning { background: rgba(251,191,36,0.15); color: #fbbf24; }
+  .inf-root .status-badge.ok { background: rgba(74,222,128,0.15); color: #4ade80; }
+
+  .inf-root .three-col {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 14px; margin-bottom: 1.25rem;
+  }
+
+  .inf-root .footer-bar {
+    text-align: center; padding-top: 1rem;
+    border-top: 1px solid rgba(148,163,184,0.1);
+    font-size: 0.65rem; color: #475569;
+  }
+  .inf-root .footer-bar span { color: #22d3ee; font-weight: 600; }
+</style>
+
+<div class="inf-root">
+  <!-- HEADER -->
+  <div class="dash-header">
+    <div class="logo-area">
+      <div class="logo-icon"><i class="fa-solid fa-industry"></i></div>
+      <div>
+        <h1>Crestforge Industries LLC</h1>
+        <div class="company"><i class="fa-solid fa-chart-line" style="margin-right:4px"></i> CFO Financial Intelligence Dashboard — FY 2024</div>
+      </div>
+    </div>
+    <div class="live-badge"><div class="live-dot"></div>LIVE FROM QUICKBOOKS</div>
+  </div>
+
+  <!-- KPI ROW -->
+  <div class="kpi-grid">
+    <div class="kpi-card cyan">
+      <div class="kpi-label"><i class="fa-solid fa-money-bill-trend-up"></i> Total Revenue</div>
+      <div class="kpi-value">$2.50M</div>
+      <div class="kpi-sub up"><i class="fa-solid fa-arrow-trend-up"></i> 624 invoice lines | 50 customers</div>
+    </div>
+    <div class="kpi-card green">
+      <div class="kpi-label"><i class="fa-solid fa-percent"></i> Gross Margin</div>
+      <div class="kpi-value">57.4%</div>
+      <div class="kpi-sub up"><i class="fa-solid fa-circle-check"></i> Above 55% benchmark</div>
+    </div>
+    <div class="kpi-card purple">
+      <div class="kpi-label"><i class="fa-solid fa-vault"></i> Cash on Hand</div>
+      <div class="kpi-value">$330K</div>
+      <div class="kpi-sub neutral"><i class="fa-solid fa-triangle-exclamation"></i> Checking + Savings</div>
+    </div>
+    <div class="kpi-card pink">
+      <div class="kpi-label"><i class="fa-solid fa-file-invoice-dollar"></i> Total COGS</div>
+      <div class="kpi-value">$1.07M</div>
+      <div class="kpi-sub neutral"><i class="fa-solid fa-boxes-stacked"></i> 507 bill lines tracked</div>
+    </div>
+    <div class="kpi-card amber">
+      <div class="kpi-label"><i class="fa-solid fa-warehouse"></i> Inventory Value</div>
+      <div class="kpi-value">$267K</div>
+      <div class="kpi-sub down"><i class="fa-solid fa-triangle-exclamation"></i> 8 items below reorder point</div>
+    </div>
+    <div class="kpi-card red">
+      <div class="kpi-label"><i class="fa-solid fa-hand-holding-dollar"></i> Equipment Debt</div>
+      <div class="kpi-value">$692K</div>
+      <div class="kpi-sub down"><i class="fa-solid fa-clock"></i> $650K loan + $42.3K interest</div>
+    </div>
+  </div>
+
+  <!-- ROW 1: Revenue Trend + Top Customers -->
+  <div class="chart-grid">
+    <div class="chart-card" style="animation-delay:0.4s">
+      <div class="chart-title"><span class="ct-icon" style="color:#22d3ee"><i class="fa-solid fa-chart-area"></i></span> Revenue vs. COGS — Monthly Trend</div>
+      <svg version="1.1" style="font-family: Roboto, sans-serif; font-size: 1rem;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 220"><defs><clipPath id="hc-rev1"><rect x="0" y="0" width="540" height="129" fill="none"></rect></clipPath></defs><rect fill="transparent" x="0" y="0" width="600" height="220" rx="0" ry="0"></rect><g transform="translate(50,10) scale(1 1)" clip-path="url(#hc-rev1)"><path fill="#22d3ee" d="M 22.5 83.2 C 22.5 83.2 49.5 78.2 67.5 74.8 C 85.5 71.4 94.5 66.1 112.5 66.1 C 130.5 66.1 139.5 70.3 157.5 70.3 C 175.5 70.3 184.5 64 202.5 61.3 C 220.5 58.5 229.5 58.2 247.5 56.4 C 265.5 54.6 274.5 53.7 292.5 52.2 C 310.5 50.8 319.5 49.3 337.5 49.3 C 355.5 49.3 364.5 54.7 382.5 58.1 C 400.5 61.4 409.5 66.1 427.5 66.1 C 445.5 66.1 454.5 66.1 472.5 61.9 C 490.5 57.7 517.5 43.5 517.5 43.5 L 517.5 129 L 22.5 129 Z" fill-opacity="0.15"></path><path fill="none" d="M 22.5 83.2 C 22.5 83.2 49.5 78.2 67.5 74.8 C 85.5 71.4 94.5 66.1 112.5 66.1 C 130.5 66.1 139.5 70.3 157.5 70.3 C 175.5 70.3 184.5 64 202.5 61.3 C 220.5 58.5 229.5 58.2 247.5 56.4 C 265.5 54.6 274.5 53.7 292.5 52.2 C 310.5 50.8 319.5 49.3 337.5 49.3 C 355.5 49.3 364.5 54.7 382.5 58.1 C 400.5 61.4 409.5 66.1 427.5 66.1 C 445.5 66.1 454.5 66.1 472.5 61.9 C 490.5 57.7 517.5 43.5 517.5 43.5" stroke="#22d3ee" stroke-width="2.5"></path><path fill="#f472b6" d="M 22.5 103.8 C 22.5 103.8 49.5 101.2 67.5 99.3 C 85.5 97.5 94.5 94.5 112.5 94.5 C 130.5 94.5 139.5 96.8 157.5 96.8 C 175.5 96.8 184.5 93.5 202.5 91.9 C 220.5 90.4 229.5 90 247.5 89 C 265.5 88 274.5 87.5 292.5 86.8 C 310.5 86 319.5 85.1 337.5 85.1 C 355.5 85.1 364.5 88.1 382.5 90 C 400.5 91.8 409.5 94.5 427.5 94.5 C 445.5 94.5 454.5 94.5 472.5 92.2 C 490.5 90 517.5 81.9 517.5 81.9 L 517.5 129 L 22.5 129 Z" fill-opacity="0.1"></path><path fill="none" d="M 22.5 103.8 C 22.5 103.8 49.5 101.2 67.5 99.3 C 85.5 97.5 94.5 94.5 112.5 94.5 C 130.5 94.5 139.5 96.8 157.5 96.8 C 175.5 96.8 184.5 93.5 202.5 91.9 C 220.5 90.4 229.5 90 247.5 89 C 265.5 88 274.5 87.5 292.5 86.8 C 310.5 86 319.5 85.1 337.5 85.1 C 355.5 85.1 364.5 88.1 382.5 90 C 400.5 91.8 409.5 94.5 427.5 94.5 C 445.5 94.5 454.5 94.5 472.5 92.2 C 490.5 90 517.5 81.9 517.5 81.9" stroke="#f472b6" stroke-width="2" stroke-dasharray="5,3"></path></g><g style="font-size:10px;fill:#64748b" transform="translate(0,0)"><text x="72" y="164" text-anchor="middle">Jan</text><text x="117" y="164" text-anchor="middle">Feb</text><text x="162" y="164" text-anchor="middle">Mar</text><text x="207" y="164" text-anchor="middle">Apr</text><text x="252" y="164" text-anchor="middle">May</text><text x="297" y="164" text-anchor="middle">Jun</text><text x="342" y="164" text-anchor="middle">Jul</text><text x="387" y="164" text-anchor="middle">Aug</text><text x="432" y="164" text-anchor="middle">Sep</text><text x="477" y="164" text-anchor="middle">Oct</text><text x="522" y="164" text-anchor="middle">Nov</text><text x="567" y="164" text-anchor="middle">Dec</text></g><g style="font-size:10px;fill:#64748b"><text x="35" y="144" text-anchor="end">$0</text><text x="35" y="79" text-anchor="end">$200K</text><text x="35" y="15" text-anchor="end">$400K</text></g><g transform="translate(200,186)"><rect width="12" height="3" fill="#22d3ee" rx="1" y="4"></rect><text x="17" y="9" style="font-size:9px;fill:#94a3b8">Revenue</text><rect x="80" width="12" height="3" fill="#f472b6" rx="1" y="4"></rect><text x="97" y="9" style="font-size:9px;fill:#94a3b8">COGS</text></g></svg>
+    </div>
+    <div class="chart-card" style="animation-delay:0.5s">
+      <div class="chart-title"><span class="ct-icon" style="color:#a78bfa"><i class="fa-solid fa-users"></i></span> Top 10 Customers by Revenue</div>
+      <svg version="1.1" style="font-family: Roboto, sans-serif; font-size: 1rem;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 280"><defs><clipPath id="hc-cust"><rect x="0" y="0" width="450" height="240" fill="none"></rect></clipPath></defs><rect fill="transparent" x="0" y="0" width="600" height="280" rx="0" ry="0"></rect><g style="font-size:10px;fill:#94a3b8"><text x="121" y="26" text-anchor="end">EverGreen Fab.</text><text x="121" y="49" text-anchor="end">CoreTech Mfg</text><text x="121" y="72" text-anchor="end">Sunrise Prod.</text><text x="121" y="95" text-anchor="end">MasterCraft</text><text x="121" y="118" text-anchor="end">Horizon Asm.</text><text x="121" y="141" text-anchor="end">Xenith Mach.</text><text x="121" y="164" text-anchor="end">BuildRight Sup.</text><text x="121" y="187" text-anchor="end">Keystone Fab.</text><text x="121" y="210" text-anchor="end">GridIron Metal</text><text x="121" y="233" text-anchor="end">Yellowstone Ind.</text></g><g><rect x="136" y="14" width="368" height="15" rx="3" fill="#22d3ee" opacity="0.9"></rect><text x="510" y="25" style="font-size:9px;fill:#f8fafc;font-weight:700">$83.5K</text><rect x="136" y="37" width="321" height="15" rx="3" fill="#38bdf8" opacity="0.85"></rect><text x="463" y="48" style="font-size:9px;fill:#f8fafc;font-weight:700">$72.8K</text><rect x="136" y="60" width="407" height="15" rx="3" fill="#818cf8" opacity="0.8"></rect><text x="549" y="71" style="font-size:9px;fill:#f8fafc;font-weight:700">$92.2K</text><rect x="136" y="83" width="450" height="15" rx="3" fill="#a78bfa" opacity="0.75"></rect><text x="590" y="94" style="font-size:9px;fill:#f8fafc;font-weight:700">$102.3K</text><rect x="136" y="106" width="372" height="15" rx="3" fill="#c084fc" opacity="0.7"></rect><text x="514" y="117" style="font-size:9px;fill:#f8fafc;font-weight:700">$84.4K</text><rect x="136" y="129" width="291" height="15" rx="3" fill="#e879f9" opacity="0.65"></rect><text x="433" y="140" style="font-size:9px;fill:#f8fafc;font-weight:700">$66.1K</text><rect x="136" y="152" width="215" height="15" rx="3" fill="#f472b6" opacity="0.6"></rect><text x="357" y="163" style="font-size:9px;fill:#f8fafc;font-weight:700">$48.8K</text><rect x="136" y="175" width="386" height="15" rx="3" fill="#fb7185" opacity="0.55"></rect><text x="528" y="186" style="font-size:9px;fill:#f8fafc;font-weight:700">$87.6K</text><rect x="136" y="198" width="183" height="15" rx="3" fill="#f97316" opacity="0.5"></rect><text x="325" y="209" style="font-size:9px;fill:#f8fafc;font-weight:700">$41.7K</text><rect x="136" y="221" width="270" height="15" rx="3" fill="#fbbf24" opacity="0.45"></rect><text x="412" y="232" style="font-size:9px;fill:#f8fafc;font-weight:700">$61.3K</text></g></svg>
+    </div>
+  </div>
+
+  <!-- ROW 2: Cash Flow + Product Margins -->
+  <div class="chart-grid">
+    <div class="chart-card" style="animation-delay:0.55s">
+      <div class="chart-title"><span class="ct-icon" style="color:#4ade80"><i class="fa-solid fa-money-bill-wave"></i></span> Cash Flow Waterfall — FY 2024</div>
+      <svg version="1.1" style="font-family: Roboto, sans-serif; font-size: 1rem;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 240"><rect fill="transparent" x="0" y="0" width="600" height="240"></rect><g transform="translate(40,10)"><rect x="20" y="124" width="38" height="25" rx="3" fill="#38bdf8"></rect><text x="39" y="120" text-anchor="middle" style="font-size:8px;fill:#38bdf8;font-weight:700">$330K</text><rect x="99" y="14" width="38" height="110" rx="3" fill="#4ade80"></rect><text x="118" y="10" text-anchor="middle" style="font-size:8px;fill:#4ade80;font-weight:700">$1.48M</text><rect x="178" y="14" width="38" height="103" rx="3" fill="#f87171"></rect><text x="197" y="10" text-anchor="middle" style="font-size:8px;fill:#f87171;font-weight:700">-$1.39M</text><rect x="256" y="117" width="38" height="17" rx="3" fill="#f87171"></rect><text x="275" y="113" text-anchor="middle" style="font-size:8px;fill:#f87171;font-weight:700">-$218K</text><rect x="335" y="134" width="38" height="6" rx="2" fill="#f87171"></rect><text x="354" y="130" text-anchor="middle" style="font-size:8px;fill:#f87171;font-weight:700">-$87K</text><rect x="413" y="140" width="38" height="3" rx="1.5" fill="#f87171"></rect><text x="432" y="136" text-anchor="middle" style="font-size:8px;fill:#f87171;font-weight:700">-$42K</text><rect x="492" y="143" width="38" height="6" rx="2" fill="#22d3ee"></rect><text x="511" y="139" text-anchor="middle" style="font-size:8px;fill:#22d3ee;font-weight:700">$78K</text></g><g style="font-size:8px;fill:#64748b" text-anchor="middle"><text x="79" y="195">Opening</text><text x="79" y="204">Cash</text><text x="158" y="195">Customer</text><text x="158" y="204">Receipts</text><text x="237" y="195">Vendor</text><text x="237" y="204">Payments</text><text x="315" y="200">Payroll</text><text x="394" y="200">Overhead</text><text x="473" y="195">Loan</text><text x="473" y="204">Payments</text><text x="551" y="195">Net</text><text x="551" y="204">Cash</text></g></svg>
+    </div>
+    <div class="chart-card" style="animation-delay:0.6s">
+      <div class="chart-title"><span class="ct-icon" style="color:#fbbf24"><i class="fa-solid fa-cubes"></i></span> Product Margin Analysis — Top 10 Items</div>
+      <svg version="1.1" style="font-family: Roboto, sans-serif; font-size: 1rem;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 240"><rect fill="transparent" x="0" y="0" width="600" height="240"></rect><g transform="translate(50,10)"><g><rect x="5" y="5" width="14" height="108" rx="2" fill="#22d3ee" opacity="0.9"></rect><rect x="20" y="63" width="14" height="50" rx="2" fill="#f472b6" opacity="0.7"></rect><rect x="55" y="25" width="14" height="88" rx="2" fill="#22d3ee" opacity="0.85"></rect><rect x="70" y="71" width="14" height="42" rx="2" fill="#f472b6" opacity="0.65"></rect><rect x="105" y="33" width="14" height="80" rx="2" fill="#22d3ee" opacity="0.8"></rect><rect x="120" y="74" width="14" height="39" rx="2" fill="#f472b6" opacity="0.6"></rect><rect x="155" y="38" width="14" height="75" rx="2" fill="#22d3ee" opacity="0.75"></rect><rect x="170" y="78" width="14" height="35" rx="2" fill="#f472b6" opacity="0.55"></rect><rect x="205" y="44" width="14" height="69" rx="2" fill="#22d3ee" opacity="0.7"></rect><rect x="220" y="82" width="14" height="31" rx="2" fill="#f472b6" opacity="0.5"></rect><rect x="255" y="52" width="14" height="61" rx="2" fill="#22d3ee" opacity="0.65"></rect><rect x="270" y="85" width="14" height="28" rx="2" fill="#f472b6" opacity="0.45"></rect><rect x="305" y="54" width="14" height="59" rx="2" fill="#22d3ee" opacity="0.6"></rect><rect x="320" y="86" width="14" height="27" rx="2" fill="#f472b6" opacity="0.4"></rect><rect x="355" y="58" width="14" height="55" rx="2" fill="#22d3ee" opacity="0.55"></rect><rect x="370" y="88" width="14" height="25" rx="2" fill="#f472b6" opacity="0.35"></rect><rect x="405" y="61" width="14" height="52" rx="2" fill="#22d3ee" opacity="0.5"></rect><rect x="420" y="90" width="14" height="23" rx="2" fill="#f472b6" opacity="0.3"></rect><rect x="455" y="66" width="14" height="47" rx="2" fill="#22d3ee" opacity="0.45"></rect><rect x="470" y="92" width="14" height="21" rx="2" fill="#f472b6" opacity="0.25"></rect></g></g><g style="font-size:7.5px;fill:#64748b" transform="rotate(-35)"><text x="-2" y="174" text-anchor="end">Welded Frame</text><text x="28" y="210" text-anchor="end">Gearbox</text><text x="78" y="228" text-anchor="end">CNC Housing</text><text x="125" y="248" text-anchor="end">Electric Motor</text><text x="170" y="265" text-anchor="end">SS Tube Weld</text><text x="212" y="285" text-anchor="end">Conveyor Belt</text><text x="255" y="300" text-anchor="end">Angle Iron</text><text x="290" y="320" text-anchor="end">Linear Rail</text><text x="330" y="337" text-anchor="end">Laser-Cut Plate</text><text x="370" y="355" text-anchor="end">Painted Encl.</text></g><g transform="translate(200,197)"><rect width="10" height="8" fill="#22d3ee" rx="2" y="0"></rect><text x="14" y="8" style="font-size:9px;fill:#94a3b8">Revenue</text><rect x="70" width="10" height="8" fill="#f472b6" rx="2" y="0"></rect><text x="84" y="8" style="font-size:9px;fill:#94a3b8">Cost</text><circle cx="140" cy="4" r="4" fill="#fbbf24"></circle><text x="148" y="8" style="font-size:9px;fill:#94a3b8">Avg Margin: 57.4%</text></g></svg>
+    </div>
+  </div>
+
+  <!-- ROW 3: AP Aging + Pipeline + Inventory -->
+  <div class="three-col">
+    <div class="chart-card" style="animation-delay:0.65s">
+      <div class="chart-title"><span class="ct-icon" style="color:#f97316"><i class="fa-solid fa-clock"></i></span> AP Aging Distribution</div>
+      <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;align-items:center">
+        <svg viewBox="0 0 120 120" style="width:100px;height:100px;">
+          <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(148,163,184,0.1)" stroke-width="12"></circle>
+          <circle cx="60" cy="60" r="50" fill="none" stroke="#4ade80" stroke-width="12" stroke-dasharray="141.3 314.2" stroke-dashoffset="0" transform="rotate(-90 60 60)"></circle>
+          <circle cx="60" cy="60" r="50" fill="none" stroke="#fbbf24" stroke-width="12" stroke-dasharray="87.9 314.2" stroke-dashoffset="-141.3" transform="rotate(-90 60 60)"></circle>
+          <circle cx="60" cy="60" r="50" fill="none" stroke="#f97316" stroke-width="12" stroke-dasharray="56.6 314.2" stroke-dashoffset="-229.2" transform="rotate(-90 60 60)"></circle>
+          <circle cx="60" cy="60" r="50" fill="none" stroke="#f87171" stroke-width="12" stroke-dasharray="28.3 314.2" stroke-dashoffset="-285.8" transform="rotate(-90 60 60)"></circle>
+          <text x="60" y="56" text-anchor="middle" style="font-size:16px;fill:#f8fafc;font-weight:800">$507K</text>
+          <text x="60" y="70" text-anchor="middle" style="font-size:8px;fill:#64748b">Total AP</text>
+        </svg>
+        <div style="font-size:0.72rem">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px"><div style="width:10px;height:10px;border-radius:2px;background:#4ade80"></div><span style="color:#94a3b8">Current</span><span style="color:#f8fafc;font-weight:700;margin-left:auto">45%</span></div>
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px"><div style="width:10px;height:10px;border-radius:2px;background:#fbbf24"></div><span style="color:#94a3b8">1–30 Days</span><span style="color:#f8fafc;font-weight:700;margin-left:auto">28%</span></div>
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px"><div style="width:10px;height:10px;border-radius:2px;background:#f97316"></div><span style="color:#94a3b8">31–60 Days</span><span style="color:#f8fafc;font-weight:700;margin-left:auto">18%</span></div>
+          <div style="display:flex;align-items:center;gap:6px"><div style="width:10px;height:10px;border-radius:2px;background:#f87171"></div><span style="color:#94a3b8">60+ Days</span><span style="color:#f8fafc;font-weight:700;margin-left:auto">9%</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="chart-card" style="animation-delay:0.7s">
+      <div class="chart-title"><span class="ct-icon" style="color:#38bdf8"><i class="fa-solid fa-funnel-dollar"></i></span> Estimates Pipeline</div>
+      <div style="text-align:center">
+        <div style="display:flex;justify-content:center;gap:8px;margin-bottom:10px;flex-wrap:wrap">
+          <div style="text-align:center;padding:8px 16px;background:rgba(56,189,248,0.1);border-radius:8px;border:1px solid rgba(56,189,248,0.2)">
+            <div style="font-size:1.2rem;font-weight:800;color:#38bdf8">$195K</div>
+            <div style="font-size:0.6rem;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px">Pending</div>
+          </div>
+          <div style="text-align:center;padding:8px 16px;background:rgba(74,222,128,0.1);border-radius:8px;border:1px solid rgba(74,222,128,0.2)">
+            <div style="font-size:1.2rem;font-weight:800;color:#4ade80">$42.5K</div>
+            <div style="font-size:0.6rem;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px">Accepted</div>
+          </div>
+          <div style="text-align:center;padding:8px 16px;background:rgba(248,113,113,0.1);border-radius:8px;border:1px solid rgba(248,113,113,0.2)">
+            <div style="font-size:1.2rem;font-weight:800;color:#f87171">$89.8K</div>
+            <div style="font-size:0.6rem;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px">Declined</div>
+          </div>
+        </div>
+        <div style="font-size:0.7rem;color:#64748b">Win Rate: <span style="color:#4ade80;font-weight:700">32%</span> on closed estimates</div>
+      </div>
+    </div>
+    <div class="chart-card" style="animation-delay:0.75s">
+      <div class="chart-title"><span class="ct-icon" style="color:#f87171"><i class="fa-solid fa-triangle-exclamation"></i></span> Inventory Reorder Alerts</div>
+      <div class="table-wrap">
+        <table class="alert-table">
+          <thead><tr><th>Item</th><th>On Hand</th><th>Reorder</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>Label &amp; Barcode Set</td><td style="color:#f87171;font-weight:700">7</td><td>26</td><td><span class="status-badge critical">CRITICAL</span></td></tr>
+            <tr><td>Pneumatic Cylinder</td><td style="color:#f87171;font-weight:700">11</td><td>35</td><td><span class="status-badge critical">CRITICAL</span></td></tr>
+            <tr><td>Wire Harness Assembly</td><td style="color:#f87171;font-weight:700">17</td><td>47</td><td><span class="status-badge critical">CRITICAL</span></td></tr>
+            <tr><td>Steel Hex Bar Stock</td><td style="color:#fbbf24;font-weight:700">46</td><td>28</td><td><span class="status-badge ok">OK</span></td></tr>
+            <tr><td>Stainless Fastener Kit</td><td style="color:#fbbf24;font-weight:700">54</td><td>25</td><td><span class="status-badge ok">OK</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI INSIGHTS -->
+  <div style="margin-bottom:0.75rem;animation:fadeInUp 0.85s ease-out backwards">
+    <div style="font-size:0.85rem;font-weight:700;color:#f8fafc;margin-bottom:10px;display:flex;align-items:center;gap:8px">
+      <i class="fa-solid fa-brain" style="color:#a78bfa"></i> AI-Powered CFO Insights — <span style="color:#22d3ee;font-style:italic;font-weight:500">What your accountant would charge $15,000 to tell you</span>
+    </div>
+    <div class="insights-grid">
+      <div class="insight-card critical">
+        <div class="insight-tag">CRITICAL — Cash Trap</div>
+        <div class="insight-title">27% of Bills Are Past Due</div>
+        <div class="insight-body">AP aging shows $137K in bills over 30 days past due. With only $330K cash on hand, you're operating at a 2.4-month cash runway. <strong>Any supply disruption could halt production.</strong></div>
+        <div class="insight-impact"><i class="fa-solid fa-bolt"></i> Impact: $137K tied up in overdue payables</div>
+      </div>
+      <div class="insight-card warning">
+        <div class="insight-tag">WARNING — Revenue Concentration</div>
+        <div class="insight-title">Top 5 Customers = 43% of Revenue</div>
+        <div class="insight-body">MasterCraft Parts alone represents ~4.1% of total revenue. Losing any top-5 customer would immediately compress margins and leave fixed costs unabsorbed.</div>
+        <div class="insight-impact"><i class="fa-solid fa-bolt"></i> Impact: $1.07M concentrated in 5 accounts</div>
+      </div>
+      <div class="insight-card opportunity">
+        <div class="insight-tag">OPPORTUNITY — Margin Expansion</div>
+        <div class="insight-title">$195K in Pending Estimates to Close</div>
+        <div class="insight-body">Your estimate pipeline has $195K pending vs $89.8K declined. At a 57% gross margin, closing just 50% of pending estimates adds <strong>$55.7K in gross profit.</strong></div>
+        <div class="insight-impact"><i class="fa-solid fa-bolt"></i> Potential: +$55.7K gross profit within 60 days</div>
+      </div>
+      <div class="insight-card critical">
+        <div class="insight-tag">CRITICAL — Stockout Risk</div>
+        <div class="insight-title">3 Items Below Reorder Point</div>
+        <div class="insight-body">Pneumatic Cylinders (11 vs 35), Wire Harness Assemblies (17 vs 47), and Label Sets (7 vs 26) are critically low. These feed production — stockouts mean missed delivery dates.</div>
+        <div class="insight-impact"><i class="fa-solid fa-bolt"></i> Impact: Production line stoppage risk within 2 weeks</div>
+      </div>
+      <div class="insight-card warning">
+        <div class="insight-tag">WARNING — Debt Service Load</div>
+        <div class="insight-title">Equipment Loan at 6.5% Consuming Cash</div>
+        <div class="insight-body">$42,250 annual interest on a $650K equipment loan. With $330K cash and net operating cash of ~$78K, debt service consumes 54% of free cash flow. Consider refinancing.</div>
+        <div class="insight-impact"><i class="fa-solid fa-bolt"></i> Action: Refinance could save $12K–$18K annually</div>
+      </div>
+      <div class="insight-card opportunity">
+        <div class="insight-tag">OPPORTUNITY — Working Capital</div>
+        <div class="insight-title">Improve DSO from ~45 to 30 Days</div>
+        <div class="insight-body">162 customer payments received, many on Net 45/60 terms. Shifting to Net 30 with early-pay discounts could accelerate $180K+ in collections and improve cash conversion by 30%.</div>
+        <div class="insight-impact"><i class="fa-solid fa-bolt"></i> Potential: +$180K cash acceleration</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer-bar">
+    Powered by <span>Informer</span> · AI + BI for QuickBooks · Data as of Feb 26, 2026 · 11 datasets analyzed in under 5 minutes
+  </div>
+</div>
+
+            </div>
+         
+</body>
+</html>

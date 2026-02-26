@@ -1,0 +1,274 @@
+[{
+	"Account Number": "1010",
+	"Account Name": "Checking Account",
+	"Account Type": "Bank",
+	"Detail Type": "Checking",
+	"Description": "Primary operating account",
+	"Opening Balance": "250000"
+},{
+	"Account Number": "1020",
+	"Account Name": "Savings Account",
+	"Account Type": "Bank",
+	"Detail Type": "Savings",
+	"Description": "Reserve savings",
+	"Opening Balance": "80000"
+},{
+	"Account Number": "1200",
+	"Account Name": "Accounts Receivable",
+	"Account Type": "Accounts Receivable",
+	"Detail Type": "Accounts Receivable (A/R)",
+	"Description": "Customer balances due",
+	"Opening Balance": "0"
+},{
+	"Account Number": "1310",
+	"Account Name": "Raw Materials Inventory",
+	"Account Type": "Other Current Assets",
+	"Detail Type": "Inventory",
+	"Description": "Steel, aluminum, plastics",
+	"Opening Balance": "95000"
+},{
+	"Account Number": "1320",
+	"Account Name": "WIP Inventory",
+	"Account Type": "Other Current Assets",
+	"Detail Type": "Inventory",
+	"Description": "Work-in-progress",
+	"Opening Balance": "42000"
+},{
+	"Account Number": "1330",
+	"Account Name": "Finished Goods Inventory",
+	"Account Type": "Other Current Assets",
+	"Detail Type": "Inventory",
+	"Description": "Ready-to-ship products",
+	"Opening Balance": "130000"
+},{
+	"Account Number": "1410",
+	"Account Name": "Prepaid Insurance",
+	"Account Type": "Other Current Assets",
+	"Detail Type": "Prepaid Expenses",
+	"Description": "Factory & liability insurance",
+	"Opening Balance": "12000"
+},{
+	"Account Number": "1510",
+	"Account Name": "Machinery & Equipment",
+	"Account Type": "Fixed Assets",
+	"Detail Type": "Machinery & Equipment",
+	"Description": "CNC machines, presses, conveyors",
+	"Opening Balance": "680000"
+},{
+	"Account Number": "1520",
+	"Account Name": "Accumulated Depreciation",
+	"Account Type": "Fixed Assets",
+	"Detail Type": "Accumulated Depreciation",
+	"Description": "Contra-asset",
+	"Opening Balance": "-210000"
+},{
+	"Account Number": "1530",
+	"Account Name": "Vehicles",
+	"Account Type": "Fixed Assets",
+	"Detail Type": "Vehicles",
+	"Description": "Forklifts & delivery trucks",
+	"Opening Balance": "95000"
+},{
+	"Account Number": "1540",
+	"Account Name": "Building",
+	"Account Type": "Fixed Assets",
+	"Detail Type": "Buildings",
+	"Description": "Manufacturing plant",
+	"Opening Balance": "900000"
+},{
+	"Account Number": "1550",
+	"Account Name": "Land",
+	"Account Type": "Fixed Assets",
+	"Detail Type": "Land",
+	"Description": "Plant site",
+	"Opening Balance": "175000"
+},{
+	"Account Number": "2010",
+	"Account Name": "Accounts Payable",
+	"Account Type": "Accounts Payable",
+	"Detail Type": "Accounts Payable (A/P)",
+	"Description": "Vendor balances owed",
+	"Opening Balance": "0"
+},{
+	"Account Number": "2020",
+	"Account Name": "Sales Tax Payable",
+	"Account Type": "Other Current Liabilities",
+	"Detail Type": "Sales Tax Payable",
+	"Description": "State & local sales tax",
+	"Opening Balance": "0"
+},{
+	"Account Number": "2030",
+	"Account Name": "Accrued Wages",
+	"Account Type": "Other Current Liabilities",
+	"Detail Type": "Accrued Liabilities",
+	"Description": "Wages earned not yet paid",
+	"Opening Balance": "18000"
+},{
+	"Account Number": "2040",
+	"Account Name": "Short-Term Loan",
+	"Account Type": "Other Current Liabilities",
+	"Detail Type": "Line of Credit",
+	"Description": "Revolving credit line",
+	"Opening Balance": "50000"
+},{
+	"Account Number": "2510",
+	"Account Name": "Equipment Loan",
+	"Account Type": "Long Term Liabilities",
+	"Detail Type": "Notes Payable",
+	"Description": "5-yr equipment financing",
+	"Opening Balance": "320000"
+},{
+	"Account Number": "3010",
+	"Account Name": "Common Stock",
+	"Account Type": "Equity",
+	"Detail Type": "Common Stock",
+	"Description": "Owner equity",
+	"Opening Balance": "500000"
+},{
+	"Account Number": "3020",
+	"Account Name": "Retained Earnings",
+	"Account Type": "Equity",
+	"Detail Type": "Retained Earnings",
+	"Description": "Cumulative earnings",
+	"Opening Balance": "279000"
+},{
+	"Account Number": "4010",
+	"Account Name": "Product Sales",
+	"Account Type": "Income",
+	"Detail Type": "Sales of Product Income",
+	"Description": "Revenue from manufactured goods",
+	"Opening Balance": "0"
+},{
+	"Account Number": "4020",
+	"Account Name": "Freight Income",
+	"Account Type": "Income",
+	"Detail Type": "Service/Fee Income",
+	"Description": "Shipping charged to customers",
+	"Opening Balance": "0"
+},{
+	"Account Number": "4030",
+	"Account Name": "Sales Returns & Allowances",
+	"Account Type": "Income",
+	"Detail Type": "Sales of Product Income",
+	"Description": "Returns and credits",
+	"Opening Balance": "0"
+},{
+	"Account Number": "5010",
+	"Account Name": "Cost of Goods Sold",
+	"Account Type": "Cost of Goods Sold",
+	"Detail Type": "Supplies & Materials",
+	"Description": "Direct material costs",
+	"Opening Balance": "0"
+},{
+	"Account Number": "5020",
+	"Account Name": "Direct Labor",
+	"Account Type": "Cost of Goods Sold",
+	"Detail Type": "Cost of Labor",
+	"Description": "Factory floor wages",
+	"Opening Balance": "0"
+},{
+	"Account Number": "5030",
+	"Account Name": "Manufacturing Overhead",
+	"Account Type": "Cost of Goods Sold",
+	"Detail Type": "Other Costs of Service",
+	"Description": "Utilities, depreciation allocated",
+	"Opening Balance": "0"
+},{
+	"Account Number": "6010",
+	"Account Name": "Freight & Shipping Expense",
+	"Account Type": "Expenses",
+	"Detail Type": "Shipping, Freight & Delivery",
+	"Description": "Outbound freight costs",
+	"Opening Balance": "0"
+},{
+	"Account Number": "6020",
+	"Account Name": "Rent Expense",
+	"Account Type": "Expenses",
+	"Detail Type": "Rent or Lease of Buildings",
+	"Description": "Office space lease",
+	"Opening Balance": "0"
+},{
+	"Account Number": "6030",
+	"Account Name": "Utilities",
+	"Account Type": "Expenses",
+	"Detail Type": "Utilities",
+	"Description": "Electric, gas, water",
+	"Opening Balance": "0"
+},{
+	"Account Number": "6040",
+	"Account Name": "Repairs & Maintenance",
+	"Account Type": "Expenses",
+	"Detail Type": "Repairs & Maintenance",
+	"Description": "Machine servicing",
+	"Opening Balance": "0"
+},{
+	"Account Number": "6050",
+	"Account Name": "Office Supplies",
+	"Account Type": "Expenses",
+	"Detail Type": "Office/General Administrative Expenses",
+	"Description": "Consumables",
+	"Opening Balance": "0"
+},{
+	"Account Number": "6060",
+	"Account Name": "Insurance Expense",
+	"Account Type": "Expenses",
+	"Detail Type": "Insurance",
+	"Description": "General liability & property",
+	"Opening Balance": "0"
+},{
+	"Account Number": "6070",
+	"Account Name": "Depreciation Expense",
+	"Account Type": "Expenses",
+	"Detail Type": "Depreciation",
+	"Description": "Annual depreciation",
+	"Opening Balance": "0"
+},{
+	"Account Number": "6080",
+	"Account Name": "Salaries & Wages - Admin",
+	"Account Type": "Expenses",
+	"Detail Type": "Payroll Expenses",
+	"Description": "Admin & management salaries",
+	"Opening Balance": "0"
+},{
+	"Account Number": "6090",
+	"Account Name": "Payroll Tax Expense",
+	"Account Type": "Expenses",
+	"Detail Type": "Payroll Expenses",
+	"Description": "Employer payroll taxes",
+	"Opening Balance": "0"
+},{
+	"Account Number": "6100",
+	"Account Name": "Bank Charges & Fees",
+	"Account Type": "Expenses",
+	"Detail Type": "Bank Charges",
+	"Description": "Wire fees, monthly fees",
+	"Opening Balance": "0"
+},{
+	"Account Number": "6110",
+	"Account Name": "Travel & Entertainment",
+	"Account Type": "Expenses",
+	"Detail Type": "Travel",
+	"Description": "Sales travel, trade shows",
+	"Opening Balance": "0"
+},{
+	"Account Number": "6120",
+	"Account Name": "Professional Services",
+	"Account Type": "Expenses",
+	"Detail Type": "Legal & Professional Fees",
+	"Description": "Accounting, legal retainer",
+	"Opening Balance": "0"
+},{
+	"Account Number": "6130",
+	"Account Name": "Interest Expense",
+	"Account Type": "Expenses",
+	"Detail Type": "Interest Paid",
+	"Description": "Loan interest",
+	"Opening Balance": "0"
+},{
+	"Account Number": "6140",
+	"Account Name": "Income Tax Expense",
+	"Account Type": "Expenses",
+	"Detail Type": "Taxes Paid",
+	"Description": "Federal & state income taxes",
+	"Opening Balance": "0"
+}]

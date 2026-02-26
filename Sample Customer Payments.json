@@ -1,0 +1,1135 @@
+[{
+	"Customer": "DeltaForge Inc.",
+	"Payment Date": "12/21/2024",
+	"Amount": "19364.94",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1001",
+	"Memo": "Partial payment"
+},{
+	"Customer": "JunctionWorks LLC",
+	"Payment Date": "11/20/2024",
+	"Amount": "1372.5",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1002",
+	"Memo": "Payment in full"
+},{
+	"Customer": "CoreTech Manufacturing",
+	"Payment Date": "05/07/2024",
+	"Amount": "11040.0",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1005",
+	"Memo": "Payment in full"
+},{
+	"Customer": "MidWest Metal Group",
+	"Payment Date": "09/10/2024",
+	"Amount": "580.0",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1006",
+	"Memo": "Payment in full"
+},{
+	"Customer": "Vanguard Manufacturing",
+	"Payment Date": "03/25/2024",
+	"Amount": "40039.0",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1007",
+	"Memo": "Payment in full"
+},{
+	"Customer": "JetStream Precision",
+	"Payment Date": "10/27/2024",
+	"Amount": "4408.0",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1008",
+	"Memo": "Payment in full"
+},{
+	"Customer": "BlueStar Manufacturing",
+	"Payment Date": "06/01/2024",
+	"Amount": "8400.0",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1009",
+	"Memo": "Payment in full"
+},{
+	"Customer": "EagleParts LLC",
+	"Payment Date": "08/27/2024",
+	"Amount": "15951.43",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1010",
+	"Memo": "Partial payment"
+},{
+	"Customer": "RiverBend Supply",
+	"Payment Date": "06/10/2024",
+	"Amount": "8027.0",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1011",
+	"Memo": "Payment in full"
+},{
+	"Customer": "Fortis Components",
+	"Payment Date": "11/22/2024",
+	"Amount": "6853.0",
+	"Payment Method": "Credit Card",
+	"Applied To Invoice": "INV-1012",
+	"Memo": "Payment in full"
+},{
+	"Customer": "UltraMold Corp",
+	"Payment Date": "07/19/2024",
+	"Amount": "2057.19",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1013",
+	"Memo": "Partial payment"
+},{
+	"Customer": "BuildRight Supply",
+	"Payment Date": "12/22/2024",
+	"Amount": "1145.0",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1015",
+	"Memo": "Payment in full"
+},{
+	"Customer": "WideRail Fabrication",
+	"Payment Date": "07/20/2024",
+	"Amount": "10957.47",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1016",
+	"Memo": "Partial payment"
+},{
+	"Customer": "Horizon Assembly Co.",
+	"Payment Date": "07/06/2024",
+	"Amount": "38789.0",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1017",
+	"Memo": "Payment in full"
+},{
+	"Customer": "EverGreen Fabrication",
+	"Payment Date": "03/23/2024",
+	"Amount": "5518.17",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1018",
+	"Memo": "Partial payment"
+},{
+	"Customer": "NexGen Fabricators",
+	"Payment Date": "01/04/2025",
+	"Amount": "14620.5",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1019",
+	"Memo": "Payment in full"
+},{
+	"Customer": "JetStream Precision",
+	"Payment Date": "12/12/2024",
+	"Amount": "8100.0",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1020",
+	"Memo": "Payment in full"
+},{
+	"Customer": "Keystone Fabrication",
+	"Payment Date": "06/28/2024",
+	"Amount": "12763.24",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1021",
+	"Memo": "Partial payment"
+},{
+	"Customer": "IronClad Industries",
+	"Payment Date": "06/04/2024",
+	"Amount": "15188.0",
+	"Payment Method": "Credit Card",
+	"Applied To Invoice": "INV-1024",
+	"Memo": "Payment in full"
+},{
+	"Customer": "OmegaCast Inc.",
+	"Payment Date": "10/20/2024",
+	"Amount": "3589.0",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1025",
+	"Memo": "Payment in full"
+},{
+	"Customer": "BuildRight Supply",
+	"Payment Date": "08/19/2024",
+	"Amount": "30524.0",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1026",
+	"Memo": "Payment in full"
+},{
+	"Customer": "BuildRight Supply",
+	"Payment Date": "05/25/2024",
+	"Amount": "15603.89",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1027",
+	"Memo": "Partial payment"
+},{
+	"Customer": "Keystone Fabrication",
+	"Payment Date": "09/24/2024",
+	"Amount": "942.01",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1028",
+	"Memo": "Partial payment"
+},{
+	"Customer": "VectorCut Precision",
+	"Payment Date": "04/04/2024",
+	"Amount": "2270.0",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1029",
+	"Memo": "Payment in full"
+},{
+	"Customer": "PrimeCast LLC",
+	"Payment Date": "12/02/2024",
+	"Amount": "9163.0",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1031",
+	"Memo": "Payment in full"
+},{
+	"Customer": "LeverArm Manufacturing",
+	"Payment Date": "07/19/2024",
+	"Amount": "6905.0",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1032",
+	"Memo": "Payment in full"
+},{
+	"Customer": "GoldStrike Metals",
+	"Payment Date": "09/20/2024",
+	"Amount": "5119.84",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1033",
+	"Memo": "Partial payment"
+},{
+	"Customer": "GridIron Metal Works",
+	"Payment Date": "01/18/2025",
+	"Amount": "2981.94",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1034",
+	"Memo": "Partial payment"
+},{
+	"Customer": "UltraMold Corp",
+	"Payment Date": "08/26/2024",
+	"Amount": "10598.93",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1035",
+	"Memo": "Partial payment"
+},{
+	"Customer": "OpenField Metal",
+	"Payment Date": "07/08/2024",
+	"Amount": "350.0",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1036",
+	"Memo": "Payment in full"
+},{
+	"Customer": "Sunrise Production",
+	"Payment Date": "12/24/2024",
+	"Amount": "26385.0",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1037",
+	"Memo": "Payment in full"
+},{
+	"Customer": "BuildRight Supply",
+	"Payment Date": "07/16/2024",
+	"Amount": "1496.0",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1039",
+	"Memo": "Payment in full"
+},{
+	"Customer": "YorkShire Manufacturing",
+	"Payment Date": "04/24/2024",
+	"Amount": "985.0",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1040",
+	"Memo": "Payment in full"
+},{
+	"Customer": "IcePeak Components",
+	"Payment Date": "10/03/2024",
+	"Amount": "2375.0",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1041",
+	"Memo": "Payment in full"
+},{
+	"Customer": "JetStream Precision",
+	"Payment Date": "04/25/2024",
+	"Amount": "11360.0",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1042",
+	"Memo": "Payment in full"
+},{
+	"Customer": "CoreTech Manufacturing",
+	"Payment Date": "10/11/2024",
+	"Amount": "2511.0",
+	"Payment Method": "Credit Card",
+	"Applied To Invoice": "INV-1043",
+	"Memo": "Payment in full"
+},{
+	"Customer": "DeltaForge Inc.",
+	"Payment Date": "08/13/2024",
+	"Amount": "6288.88",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1044",
+	"Memo": "Partial payment"
+},{
+	"Customer": "UltraMold Corp",
+	"Payment Date": "03/22/2024",
+	"Amount": "17270.0",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1045",
+	"Memo": "Payment in full"
+},{
+	"Customer": "CoreTech Manufacturing",
+	"Payment Date": "01/21/2024",
+	"Amount": "4567.0",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1046",
+	"Memo": "Payment in full"
+},{
+	"Customer": "GridIron Metal Works",
+	"Payment Date": "12/14/2024",
+	"Amount": "5389.0",
+	"Payment Method": "Credit Card",
+	"Applied To Invoice": "INV-1047",
+	"Memo": "Payment in full"
+},{
+	"Customer": "CoreTech Manufacturing",
+	"Payment Date": "01/15/2024",
+	"Amount": "14220.0",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1048",
+	"Memo": "Payment in full"
+},{
+	"Customer": "VectorCut Precision",
+	"Payment Date": "10/09/2024",
+	"Amount": "8866.0",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1049",
+	"Memo": "Payment in full"
+},{
+	"Customer": "EagleParts LLC",
+	"Payment Date": "10/10/2024",
+	"Amount": "5957.44",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1050",
+	"Memo": "Partial payment"
+},{
+	"Customer": "Allied Metalworks",
+	"Payment Date": "01/02/2025",
+	"Amount": "352.35",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1051",
+	"Memo": "Partial payment"
+},{
+	"Customer": "Xenith Machining",
+	"Payment Date": "01/26/2024",
+	"Amount": "30991.5",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1053",
+	"Memo": "Payment in full"
+},{
+	"Customer": "X-Cel Components",
+	"Payment Date": "03/16/2024",
+	"Amount": "336.0",
+	"Payment Method": "Credit Card",
+	"Applied To Invoice": "INV-1054",
+	"Memo": "Payment in full"
+},{
+	"Customer": "YorkShire Manufacturing",
+	"Payment Date": "09/07/2024",
+	"Amount": "7316.5",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1055",
+	"Memo": "Payment in full"
+},{
+	"Customer": "United Parts Co.",
+	"Payment Date": "02/24/2024",
+	"Amount": "5582.0",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1059",
+	"Memo": "Payment in full"
+},{
+	"Customer": "MasterCraft Parts",
+	"Payment Date": "09/03/2024",
+	"Amount": "2460.5",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1061",
+	"Memo": "Payment in full"
+},{
+	"Customer": "Xenith Machining",
+	"Payment Date": "10/31/2024",
+	"Amount": "431.89",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1062",
+	"Memo": "Partial payment"
+},{
+	"Customer": "CoreTech Manufacturing",
+	"Payment Date": "10/30/2024",
+	"Amount": "2830.01",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1063",
+	"Memo": "Partial payment"
+},{
+	"Customer": "Horizon Assembly Co.",
+	"Payment Date": "04/29/2024",
+	"Amount": "5112.32",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1064",
+	"Memo": "Partial payment"
+},{
+	"Customer": "TrueForm Industries",
+	"Payment Date": "05/01/2024",
+	"Amount": "1012.0",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1065",
+	"Memo": "Payment in full"
+},{
+	"Customer": "CoreTech Manufacturing",
+	"Payment Date": "12/30/2024",
+	"Amount": "6029.5",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1066",
+	"Memo": "Payment in full"
+},{
+	"Customer": "TrueForm Industries",
+	"Payment Date": "04/15/2024",
+	"Amount": "3527.37",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1067",
+	"Memo": "Partial payment"
+},{
+	"Customer": "JunctionWorks LLC",
+	"Payment Date": "07/18/2024",
+	"Amount": "3385.27",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1068",
+	"Memo": "Partial payment"
+},{
+	"Customer": "YorkShire Manufacturing",
+	"Payment Date": "10/31/2024",
+	"Amount": "4350.0",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1069",
+	"Memo": "Payment in full"
+},{
+	"Customer": "SteelPath Co.",
+	"Payment Date": "07/24/2024",
+	"Amount": "4693.62",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1070",
+	"Memo": "Partial payment"
+},{
+	"Customer": "GoldStrike Metals",
+	"Payment Date": "03/22/2024",
+	"Amount": "20217.5",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1071",
+	"Memo": "Payment in full"
+},{
+	"Customer": "JunctionWorks LLC",
+	"Payment Date": "03/13/2024",
+	"Amount": "12762.15",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1072",
+	"Memo": "Partial payment"
+},{
+	"Customer": "Keystone Fabrication",
+	"Payment Date": "11/26/2024",
+	"Amount": "19123.5",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1073",
+	"Memo": "Payment in full"
+},{
+	"Customer": "NexGen Fabricators",
+	"Payment Date": "02/11/2024",
+	"Amount": "2920.5",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1074",
+	"Memo": "Partial payment"
+},{
+	"Customer": "IronClad Industries",
+	"Payment Date": "10/11/2024",
+	"Amount": "6543.0",
+	"Payment Method": "Credit Card",
+	"Applied To Invoice": "INV-1076",
+	"Memo": "Payment in full"
+},{
+	"Customer": "NexGen Fabricators",
+	"Payment Date": "05/20/2024",
+	"Amount": "25230.0",
+	"Payment Method": "Credit Card",
+	"Applied To Invoice": "INV-1077",
+	"Memo": "Payment in full"
+},{
+	"Customer": "Quantum Steel LLC",
+	"Payment Date": "07/28/2024",
+	"Amount": "4341.0",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1080",
+	"Memo": "Payment in full"
+},{
+	"Customer": "Yellowstone Industrial",
+	"Payment Date": "08/23/2024",
+	"Amount": "18867.5",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1081",
+	"Memo": "Payment in full"
+},{
+	"Customer": "MasterCraft Parts",
+	"Payment Date": "07/31/2024",
+	"Amount": "40963.0",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1082",
+	"Memo": "Payment in full"
+},{
+	"Customer": "IcePeak Components",
+	"Payment Date": "01/15/2025",
+	"Amount": "8975.0",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1084",
+	"Memo": "Payment in full"
+},{
+	"Customer": "MasterCraft Parts",
+	"Payment Date": "06/09/2024",
+	"Amount": "29718.62",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1085",
+	"Memo": "Partial payment"
+},{
+	"Customer": "SteelPath Co.",
+	"Payment Date": "02/09/2024",
+	"Amount": "10541.0",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1086",
+	"Memo": "Payment in full"
+},{
+	"Customer": "NexGen Fabricators",
+	"Payment Date": "03/02/2024",
+	"Amount": "3182.65",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1087",
+	"Memo": "Partial payment"
+},{
+	"Customer": "Yellowstone Industrial",
+	"Payment Date": "04/11/2024",
+	"Amount": "8262.47",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1088",
+	"Memo": "Partial payment"
+},{
+	"Customer": "EverGreen Fabrication",
+	"Payment Date": "05/15/2024",
+	"Amount": "4030.19",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1089",
+	"Memo": "Partial payment"
+},{
+	"Customer": "UltraMold Corp",
+	"Payment Date": "06/29/2024",
+	"Amount": "10360.0",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1090",
+	"Memo": "Payment in full"
+},{
+	"Customer": "YorkShire Manufacturing",
+	"Payment Date": "06/10/2024",
+	"Amount": "6090.0",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1091",
+	"Memo": "Payment in full"
+},{
+	"Customer": "Quantum Steel LLC",
+	"Payment Date": "09/21/2024",
+	"Amount": "4068.0",
+	"Payment Method": "Credit Card",
+	"Applied To Invoice": "INV-1092",
+	"Memo": "Payment in full"
+},{
+	"Customer": "GridIron Metal Works",
+	"Payment Date": "11/16/2024",
+	"Amount": "11025.0",
+	"Payment Method": "Credit Card",
+	"Applied To Invoice": "INV-1093",
+	"Memo": "Payment in full"
+},{
+	"Customer": "GridIron Metal Works",
+	"Payment Date": "06/28/2024",
+	"Amount": "22264.0",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1094",
+	"Memo": "Payment in full"
+},{
+	"Customer": "MidWest Metal Group",
+	"Payment Date": "06/25/2024",
+	"Amount": "13370.5",
+	"Payment Method": "Credit Card",
+	"Applied To Invoice": "INV-1095",
+	"Memo": "Payment in full"
+},{
+	"Customer": "LumaTech Corp",
+	"Payment Date": "07/06/2024",
+	"Amount": "3741.56",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1098",
+	"Memo": "Partial payment"
+},{
+	"Customer": "United Parts Co.",
+	"Payment Date": "08/08/2024",
+	"Amount": "1408.0",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1099",
+	"Memo": "Payment in full"
+},{
+	"Customer": "Quantum Steel LLC",
+	"Payment Date": "07/25/2024",
+	"Amount": "17220.0",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1101",
+	"Memo": "Payment in full"
+},{
+	"Customer": "SteelPath Co.",
+	"Payment Date": "12/31/2024",
+	"Amount": "13715.0",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1102",
+	"Memo": "Payment in full"
+},{
+	"Customer": "Keystone Fabrication",
+	"Payment Date": "10/06/2024",
+	"Amount": "5964.5",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1105",
+	"Memo": "Payment in full"
+},{
+	"Customer": "GoldStrike Metals",
+	"Payment Date": "09/13/2024",
+	"Amount": "990.5",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1106",
+	"Memo": "Payment in full"
+},{
+	"Customer": "BuildRight Supply",
+	"Payment Date": "01/08/2025",
+	"Amount": "46.84",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1107",
+	"Memo": "Partial payment"
+},{
+	"Customer": "SteelPath Co.",
+	"Payment Date": "10/25/2024",
+	"Amount": "4434.0",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1109",
+	"Memo": "Payment in full"
+},{
+	"Customer": "VectorCut Precision",
+	"Payment Date": "01/21/2024",
+	"Amount": "1015.0",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1110",
+	"Memo": "Payment in full"
+},{
+	"Customer": "Yellowstone Industrial",
+	"Payment Date": "05/18/2024",
+	"Amount": "12895.5",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1111",
+	"Memo": "Payment in full"
+},{
+	"Customer": "BlueStar Manufacturing",
+	"Payment Date": "05/05/2024",
+	"Amount": "5655.0",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1112",
+	"Memo": "Payment in full"
+},{
+	"Customer": "SteelPath Co.",
+	"Payment Date": "02/07/2024",
+	"Amount": "11907.0",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1113",
+	"Memo": "Payment in full"
+},{
+	"Customer": "YorkShire Manufacturing",
+	"Payment Date": "04/03/2024",
+	"Amount": "27985.0",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1114",
+	"Memo": "Payment in full"
+},{
+	"Customer": "HighPoint Assembly",
+	"Payment Date": "08/09/2024",
+	"Amount": "3598.0",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1115",
+	"Memo": "Payment in full"
+},{
+	"Customer": "X-Cel Components",
+	"Payment Date": "09/21/2024",
+	"Amount": "2434.0",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1117",
+	"Memo": "Payment in full"
+},{
+	"Customer": "CoreTech Manufacturing",
+	"Payment Date": "02/25/2024",
+	"Amount": "16383.0",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1119",
+	"Memo": "Payment in full"
+},{
+	"Customer": "RiverBend Supply",
+	"Payment Date": "04/30/2024",
+	"Amount": "16334.5",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1120",
+	"Memo": "Payment in full"
+},{
+	"Customer": "DeltaForge Inc.",
+	"Payment Date": "12/19/2024",
+	"Amount": "2006.5",
+	"Payment Method": "Credit Card",
+	"Applied To Invoice": "INV-1122",
+	"Memo": "Payment in full"
+},{
+	"Customer": "LeverArm Manufacturing",
+	"Payment Date": "08/17/2024",
+	"Amount": "8269.0",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1124",
+	"Memo": "Payment in full"
+},{
+	"Customer": "VectorCut Precision",
+	"Payment Date": "10/01/2024",
+	"Amount": "1580.85",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1126",
+	"Memo": "Partial payment"
+},{
+	"Customer": "Duratek Systems",
+	"Payment Date": "08/05/2024",
+	"Amount": "1550.0",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1127",
+	"Memo": "Payment in full"
+},{
+	"Customer": "Sunrise Production",
+	"Payment Date": "10/02/2024",
+	"Amount": "6579.0",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1129",
+	"Memo": "Payment in full"
+},{
+	"Customer": "Duratek Systems",
+	"Payment Date": "01/15/2024",
+	"Amount": "861.0",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1132",
+	"Memo": "Payment in full"
+},{
+	"Customer": "HighPoint Assembly",
+	"Payment Date": "05/18/2024",
+	"Amount": "1016.69",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1133",
+	"Memo": "Partial payment"
+},{
+	"Customer": "IcePeak Components",
+	"Payment Date": "12/14/2024",
+	"Amount": "2584.0",
+	"Payment Method": "Credit Card",
+	"Applied To Invoice": "INV-1134",
+	"Memo": "Payment in full"
+},{
+	"Customer": "JetStream Precision",
+	"Payment Date": "07/30/2024",
+	"Amount": "4995.0",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1135",
+	"Memo": "Payment in full"
+},{
+	"Customer": "OmegaCast Inc.",
+	"Payment Date": "07/23/2024",
+	"Amount": "10016.38",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1137",
+	"Memo": "Partial payment"
+},{
+	"Customer": "WideRail Fabrication",
+	"Payment Date": "06/21/2024",
+	"Amount": "4048.0",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1139",
+	"Memo": "Payment in full"
+},{
+	"Customer": "MasterCraft Parts",
+	"Payment Date": "07/01/2024",
+	"Amount": "10867.0",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1141",
+	"Memo": "Payment in full"
+},{
+	"Customer": "Keystone Fabrication",
+	"Payment Date": "08/05/2024",
+	"Amount": "3319.0",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1142",
+	"Memo": "Payment in full"
+},{
+	"Customer": "Keystone Fabrication",
+	"Payment Date": "06/07/2024",
+	"Amount": "19843.0",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1143",
+	"Memo": "Payment in full"
+},{
+	"Customer": "MidWest Metal Group",
+	"Payment Date": "03/05/2024",
+	"Amount": "17316.0",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1144",
+	"Memo": "Payment in full"
+},{
+	"Customer": "CoreTech Manufacturing",
+	"Payment Date": "08/22/2024",
+	"Amount": "15266.0",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1145",
+	"Memo": "Payment in full"
+},{
+	"Customer": "TrueForm Industries",
+	"Payment Date": "09/16/2024",
+	"Amount": "4467.0",
+	"Payment Method": "Credit Card",
+	"Applied To Invoice": "INV-1146",
+	"Memo": "Payment in full"
+},{
+	"Customer": "YorkShire Manufacturing",
+	"Payment Date": "01/21/2024",
+	"Amount": "10362.5",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1147",
+	"Memo": "Payment in full"
+},{
+	"Customer": "Zenith Components",
+	"Payment Date": "10/12/2024",
+	"Amount": "16554.76",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1149",
+	"Memo": "Partial payment"
+},{
+	"Customer": "PeakForm Engineering",
+	"Payment Date": "12/21/2024",
+	"Amount": "13800.0",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1150",
+	"Memo": "Payment in full"
+},{
+	"Customer": "X-Cel Components",
+	"Payment Date": "08/21/2024",
+	"Amount": "8085.0",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1151",
+	"Memo": "Payment in full"
+},{
+	"Customer": "WideRail Fabrication",
+	"Payment Date": "11/07/2024",
+	"Amount": "2472.55",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1152",
+	"Memo": "Partial payment"
+},{
+	"Customer": "EverGreen Fabrication",
+	"Payment Date": "06/17/2024",
+	"Amount": "18786.0",
+	"Payment Method": "Credit Card",
+	"Applied To Invoice": "INV-1153",
+	"Memo": "Payment in full"
+},{
+	"Customer": "EverGreen Fabrication",
+	"Payment Date": "08/24/2024",
+	"Amount": "55210.0",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1154",
+	"Memo": "Payment in full"
+},{
+	"Customer": "Keystone Fabrication",
+	"Payment Date": "05/22/2024",
+	"Amount": "25602.0",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1155",
+	"Memo": "Payment in full"
+},{
+	"Customer": "RiverBend Supply",
+	"Payment Date": "08/03/2024",
+	"Amount": "635.08",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1156",
+	"Memo": "Partial payment"
+},{
+	"Customer": "Yellowstone Industrial",
+	"Payment Date": "01/03/2025",
+	"Amount": "2225.0",
+	"Payment Method": "Credit Card",
+	"Applied To Invoice": "INV-1157",
+	"Memo": "Payment in full"
+},{
+	"Customer": "Xenith Machining",
+	"Payment Date": "05/03/2024",
+	"Amount": "14238.0",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1158",
+	"Memo": "Payment in full"
+},{
+	"Customer": "Horizon Assembly Co.",
+	"Payment Date": "07/09/2024",
+	"Amount": "7740.06",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1159",
+	"Memo": "Partial payment"
+},{
+	"Customer": "Triton Assemblies",
+	"Payment Date": "04/09/2024",
+	"Amount": "16132.0",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1160",
+	"Memo": "Payment in full"
+},{
+	"Customer": "LumaTech Corp",
+	"Payment Date": "12/14/2024",
+	"Amount": "7443.0",
+	"Payment Method": "Credit Card",
+	"Applied To Invoice": "INV-1161",
+	"Memo": "Payment in full"
+},{
+	"Customer": "Frontier Tooling",
+	"Payment Date": "05/04/2024",
+	"Amount": "3281.91",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1162",
+	"Memo": "Partial payment"
+},{
+	"Customer": "Fortis Components",
+	"Payment Date": "02/02/2024",
+	"Amount": "9180.0",
+	"Payment Method": "Credit Card",
+	"Applied To Invoice": "INV-1163",
+	"Memo": "Payment in full"
+},{
+	"Customer": "YorkShire Manufacturing",
+	"Payment Date": "10/28/2024",
+	"Amount": "6486.79",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1164",
+	"Memo": "Partial payment"
+},{
+	"Customer": "Cascade Fabricators",
+	"Payment Date": "08/22/2024",
+	"Amount": "14367.5",
+	"Payment Method": "Credit Card",
+	"Applied To Invoice": "INV-1165",
+	"Memo": "Payment in full"
+},{
+	"Customer": "Horizon Assembly Co.",
+	"Payment Date": "04/24/2024",
+	"Amount": "32767.0",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1166",
+	"Memo": "Payment in full"
+},{
+	"Customer": "MasterCraft Parts",
+	"Payment Date": "04/06/2024",
+	"Amount": "15204.0",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1167",
+	"Memo": "Payment in full"
+},{
+	"Customer": "Allied Metalworks",
+	"Payment Date": "06/10/2024",
+	"Amount": "7644.5",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1168",
+	"Memo": "Payment in full"
+},{
+	"Customer": "SteelPath Co.",
+	"Payment Date": "09/18/2024",
+	"Amount": "5286.18",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1169",
+	"Memo": "Partial payment"
+},{
+	"Customer": "EagleParts LLC",
+	"Payment Date": "02/29/2024",
+	"Amount": "5265.64",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1170",
+	"Memo": "Partial payment"
+},{
+	"Customer": "DeltaForge Inc.",
+	"Payment Date": "12/19/2024",
+	"Amount": "4962.0",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1171",
+	"Memo": "Payment in full"
+},{
+	"Customer": "Sunrise Production",
+	"Payment Date": "10/28/2024",
+	"Amount": "41610.5",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1172",
+	"Memo": "Payment in full"
+},{
+	"Customer": "CoreTech Manufacturing",
+	"Payment Date": "01/13/2024",
+	"Amount": "18008.0",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1173",
+	"Memo": "Payment in full"
+},{
+	"Customer": "OmegaCast Inc.",
+	"Payment Date": "12/18/2024",
+	"Amount": "190.0",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1175",
+	"Memo": "Payment in full"
+},{
+	"Customer": "VectorCut Precision",
+	"Payment Date": "03/06/2024",
+	"Amount": "7684.0",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1177",
+	"Memo": "Payment in full"
+},{
+	"Customer": "JetStream Precision",
+	"Payment Date": "10/13/2024",
+	"Amount": "8299.5",
+	"Payment Method": "Credit Card",
+	"Applied To Invoice": "INV-1178",
+	"Memo": "Payment in full"
+},{
+	"Customer": "NorthStar Tooling",
+	"Payment Date": "02/29/2024",
+	"Amount": "6252.0",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1179",
+	"Memo": "Payment in full"
+},{
+	"Customer": "PeakForm Engineering",
+	"Payment Date": "12/14/2024",
+	"Amount": "4465.0",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1180",
+	"Memo": "Payment in full"
+},{
+	"Customer": "MasterCraft Parts",
+	"Payment Date": "12/30/2024",
+	"Amount": "3135.0",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1181",
+	"Memo": "Payment in full"
+},{
+	"Customer": "MidWest Metal Group",
+	"Payment Date": "08/02/2024",
+	"Amount": "16059.0",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1182",
+	"Memo": "Payment in full"
+},{
+	"Customer": "EagleParts LLC",
+	"Payment Date": "01/20/2024",
+	"Amount": "2303.0",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1183",
+	"Memo": "Payment in full"
+},{
+	"Customer": "X-Cel Components",
+	"Payment Date": "02/18/2024",
+	"Amount": "140.89",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1184",
+	"Memo": "Partial payment"
+},{
+	"Customer": "Cascade Fabricators",
+	"Payment Date": "07/30/2024",
+	"Amount": "26148.5",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1185",
+	"Memo": "Payment in full"
+},{
+	"Customer": "Fortis Components",
+	"Payment Date": "02/27/2024",
+	"Amount": "8534.5",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1186",
+	"Memo": "Payment in full"
+},{
+	"Customer": "TrueForm Industries",
+	"Payment Date": "05/23/2024",
+	"Amount": "5250.0",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1187",
+	"Memo": "Payment in full"
+},{
+	"Customer": "NexGen Fabricators",
+	"Payment Date": "02/17/2024",
+	"Amount": "2469.0",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1188",
+	"Memo": "Payment in full"
+},{
+	"Customer": "HighPoint Assembly",
+	"Payment Date": "05/28/2024",
+	"Amount": "5573.5",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1189",
+	"Memo": "Payment in full"
+},{
+	"Customer": "Vanguard Manufacturing",
+	"Payment Date": "06/12/2024",
+	"Amount": "4954.0",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1190",
+	"Memo": "Payment in full"
+},{
+	"Customer": "Xenith Machining",
+	"Payment Date": "05/25/2024",
+	"Amount": "4767.71",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1191",
+	"Memo": "Partial payment"
+},{
+	"Customer": "GoldStrike Metals",
+	"Payment Date": "02/14/2024",
+	"Amount": "850.0",
+	"Payment Method": "ACH",
+	"Applied To Invoice": "INV-1192",
+	"Memo": "Payment in full"
+},{
+	"Customer": "Duratek Systems",
+	"Payment Date": "04/29/2024",
+	"Amount": "9236.5",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1194",
+	"Memo": "Payment in full"
+},{
+	"Customer": "MidWest Metal Group",
+	"Payment Date": "10/30/2024",
+	"Amount": "2021.83",
+	"Payment Method": "Wire Transfer",
+	"Applied To Invoice": "INV-1195",
+	"Memo": "Partial payment"
+},{
+	"Customer": "OpenField Metal",
+	"Payment Date": "01/12/2024",
+	"Amount": "8778.0",
+	"Payment Method": "Check",
+	"Applied To Invoice": "INV-1197",
+	"Memo": "Payment in full"
+},{
+	"Customer": "Allied Metalworks",
+	"Payment Date": "02/08/2024",
+	"Amount": "12470.0",
+	"Payment Method": "Credit Card",
+	"Applied To Invoice": "INV-1198",
+	"Memo": "Payment in full"
+},{
+	"Customer": "Xenith Machining",
+	"Payment Date": "02/29/2024",
+	"Amount": "15633.0",
+	"Payment Method": "Credit Card",
+	"Applied To Invoice": "INV-1199",
+	"Memo": "Payment in full"
+},{
+	"Customer": "Sunrise Production",
+	"Payment Date": "07/02/2024",
+	"Amount": "17674.5",
+	"Payment Method": "Credit Card",
+	"Applied To Invoice": "INV-1200",
+	"Memo": "Payment in full"
+}]

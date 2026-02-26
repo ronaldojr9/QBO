@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>quickbooks financial command center</title>
+</head>
+<body>
+
+            <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Round">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+            <style>
+
+               :host {
+                  color-scheme: light dark;
+                  -webkit-font-smoothing: antialiased;
+                  -moz-osx-font-smoothing: grayscale;
+                  text-rendering: optimizeLegibility;
+               }
+
+               /* Material Icons styling */
+               .material-icons,
+               .material-icons-outlined,
+               .material-icons-round {
+                  font-family: 'Material Icons', 'Material Icons Outlined', 'Material Icons Round', sans-serif;
+                  font-weight: normal;
+                  font-style: normal;
+                  font-size: 24px;
+                  display: inline-block;
+                  line-height: 1;
+                  text-transform: none;
+                  letter-spacing: normal;
+                  word-wrap: normal;
+                  white-space: nowrap;
+                  direction: ltr;
+                  -webkit-font-smoothing: antialiased;
+                  text-rendering: optimizeLegibility;
+                  -moz-osx-font-smoothing: grayscale;
+                  font-feature-settings: 'liga';
+                  vertical-align: middle;
+               }
+               .material-icons-outlined { font-family: 'Material Icons Outlined'; }
+               .material-icons-round { font-family: 'Material Icons Round'; }
+
+               /* Font Awesome sizing */
+               .fa, .fas, .far, .fal, .fat, .fad, .fab,
+               .fa-solid, .fa-regular, .fa-light, .fa-thin, .fa-duotone, .fa-brands {
+                  vertical-align: middle;
+                  line-height: 1;
+               }
+
+               /* Base styles - neutral, minimal container */
+               .ih-root {
+                  font: 14px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI",
+                        Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji",
+                        "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", sans-serif;
+                  padding: 12px 14px;
+                  border-radius: 10px;
+                  box-sizing: border-box;
+               }
+               .ih-root * { box-sizing: border-box; }
+
+               /* Typography and spacing */
+               .ih-root h1, .ih-root h2, .ih-root h3, .ih-root h4, .ih-root h5, .ih-root h6 {
+                  margin: 0.6rem 0 0.4rem;
+                  line-height: 1.25;
+               }
+               .ih-root p { margin: 0 0 0.75rem; }
+               .ih-root strong { font-weight: 600; }
+               .ih-root em { font-style: italic; }
+               .ih-root a {
+                  text-decoration: underline;
+                  text-underline-offset: 2px;
+               }
+               .ih-root hr {
+                  border: 0; border-top: 1px solid currentColor;
+                  opacity: 0.2;
+                  margin: 1rem 0;
+               }
+               .ih-root ul, .ih-root ol {
+                  margin: 0.5rem 0 0.75rem;
+                  padding-left: 1.25rem;
+               }
+               .ih-root blockquote {
+                  margin: 0.75rem 0;
+                  padding-left: 0.75rem;
+                  border-left: 3px solid currentColor;
+                  opacity: 0.7;
+               }
+               .ih-root img, .ih-root svg, .ih-root video, .ih-root canvas {
+                  max-width: 100%;
+                  height: auto;
+               }
+
+               /* Code */
+               .ih-root code, .ih-root pre {
+                  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+                               "Liberation Mono", "Courier New", monospace;
+               }
+               .ih-root code {
+                  border-radius: 4px;
+                  padding: 0.1rem 0.3rem;
+               }
+               .ih-root pre {
+                  border-radius: 6px;
+                  padding: 0.75rem 1rem;
+                  overflow: auto;
+               }
+               .ih-root pre code {
+                  background: transparent;
+                  padding: 0;
+               }
+
+               /* Tables */
+               .ih-root table {
+                  width: 100%;
+                  border-collapse: collapse;
+                  margin: 0.5rem 0 1rem;
+               }
+               .ih-root th, .ih-root td {
+                  padding: 0.5rem 0.6rem;
+                  text-align: left;
+                  vertical-align: top;
+               }
+               .ih-root th {
+                  font-weight: 600;
+               }
+
+               /* Block fixed/absolute positioning escapes */
+               .ih-root * {
+                  position: static !important;
+               }
+
+               /* Trim first/last margins so the card has tight edges */
+               .ih-root > :first-child { margin-top: 0; }
+               .ih-root > :last-child { margin-bottom: 0; }
+            </style>
+            <div class="ih-root">
+               <style>
+  .inf-root {
+    width: 100%;
+    max-width: 100%;
+    font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: clamp(12px, 1.4vw, 16px);
+    line-height: 1.5;
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 0;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .inf-root * { box-sizing: border-box; }
+  .inf-root img, .inf-root svg, .inf-root canvas, .inf-root video { display: block; max-width: 100%; height: auto; }
+
+  /* ===== HEADER ===== */
+  .dash-header {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 50%, #1e1b4b 100%);
+    padding: 2rem 2.5rem 1.5rem;
+    border-bottom: 1px solid rgba(99,102,241,0.3);
+    position: relative;
+    overflow: hidden;
+  }
+  .dash-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .dash-header::after {
+    content: '';
+    position: absolute;
+    bottom: -60%;
+    left: 5%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(14,165,233,0.1) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .dash-header-inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .dash-brand {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .dash-logo {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    box-shadow: 0 4px 15px rgba(99,102,241,0.4);
+  }
+  .dash-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, #e2e8f0, #a5b4fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0;
+  }
+  .dash-subtitle {
+    font-size: 0.85rem;
+    color: #94a3b8;
+    margin: 0.2rem 0 0;
+  }
+  .dash-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(34,197,94,0.15);
+    color: #4ade80;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    border: 1px solid rgba(34,197,94,0.3);
+  }
+  .pulse-dot {
+    width: 8px;
+    height: 8px;
+    background: #4ade80;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  /* ===== NAV TABS ===== */
+  .dash-nav {
+    display: flex;
+    gap: 0.25rem;
+    padding: 0.75rem 2.5rem 0;
+    background: #1e293b;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .dash-nav::-webkit-scrollbar { display: none; }
+  .nav-tab {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: #64748b;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.3s;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    font-family: inherit;
+  }
+  .nav-tab:hover { color: #e2e8f0; }
+  .nav-tab.active {
+    color: #a5b4fc;
+    border-bottom-color: #6366f1;
+  }
+
+  /* ===== TAB PANELS ===== */
+  .tab-panel { display: none; padding: 1.5rem 2.5rem 2rem; }
+  .tab-panel.active { display: block; }
+
+  /* ===== KPI ROW ===== */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .kpi {
+    background: linear-gradient(135deg, #1e293b 0%, #1e2740 100%);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 1.2rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: default;
+  }
+  .kpi:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    border-color: rgba(99,102,241,0.3);
+  }
+  .kpi-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    margin-bottom: 0.8rem;
+  }
+  .kpi-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #64748b;
+    font-weight: 600;
+    margin: 0 0 0.3rem;
+  }
+  .kpi-value {
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin: 0;
+    line-height: 1.2;
+  }
+  .kpi-change {
+    font-size: 0.78rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin-top: 0.4rem;
+  }
+  .kpi-change.up { color: #4ade80; }
+  .kpi-change.down { color: #f87171; }
+  .kpi-change.neutral { color: #fbbf24; }
+  .kpi-glow {
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    opacity: 0.15;
+  }
+
+  /* ===== CHART CARDS ===== */
+  .chart-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+  @media (max-width: 900px) {
+    .chart-grid { grid-template-columns: 1fr; }
+  }
+  .chart-card {
+    background: linear-gradient(135deg, #1e293b 0%, #1e2740 100%);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: border-color 0.3s;
+  }
+  .chart-card:hover { border-color: rgba(99,102,241,0.2); }
+  .chart-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.2rem;
+  }
+  .chart-card-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #e2e8f0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .chart-card-subtitle {
+    font-size: 0.72rem;
+    color: #64748b;
+    margin: 0;
+  }
+  .chart-card.full { grid-column: 1 / -1; }
+
+  /* ===== BAR CHART ===== */
+  .bar-chart { display: flex; flex-direction: column; gap: 0.5rem; }
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    padding: 0.3rem 0.5rem;
+    border-radius: 6px;
+    transition: background 0.2s;
+  }
+  .bar-row:hover { background: rgba(255,255,255,0.03); }
+  .bar-label {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    min-width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .bar-track {
+    flex: 1;
+    height: 24px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 6px;
+    transition: width 1s cubic-bezier(0.22, 1, 0.36, 1);
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding-left: 0.5rem;
+    min-width: fit-content;
+  }
+  .bar-fill-text {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #fff;
+    white-space: nowrap;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  }
+  .bar-val {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #e2e8f0;
+    min-width: 35px;
+    text-align: right;
+  }
+
+  /* ===== HORIZONTAL STACKED ===== */
+  .stacked-bar-container { margin-top: 0.5rem; }
+  .stacked-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .stacked-label {
+    font-size: 0.78rem;
+    color: #94a3b8;
+    min-width: 80px;
+    text-align: right;
+  }
+  .stacked-track {
+    flex: 1;
+    height: 28px;
+    display: flex;
+    border-radius: 6px;
+    overflow: hidden;
+    background: rgba(255,255,255,0.04);
+  }
+  .stacked-seg {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: #fff;
+    transition: flex 0.5s;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  /* ===== DONUT ===== */
+  .donut-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    padding: 1rem 0;
+  }
+  .donut-svg { width: 160px; height: 160px; }
+  .donut-legend { display: flex; flex-direction: column; gap: 0.5rem; }
+  .donut-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: #94a3b8;
+    cursor: pointer;
+    padding: 0.3rem 0.5rem;
+    border-radius: 6px;
+    transition: background 0.2s;
+  }
+  .donut-legend-item:hover { background: rgba(255,255,255,0.05); }
+  .donut-swatch {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+  .donut-legend-val {
+    font-weight: 600;
+    color: #e2e8f0;
+    margin-left: auto;
+    padding-left: 1rem;
+  }
+
+  /* ===== TABLE ===== */
+  .inf-root .table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid rgba(255,255,255,0.06); }
+  .inf-root table { width: 100%; border-collapse: collapse; table-layout: auto; }
+  .inf-root thead { background: rgba(99,102,241,0.1); }
+  .inf-root th {
+    padding: 0.7rem 1rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #a5b4fc;
+    text-align: left;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 0.2s;
+  }
+  .inf-root th:hover { color: #e2e8f0; }
+  .inf-root td {
+    padding: 0.65rem 1rem;
+    font-size: 0.82rem;
+    color: #cbd5e1;
+    border: none;
+    border-top: 1px solid rgba(255,255,255,0.04);
+    white-space: nowrap;
+  }
+  .inf-root tbody tr { transition: background 0.2s; }
+  .inf-root tbody tr:hover { background: rgba(99,102,241,0.06); }
+
+  /* ===== STATUS BADGES ===== */
+  .status { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.72rem; font-weight: 600; }
+  .status.paid { background: rgba(34,197,94,0.15); color: #4ade80; }
+  .status.open { background: rgba(251,191,36,0.15); color: #fbbf24; }
+  .status.partial { background: rgba(99,102,241,0.15); color: #a5b4fc; }
+  .status.overdue { background: rgba(248,113,113,0.15); color: #f87171; }
+  .status.pending { background: rgba(251,191,36,0.15); color: #fbbf24; }
+  .status.accepted { background: rgba(34,197,94,0.15); color: #4ade80; }
+  .status.declined { background: rgba(248,113,113,0.15); color: #f87171; }
+
+  /* ===== INSIGHT CARDS ===== */
+  .insight-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+  .insight-card {
+    background: linear-gradient(135deg, #1e293b 0%, #1e2740 100%);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 1.5rem;
+  }
+  .insight-card h4 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #e2e8f0;
+    margin: 0 0 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .insight-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 0.82rem;
+  }
+  .insight-item:last-child { border-bottom: none; }
+  .insight-item-label { color: #94a3b8; }
+  .insight-item-val { font-weight: 600; color: #e2e8f0; }
+
+  /* ===== SPARKLINE ===== */
+  .sparkline-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.4rem;
+  }
+
+  /* ===== ALERT BAR ===== */
+  .alert-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.8rem 1.2rem;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    font-size: 0.82rem;
+  }
+  .alert-bar.warning {
+    background: rgba(251,191,36,0.08);
+    border: 1px solid rgba(251,191,36,0.25);
+    color: #fbbf24;
+  }
+  .alert-bar.danger {
+    background: rgba(248,113,113,0.08);
+    border: 1px solid rgba(248,113,113,0.25);
+    color: #f87171;
+  }
+  .alert-bar.info {
+    background: rgba(99,102,241,0.08);
+    border: 1px solid rgba(99,102,241,0.25);
+    color: #a5b4fc;
+  }
+
+  /* ===== AI INSIGHTS SECTION ===== */
+  .ai-section {
+    background: linear-gradient(135deg, rgba(99,102,241,0.08) 0%, rgba(139,92,246,0.08) 100%);
+    border: 1px solid rgba(99,102,241,0.2);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .ai-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  .ai-header h3 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin: 0;
+    background: linear-gradient(135deg, #a5b4fc, #c4b5fd);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .ai-insight {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(99,102,241,0.1);
+    font-size: 0.85rem;
+    color: #cbd5e1;
+    line-height: 1.5;
+  }
+  .ai-insight:last-child { border-bottom: none; }
+  .ai-insight-icon {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+  }
+
+  /* ===== COA TREEMAP ===== */
+  .treemap-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 4px;
+  }
+  .treemap-cell {
+    border-radius: 8px;
+    padding: 0.7rem 0.6rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #fff;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+    flex-direction: column;
+    min-height: 60px;
+  }
+  .treemap-cell:hover {
+    transform: scale(1.03);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    z-index: 1;
+  }
+  .treemap-cell-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .treemap-cell-val { font-size: 0.85rem; margin-top: auto; }
+
+  /* ===== FOOTER ===== */
+  .dash-footer {
+    padding: 1.2rem 2.5rem;
+    background: #1e293b;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    font-size: 0.72rem;
+    color: #475569;
+  }
+  .dash-footer a { color: #6366f1; text-decoration: none; }
+
+  /* ===== ANIMATIONS ===== */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-in { animation: fadeInUp 0.5s ease forwards; }
+  .delay-1 { animation-delay: 0.1s; opacity: 0; }
+  .delay-2 { animation-delay: 0.2s; opacity: 0; }
+  .delay-3 { animation-delay: 0.3s; opacity: 0; }
+  .delay-4 { animation-delay: 0.4s; opacity: 0; }
+  .delay-5 { animation-delay: 0.5s; opacity: 0; }
+  .delay-6 { animation-delay: 0.6s; opacity: 0; }
+</style>
+
+<div class="inf-root">
+
+  <!-- ===== HEADER ===== -->
+  <div class="dash-header">
+    <div class="dash-header-inner">
+      <div class="dash-brand">
+        <div class="dash-logo"><i class="fa-solid fa-chart-mixed" style="color:#fff;"></i></div>
+        <div>
+          <h1 class="dash-title">QuickBooks Financial Command Center</h1>
+          <p class="dash-subtitle">Precision Manufacturing Corp. — Fiscal Year 2024–2025</p>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
+        <div class="dash-badge"><div class="pulse-dot"></div> Live Data Connected</div>
+        <span style="font-size:0.78rem;color:#64748b;"><i class="fa-regular fa-clock" style="margin-right:4px;"></i> Last sync: Feb 26, 2026 5:21 PM</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== NAV ===== -->
+  <div class="dash-nav" id="dashNav">
+    <button class="nav-tab active" onclick="switchTab('overview')"><i class="fa-solid fa-gauge-high" style="margin-right:5px;"></i> Executive Overview</button>
+    <button class="nav-tab" onclick="switchTab('revenue')"><i class="fa-solid fa-chart-line" style="margin-right:5px;"></i> Revenue &amp; AR</button>
+    <button class="nav-tab" onclick="switchTab('spend')"><i class="fa-solid fa-receipt" style="margin-right:5px;"></i> Spend &amp; AP</button>
+    <button class="nav-tab" onclick="switchTab('pipeline')"><i class="fa-solid fa-filter" style="margin-right:5px;"></i> Pipeline</button>
+    <button class="nav-tab" onclick="switchTab('coa')"><i class="fa-solid fa-sitemap" style="margin-right:5px;"></i> Chart of Accounts</button>
+    <button class="nav-tab" onclick="switchTab('ai')"><i class="fa-solid fa-brain" style="margin-right:5px;"></i> AI Insights</button>
+  </div>
+
+  <!-- ======================================= -->
+  <!-- TAB 1: EXECUTIVE OVERVIEW               -->
+  <!-- ======================================= -->
+  <div class="tab-panel active" id="tab-overview">
+
+    <div class="alert-bar warning animate-in delay-1">
+      <i class="fa-solid fa-triangle-exclamation"></i>
+      <strong>Action Required:</strong>&nbsp; 38 invoices are unpaid • 85 vendor bills are open • 15 estimates pending review
+    </div>
+
+    <!-- KPIs -->
+    <div class="kpi-row">
+      <div class="kpi animate-in delay-1">
+        <div class="kpi-glow" style="background:radial-gradient(circle,rgba(34,197,94,0.5),transparent);"></div>
+        <div class="kpi-icon" style="background:rgba(34,197,94,0.15);"><span class="material-icons-round" style="font-size:1.2rem;color:#4ade80;">payments</span></div>
+        <p class="kpi-label">Total Invoiced (624 lines)</p>
+        <p class="kpi-value">$2.47M</p>
+        <div class="kpi-change up"><i class="fa-solid fa-arrow-trend-up"></i> 49 customers active</div>
+      </div>
+      <div class="kpi animate-in delay-2">
+        <div class="kpi-glow" style="background:radial-gradient(circle,rgba(14,165,233,0.5),transparent);"></div>
+        <div class="kpi-icon" style="background:rgba(14,165,233,0.15);"><span class="material-icons-round" style="font-size:1.2rem;color:#38bdf8;">account_balance</span></div>
+        <p class="kpi-label">Payments Collected (162)</p>
+        <p class="kpi-value">$1.82M</p>
+        <div class="kpi-change up"><i class="fa-solid fa-arrow-trend-up"></i> 73.6% collection rate</div>
+      </div>
+      <div class="kpi animate-in delay-3">
+        <div class="kpi-glow" style="background:radial-gradient(circle,rgba(251,191,36,0.5),transparent);"></div>
+        <div class="kpi-icon" style="background:rgba(251,191,36,0.15);"><span class="material-icons-round" style="font-size:1.2rem;color:#fbbf24;">shopping_cart</span></div>
+        <p class="kpi-label">Vendor Bills (507 lines)</p>
+        <p class="kpi-value">$1.38M</p>
+        <div class="kpi-change neutral"><i class="fa-solid fa-minus"></i> 30 vendors tracked</div>
+      </div>
+      <div class="kpi animate-in delay-4">
+        <div class="kpi-glow" style="background:radial-gradient(circle,rgba(99,102,241,0.5),transparent);"></div>
+        <div class="kpi-icon" style="background:rgba(99,102,241,0.15);"><span class="material-icons-round" style="font-size:1.2rem;color:#a5b4fc;">savings</span></div>
+        <p class="kpi-label">Cash Position</p>
+        <p class="kpi-value">$330K</p>
+        <div class="kpi-change up"><i class="fa-solid fa-arrow-trend-up"></i> Checking + Savings</div>
+      </div>
+      <div class="kpi animate-in delay-5">
+        <div class="kpi-glow" style="background:radial-gradient(circle,rgba(236,72,153,0.5),transparent);"></div>
+        <div class="kpi-icon" style="background:rgba(236,72,153,0.15);"><span class="material-icons-round" style="font-size:1.2rem;color:#f472b6;">description</span></div>
+        <p class="kpi-label">Open Estimates (80 lines)</p>
+        <p class="kpi-value">$245K</p>
+        <div class="kpi-change neutral"><i class="fa-solid fa-clock"></i> 15 pending decision</div>
+      </div>
+      <div class="kpi animate-in delay-6">
+        <div class="kpi-glow" style="background:radial-gradient(circle,rgba(168,85,247,0.5),transparent);"></div>
+        <div class="kpi-icon" style="background:rgba(168,85,247,0.15);"><span class="material-icons-round" style="font-size:1.2rem;color:#c084fc;">inventory_2</span></div>
+        <p class="kpi-label">Total Assets</p>
+        <p class="kpi-value">$2.25M</p>
+        <div class="kpi-change up"><i class="fa-solid fa-arrow-trend-up"></i> 39 GL accounts</div>
+      </div>
+    </div>
+
+    <!-- Charts Row 1 -->
+    <div class="chart-grid">
+      <div class="chart-card">
+        <div class="chart-card-header">
+          <div>
+            <h3 class="chart-card-title"><i class="fa-solid fa-building" style="color:#6366f1;"></i> Top 10 Customers by Invoice Lines</h3>
+            <p class="chart-card-subtitle">Based on 624 invoice line items</p>
+          </div>
+        </div>
+        <div class="bar-chart">
+          <div class="bar-row"><span class="bar-label">CoreTech Manufacturing</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:linear-gradient(90deg,#6366f1,#818cf8);"><span class="bar-fill-text">34 lines</span></div></div><span class="bar-val">34</span></div>
+          <div class="bar-row"><span class="bar-label">JetStream Precision</span><div class="bar-track"><div class="bar-fill" style="width:76%;background:linear-gradient(90deg,#6366f1,#818cf8);"><span class="bar-fill-text">26</span></div></div><span class="bar-val">26</span></div>
+          <div class="bar-row"><span class="bar-label">Keystone Fabrication</span><div class="bar-track"><div class="bar-fill" style="width:71%;background:linear-gradient(90deg,#6366f1,#818cf8);"><span class="bar-fill-text">24</span></div></div><span class="bar-val">24</span></div>
+          <div class="bar-row"><span class="bar-label">Horizon Assembly Co.</span><div class="bar-track"><div class="bar-fill" style="width:65%;background:linear-gradient(90deg,#8b5cf6,#a78bfa);"><span class="bar-fill-text">22</span></div></div><span class="bar-val">22</span></div>
+          <div class="bar-row"><span class="bar-label">UltraMold Corp</span><div class="bar-track"><div class="bar-fill" style="width:65%;background:linear-gradient(90deg,#8b5cf6,#a78bfa);"><span class="bar-fill-text">22</span></div></div><span class="bar-val">22</span></div>
+          <div class="bar-row"><span class="bar-label">YorkShire Manufacturing</span><div class="bar-track"><div class="bar-fill" style="width:62%;background:linear-gradient(90deg,#8b5cf6,#a78bfa);"><span class="bar-fill-text">21</span></div></div><span class="bar-val">21</span></div>
+          <div class="bar-row"><span class="bar-label">GoldStrike Metals</span><div class="bar-track"><div class="bar-fill" style="width:59%;background:linear-gradient(90deg,#a855f7,#c084fc);"><span class="bar-fill-text">20</span></div></div><span class="bar-val">20</span></div>
+          <div class="bar-row"><span class="bar-label">IronClad Industries</span><div class="bar-track"><div class="bar-fill" style="width:59%;background:linear-gradient(90deg,#a855f7,#c084fc);"><span class="bar-fill-text">20</span></div></div><span class="bar-val">20</span></div>
+          <div class="bar-row"><span class="bar-label">SteelPath Co.</span><div class="bar-track"><div class="bar-fill" style="width:59%;background:linear-gradient(90deg,#a855f7,#c084fc);"><span class="bar-fill-text">20</span></div></div><span class="bar-val">20</span></div>
+          <div class="bar-row"><span class="bar-label">Sunrise Production</span><div class="bar-track"><div class="bar-fill" style="width:59%;background:linear-gradient(90deg,#a855f7,#c084fc);"><span class="bar-fill-text">20</span></div></div><span class="bar-val">20</span></div>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-card-header">
+          <div>
+            <h3 class="chart-card-title"><i class="fa-solid fa-chart-pie" style="color:#ec4899;"></i> Invoice Status Breakdown</h3>
+            <p class="chart-card-subtitle">624 total invoice lines</p>
+          </div>
+        </div>
+        <div class="donut-container">
+          <svg class="donut-svg" viewBox="0 0 160 160">
+            <circle cx="80" cy="80" r="60" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="20"></circle>
+            <circle cx="80" cy="80" r="60" fill="none" stroke="#4ade80" stroke-width="20" stroke-dasharray="256 121" stroke-dashoffset="0" transform="rotate(-90 80 80)" style="transition:all 1s;"></circle>
+            <circle cx="80" cy="80" r="60" fill="none" stroke="#64748b" stroke-width="20" stroke-dasharray="164.5 212.5" stroke-dashoffset="-256" transform="rotate(-90 80 80)" style="transition:all 1s;"></circle>
+            <circle cx="80" cy="80" r="60" fill="none" stroke="#a5b4fc" stroke-width="20" stroke-dasharray="25.5 351.5" stroke-dashoffset="-420.5" transform="rotate(-90 80 80)" style="transition:all 1s;"></circle>
+            <circle cx="80" cy="80" r="60" fill="none" stroke="#f87171" stroke-width="20" stroke-dasharray="23 354" stroke-dashoffset="-446" transform="rotate(-90 80 80)" style="transition:all 1s;"></circle>
+            <text x="80" y="76" text-anchor="middle" font-size="20" font-weight="700" fill="#e2e8f0">624</text>
+            <text x="80" y="94" text-anchor="middle" font-size="10" fill="#64748b">LINES</text>
+          </svg>
+          <div class="donut-legend">
+            <div class="donut-legend-item"><div class="donut-swatch" style="background:#4ade80;"></div> Paid <span class="donut-legend-val">120 (19.2%)</span></div>
+            <div class="donut-legend-item"><div class="donut-swatch" style="background:#64748b;"></div> Unassigned <span class="donut-legend-val">424 (67.9%)</span></div>
+            <div class="donut-legend-item"><div class="donut-swatch" style="background:#a5b4fc;"></div> Partial <span class="donut-legend-val">42 (6.7%)</span></div>
+            <div class="donut-legend-item"><div class="donut-swatch" style="background:#f87171;"></div> Unpaid <span class="donut-legend-val">38 (6.1%)</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Row 2 -->
+    <div class="chart-grid">
+      <div class="chart-card">
+        <div class="chart-card-header">
+          <div>
+            <h3 class="chart-card-title"><i class="fa-solid fa-credit-card" style="color:#38bdf8;"></i> Payment Methods</h3>
+            <p class="chart-card-subtitle">162 payments received</p>
+          </div>
+        </div>
+        <div class="donut-container">
+          <svg class="donut-svg" viewBox="0 0 160 160">
+            <circle cx="80" cy="80" r="60" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="20"></circle>
+            <circle cx="80" cy="80" r="60" fill="none" stroke="#6366f1" stroke-width="20" stroke-dasharray="114 263" stroke-dashoffset="0" transform="rotate(-90 80 80)"></circle>
+            <circle cx="80" cy="80" r="60" fill="none" stroke="#38bdf8" stroke-width="20" stroke-dasharray="112 265" stroke-dashoffset="-114" transform="rotate(-90 80 80)"></circle>
+            <circle cx="80" cy="80" r="60" fill="none" stroke="#fbbf24" stroke-width="20" stroke-dasharray="100 277" stroke-dashoffset="-226" transform="rotate(-90 80 80)"></circle>
+            <circle cx="80" cy="80" r="60" fill="none" stroke="#f472b6" stroke-width="20" stroke-dasharray="51 326" stroke-dashoffset="-326" transform="rotate(-90 80 80)"></circle>
+            <text x="80" y="76" text-anchor="middle" font-size="20" font-weight="700" fill="#e2e8f0">162</text>
+            <text x="80" y="94" text-anchor="middle" font-size="10" fill="#64748b">PAYMENTS</text>
+          </svg>
+          <div class="donut-legend">
+            <div class="donut-legend-item"><div class="donut-swatch" style="background:#6366f1;"></div> ACH <span class="donut-legend-val">49 (30.2%)</span></div>
+            <div class="donut-legend-item"><div class="donut-swatch" style="background:#38bdf8;"></div> Wire Transfer <span class="donut-legend-val">48 (29.6%)</span></div>
+            <div class="donut-legend-item"><div class="donut-swatch" style="background:#fbbf24;"></div> Check <span class="donut-legend-val">43 (26.5%)</span></div>
+            <div class="donut-legend-item"><div class="donut-swatch" style="background:#f472b6;"></div> Credit Card <span class="donut-legend-val">22 (13.6%)</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-card-header">
+          <div>
+            <h3 class="chart-card-title"><i class="fa-solid fa-file-invoice" style="color:#fbbf24;"></i> Payment Terms Distribution</h3>
+            <p class="chart-card-subtitle">Invoice terms breakdown</p>
+          </div>
+        </div>
+        <div style="padding:1rem 0;">
+          <div class="stacked-bar-container">
+            <div style="margin-bottom:1rem;">
+              <div class="stacked-track" style="height:40px;border-radius:10px;">
+                <div class="stacked-seg" style="flex:220;background:linear-gradient(135deg,#6366f1,#818cf8);">Net 45 • 220</div>
+                <div class="stacked-seg" style="flex:210;background:linear-gradient(135deg,#8b5cf6,#a78bfa);">Net 60 • 210</div>
+                <div class="stacked-seg" style="flex:194;background:linear-gradient(135deg,#a855f7,#c084fc);">Net 30 • 194</div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:1.5rem;">
+            <p style="font-size:0.78rem;color:#64748b;margin:0 0 0.8rem;text-transform:uppercase;letter-spacing:0.5px;font-weight:600;">Customer Terms Preference</p>
+            <div class="bar-chart">
+              <div class="bar-row"><span class="bar-label">Due on receipt</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:linear-gradient(90deg,#14b8a6,#2dd4bf);"><span class="bar-fill-text">19 customers</span></div></div><span class="bar-val">19</span></div>
+              <div class="bar-row"><span class="bar-label">Net 60</span><div class="bar-track"><div class="bar-fill" style="width:74%;background:linear-gradient(90deg,#0ea5e9,#38bdf8);"><span class="bar-fill-text">14</span></div></div><span class="bar-val">14</span></div>
+              <div class="bar-row"><span class="bar-label">Net 30</span><div class="bar-track"><div class="bar-fill" style="width:47%;background:linear-gradient(90deg,#6366f1,#818cf8);"><span class="bar-fill-text">9</span></div></div><span class="bar-val">9</span></div>
+              <div class="bar-row"><span class="bar-label">Net 45</span><div class="bar-track"><div class="bar-fill" style="width:42%;background:linear-gradient(90deg,#8b5cf6,#a78bfa);"><span class="bar-fill-text">8</span></div></div><span class="bar-val">8</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================= -->
+  <!-- TAB 2: REVENUE & AR                     -->
+  <!-- ======================================= -->
+  <div class="tab-panel" id="tab-revenue">
+    <div class="chart-grid">
+      <div class="chart-card full">
+        <div class="chart-card-header">
+          <div>
+            <h3 class="chart-card-title"><i class="fa-solid fa-boxes-stacked" style="color:#8b5cf6;"></i> Top 25 Products by Invoice Frequency</h3>
+            <p class="chart-card-subtitle">Which products drive the most transactions</p>
+          </div>
+        </div>
+        <div class="bar-chart">
+          <div class="bar-row"><span class="bar-label">Plastic Injection Tray</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:linear-gradient(90deg,#6366f1,#818cf8);"><span class="bar-fill-text">20</span></div></div><span class="bar-val">20</span></div>
+          <div class="bar-row"><span class="bar-label">Aluminum Angle Stock</span><div class="bar-track"><div class="bar-fill" style="width:85%;background:linear-gradient(90deg,#6366f1,#818cf8);"><span class="bar-fill-text">17</span></div></div><span class="bar-val">17</span></div>
+          <div class="bar-row"><span class="bar-label">Linear Rail System</span><div class="bar-track"><div class="bar-fill" style="width:85%;background:linear-gradient(90deg,#6366f1,#818cf8);"><span class="bar-fill-text">17</span></div></div><span class="bar-val">17</span></div>
+          <div class="bar-row"><span class="bar-label">Stainless Tube Clamp</span><div class="bar-track"><div class="bar-fill" style="width:85%;background:linear-gradient(90deg,#8b5cf6,#a78bfa);"><span class="bar-fill-text">17</span></div></div><span class="bar-val">17</span></div>
+          <div class="bar-row"><span class="bar-label">Conveyor Belt Segment</span><div class="bar-track"><div class="bar-fill" style="width:80%;background:linear-gradient(90deg,#8b5cf6,#a78bfa);"><span class="bar-fill-text">16</span></div></div><span class="bar-val">16</span></div>
+          <div class="bar-row"><span class="bar-label">Fabrication Labor - Std</span><div class="bar-track"><div class="bar-fill" style="width:80%;background:linear-gradient(90deg,#8b5cf6,#a78bfa);"><span class="bar-fill-text">16</span></div></div><span class="bar-val">16</span></div>
+          <div class="bar-row"><span class="bar-label">Freight - Expedited</span><div class="bar-track"><div class="bar-fill" style="width:80%;background:linear-gradient(90deg,#a855f7,#c084fc);"><span class="bar-fill-text">16</span></div></div><span class="bar-val">16</span></div>
+          <div class="bar-row"><span class="bar-label">Painted Enclosure Box</span><div class="bar-track"><div class="bar-fill" style="width:80%;background:linear-gradient(90deg,#a855f7,#c084fc);"><span class="bar-fill-text">16</span></div></div><span class="bar-val">16</span></div>
+          <div class="bar-row"><span class="bar-label">SS Tube Weldment</span><div class="bar-track"><div class="bar-fill" style="width:80%;background:linear-gradient(90deg,#a855f7,#c084fc);"><span class="bar-fill-text">16</span></div></div><span class="bar-val">16</span></div>
+          <div class="bar-row"><span class="bar-label">Bearing Block Assembly</span><div class="bar-track"><div class="bar-fill" style="width:75%;background:linear-gradient(90deg,#ec4899,#f472b6);"><span class="bar-fill-text">15</span></div></div><span class="bar-val">15</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="insight-row">
+      <div class="insight-card">
+        <h4><i class="fa-solid fa-ranking-star" style="color:#fbbf24;"></i> Full Customer Ranking (49 active)</h4>
+        <div class="table-wrap" style="max-height:350px;overflow-y:auto;">
+          <table>
+            <thead><tr><th>#</th><th>Customer</th><th>Invoice Lines</th><th>Payments</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>CoreTech Manufacturing</td><td>34</td><td>9</td></tr>
+              <tr><td>2</td><td>JetStream Precision</td><td>26</td><td>5</td></tr>
+              <tr><td>3</td><td>Keystone Fabrication</td><td>24</td><td>7</td></tr>
+              <tr><td>4</td><td>Horizon Assembly Co.</td><td>22</td><td>4</td></tr>
+              <tr><td>5</td><td>UltraMold Corp</td><td>22</td><td>4</td></tr>
+              <tr><td>6</td><td>YorkShire Manufacturing</td><td>21</td><td>7</td></tr>
+              <tr><td>7</td><td>GoldStrike Metals</td><td>20</td><td>4</td></tr>
+              <tr><td>8</td><td>IronClad Industries</td><td>20</td><td>0</td></tr>
+              <tr><td>9</td><td>SteelPath Co.</td><td>20</td><td>6</td></tr>
+              <tr><td>10</td><td>Sunrise Production</td><td>20</td><td>4</td></tr>
+              <tr><td>11</td><td>DeltaForge Inc.</td><td>19</td><td>4</td></tr>
+              <tr><td>12</td><td>MasterCraft Parts</td><td>19</td><td>6</td></tr>
+              <tr><td>13</td><td>Xenith Machining</td><td>19</td><td>5</td></tr>
+              <tr><td>14</td><td>BuildRight Supply</td><td>18</td><td>5</td></tr>
+              <tr><td>15</td><td>Yellowstone Industrial</td><td>18</td><td>0</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="insight-card">
+        <h4><i class="fa-solid fa-map-location-dot" style="color:#38bdf8;"></i> Customer Geographic Distribution</h4>
+        <div class="bar-chart" style="margin-top:0.5rem;">
+          <div class="bar-row"><span class="bar-label">California</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:linear-gradient(90deg,#0ea5e9,#38bdf8);"><span class="bar-fill-text">8</span></div></div><span class="bar-val">8</span></div>
+          <div class="bar-row"><span class="bar-label">Michigan</span><div class="bar-track"><div class="bar-fill" style="width:88%;background:linear-gradient(90deg,#0ea5e9,#38bdf8);"><span class="bar-fill-text">7</span></div></div><span class="bar-val">7</span></div>
+          <div class="bar-row"><span class="bar-label">Georgia</span><div class="bar-track"><div class="bar-fill" style="width:75%;background:linear-gradient(90deg,#6366f1,#818cf8);"><span class="bar-fill-text">6</span></div></div><span class="bar-val">6</span></div>
+          <div class="bar-row"><span class="bar-label">New York</span><div class="bar-track"><div class="bar-fill" style="width:75%;background:linear-gradient(90deg,#6366f1,#818cf8);"><span class="bar-fill-text">6</span></div></div><span class="bar-val">6</span></div>
+          <div class="bar-row"><span class="bar-label">Pennsylvania</span><div class="bar-track"><div class="bar-fill" style="width:75%;background:linear-gradient(90deg,#8b5cf6,#a78bfa);"><span class="bar-fill-text">6</span></div></div><span class="bar-val">6</span></div>
+          <div class="bar-row"><span class="bar-label">Texas</span><div class="bar-track"><div class="bar-fill" style="width:63%;background:linear-gradient(90deg,#8b5cf6,#a78bfa);"><span class="bar-fill-text">5</span></div></div><span class="bar-val">5</span></div>
+          <div class="bar-row"><span class="bar-label">Wisconsin</span><div class="bar-track"><div class="bar-fill" style="width:63%;background:linear-gradient(90deg,#a855f7,#c084fc);"><span class="bar-fill-text">5</span></div></div><span class="bar-val">5</span></div>
+          <div class="bar-row"><span class="bar-label">Ohio</span><div class="bar-track"><div class="bar-fill" style="width:50%;background:linear-gradient(90deg,#a855f7,#c084fc);"><span class="bar-fill-text">4</span></div></div><span class="bar-val">4</span></div>
+          <div class="bar-row"><span class="bar-label">Illinois</span><div class="bar-track"><div class="bar-fill" style="width:25%;background:linear-gradient(90deg,#ec4899,#f472b6);"><span class="bar-fill-text">2</span></div></div><span class="bar-val">2</span></div>
+          <div class="bar-row"><span class="bar-label">Florida</span><div class="bar-track"><div class="bar-fill" style="width:13%;background:linear-gradient(90deg,#ec4899,#f472b6);"><span class="bar-fill-text">1</span></div></div><span class="bar-val">1</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================= -->
+  <!-- TAB 3: SPEND & AP                       -->
+  <!-- ======================================= -->
+  <div class="tab-panel" id="tab-spend">
+    <div class="chart-grid">
+      <div class="chart-card">
+        <div class="chart-card-header">
+          <div>
+            <h3 class="chart-card-title"><i class="fa-solid fa-truck-field" style="color:#14b8a6;"></i> Top Vendors by Bill Lines</h3>
+            <p class="chart-card-subtitle">507 bill lines across 30 vendors</p>
+          </div>
+        </div>
+        <div class="bar-chart">
+          <div class="bar-row"><span class="bar-label">QuikShip Freight</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:linear-gradient(90deg,#14b8a6,#2dd4bf);"><span class="bar-fill-text">28</span></div></div><span class="bar-val">28</span></div>
+          <div class="bar-row"><span class="bar-label">Universal Gasket Co.</span><div class="bar-track"><div class="bar-fill" style="width:93%;background:linear-gradient(90deg,#14b8a6,#2dd4bf);"><span class="bar-fill-text">26</span></div></div><span class="bar-val">26</span></div>
+          <div class="bar-row"><span class="bar-label">OakTree Logistics</span><div class="bar-track"><div class="bar-fill" style="width:89%;background:linear-gradient(90deg,#0ea5e9,#38bdf8);"><span class="bar-fill-text">25</span></div></div><span class="bar-val">25</span></div>
+          <div class="bar-row"><span class="bar-label">ValvePro Supply</span><div class="bar-track"><div class="bar-fill" style="width:82%;background:linear-gradient(90deg,#0ea5e9,#38bdf8);"><span class="bar-fill-text">23</span></div></div><span class="bar-val">23</span></div>
+          <div class="bar-row"><span class="bar-label">Atlas Packaging</span><div class="bar-track"><div class="bar-fill" style="width:79%;background:linear-gradient(90deg,#6366f1,#818cf8);"><span class="bar-fill-text">22</span></div></div><span class="bar-val">22</span></div>
+          <div class="bar-row"><span class="bar-label">MetroMetal Suppliers</span><div class="bar-track"><div class="bar-fill" style="width:79%;background:linear-gradient(90deg,#6366f1,#818cf8);"><span class="bar-fill-text">22</span></div></div><span class="bar-val">22</span></div>
+          <div class="bar-row"><span class="bar-label">NorthAm Steel Trading</span><div class="bar-track"><div class="bar-fill" style="width:79%;background:linear-gradient(90deg,#8b5cf6,#a78bfa);"><span class="bar-fill-text">22</span></div></div><span class="bar-val">22</span></div>
+          <div class="bar-row"><span class="bar-label">FastenerPro LLC</span><div class="bar-track"><div class="bar-fill" style="width:71%;background:linear-gradient(90deg,#8b5cf6,#a78bfa);"><span class="bar-fill-text">20</span></div></div><span class="bar-val">20</span></div>
+          <div class="bar-row"><span class="bar-label">Ironworks Supply Co.</span><div class="bar-track"><div class="bar-fill" style="width:71%;background:linear-gradient(90deg,#a855f7,#c084fc);"><span class="bar-fill-text">20</span></div></div><span class="bar-val">20</span></div>
+          <div class="bar-row"><span class="bar-label">KingPin Tool Supply</span><div class="bar-track"><div class="bar-fill" style="width:71%;background:linear-gradient(90deg,#a855f7,#c084fc);"><span class="bar-fill-text">20</span></div></div><span class="bar-val">20</span></div>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-card-header">
+          <div>
+            <h3 class="chart-card-title"><i class="fa-solid fa-layer-group" style="color:#f472b6;"></i> Spend by GL Category</h3>
+            <p class="chart-card-subtitle">Where the money goes</p>
+          </div>
+        </div>
+        <div class="donut-container">
+          <svg class="donut-svg" viewBox="0 0 160 160">
+            <circle cx="80" cy="80" r="60" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="20"></circle>
+            <circle cx="80" cy="80" r="60" fill="none" stroke="#6366f1" stroke-width="20" stroke-dasharray="129 248" stroke-dashoffset="0" transform="rotate(-90 80 80)"></circle>
+            <circle cx="80" cy="80" r="60" fill="none" stroke="#8b5cf6" stroke-width="20" stroke-dasharray="115 262" stroke-dashoffset="-129" transform="rotate(-90 80 80)"></circle>
+            <circle cx="80" cy="80" r="60" fill="none" stroke="#14b8a6" stroke-width="20" stroke-dasharray="38 339" stroke-dashoffset="-244" transform="rotate(-90 80 80)"></circle>
+            <circle cx="80" cy="80" r="60" fill="none" stroke="#fbbf24" stroke-width="20" stroke-dasharray="23 354" stroke-dashoffset="-282" transform="rotate(-90 80 80)"></circle>
+            <circle cx="80" cy="80" r="60" fill="none" stroke="#f87171" stroke-width="20" stroke-dasharray="23 354" stroke-dashoffset="-305" transform="rotate(-90 80 80)"></circle>
+            <circle cx="80" cy="80" r="60" fill="none" stroke="#38bdf8" stroke-width="20" stroke-dasharray="49 328" stroke-dashoffset="-328" transform="rotate(-90 80 80)"></circle>
+            <text x="80" y="76" text-anchor="middle" font-size="18" font-weight="700" fill="#e2e8f0">507</text>
+            <text x="80" y="92" text-anchor="middle" font-size="10" fill="#64748b">BILL LINES</text>
+          </svg>
+          <div class="donut-legend">
+            <div class="donut-legend-item"><div class="donut-swatch" style="background:#6366f1;"></div> Mfg Overhead <span class="donut-legend-val">174 (34.3%)</span></div>
+            <div class="donut-legend-item"><div class="donut-swatch" style="background:#8b5cf6;"></div> Raw Materials <span class="donut-legend-val">155 (30.6%)</span></div>
+            <div class="donut-legend-item"><div class="donut-swatch" style="background:#14b8a6;"></div> Freight/Shipping <span class="donut-legend-val">51 (10.1%)</span></div>
+            <div class="donut-legend-item"><div class="donut-swatch" style="background:#fbbf24;"></div> Insurance <span class="donut-legend-val">31 (6.1%)</span></div>
+            <div class="donut-legend-item"><div class="donut-swatch" style="background:#f87171;"></div> Repairs/Maint. <span class="donut-legend-val">31 (6.1%)</span></div>
+            <div class="donut-legend-item"><div class="donut-swatch" style="background:#38bdf8;"></div> Other <span class="donut-legend-val">65 (12.8%)</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-card" style="margin-bottom:1.5rem;">
+      <div class="chart-card-header">
+        <div>
+          <h3 class="chart-card-title"><i class="fa-solid fa-signal" style="color:#fbbf24;"></i> Vendor Bill Status Overview</h3>
+        </div>
+      </div>
+      <div style="padding:0.5rem 0;">
+        <div class="stacked-track" style="height:44px;border-radius:10px;">
+          <div class="stacked-seg" style="flex:307;background:linear-gradient(135deg,#475569,#64748b);">Unassigned • 307</div>
+          <div class="stacked-seg" style="flex:85;background:linear-gradient(135deg,#fbbf24,#fcd34d);">Open • 85</div>
+          <div class="stacked-seg" style="flex:70;background:linear-gradient(135deg,#22c55e,#4ade80);">Paid • 70</div>
+          <div class="stacked-seg" style="flex:45;background:linear-gradient(135deg,#6366f1,#818cf8);">Partial • 45</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================= -->
+  <!-- TAB 4: PIPELINE                         -->
+  <!-- ======================================= -->
+  <div class="tab-panel" id="tab-pipeline">
+    <div class="kpi-row">
+      <div class="kpi">
+        <div class="kpi-icon" style="background:rgba(34,197,94,0.15);"><span class="material-icons-round" style="font-size:1.2rem;color:#4ade80;">check_circle</span></div>
+        <p class="kpi-label">Accepted</p>
+        <p class="kpi-value" style="color:#4ade80;">4</p>
+      </div>
+      <div class="kpi">
+        <div class="kpi-icon" style="background:rgba(251,191,36,0.15);"><span class="material-icons-round" style="font-size:1.2rem;color:#fbbf24;">hourglass_top</span></div>
+        <p class="kpi-label">Pending</p>
+        <p class="kpi-value" style="color:#fbbf24;">15</p>
+      </div>
+      <div class="kpi">
+        <div class="kpi-icon" style="background:rgba(248,113,113,0.15);"><span class="material-icons-round" style="font-size:1.2rem;color:#f87171;">cancel</span></div>
+        <p class="kpi-label">Declined</p>
+        <p class="kpi-value" style="color:#f87171;">11</p>
+      </div>
+      <div class="kpi">
+        <div class="kpi-icon" style="background:rgba(100,116,139,0.15);"><span class="material-icons-round" style="font-size:1.2rem;color:#94a3b8;">drafts</span></div>
+        <p class="kpi-label">Draft / Unassigned</p>
+        <p class="kpi-value">50</p>
+      </div>
+    </div>
+
+    <!-- Funnel visualization -->
+    <div class="chart-card" style="margin-bottom:1.5rem;">
+      <div class="chart-card-header">
+        <div>
+          <h3 class="chart-card-title"><i class="fa-solid fa-filter" style="color:#a855f7;"></i> Estimate Conversion Funnel</h3>
+          <p class="chart-card-subtitle">80 estimate lines → conversion tracking</p>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:0.5rem;align-items:center;padding:1rem 0;">
+        <div style="width:100%;height:44px;background:linear-gradient(135deg,#6366f1,#818cf8);border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:600;color:#fff;font-size:0.9rem;">
+          <i class="fa-solid fa-file-lines" style="margin-right:8px;"></i> Total Estimates: 80 lines
+        </div>
+        <div style="width:0;height:0;border-left:15px solid transparent;border-right:15px solid transparent;border-top:12px solid #6366f1;"></div>
+        <div style="width:85%;height:40px;background:linear-gradient(135deg,#fbbf24,#fcd34d);border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:600;color:#1e293b;font-size:0.85rem;">
+          <i class="fa-solid fa-clock" style="margin-right:8px;"></i> Pending Decision: 15 (18.8%)
+        </div>
+        <div style="width:0;height:0;border-left:12px solid transparent;border-right:12px solid transparent;border-top:12px solid #fbbf24;"></div>
+        <div style="display:flex;gap:1rem;width:65%;justify-content:center;">
+          <div style="flex:1;height:40px;background:linear-gradient(135deg,#22c55e,#4ade80);border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:600;color:#fff;font-size:0.82rem;">
+            <i class="fa-solid fa-circle-check" style="margin-right:6px;"></i> Won: 4
+          </div>
+          <div style="flex:1;height:40px;background:linear-gradient(135deg,#ef4444,#f87171);border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:600;color:#fff;font-size:0.82rem;">
+            <i class="fa-solid fa-circle-xmark" style="margin-right:6px;"></i> Lost: 11
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-grid">
+      <div class="chart-card">
+        <div class="chart-card-header">
+          <div>
+            <h3 class="chart-card-title"><i class="fa-solid fa-users" style="color:#38bdf8;"></i> Estimates by Customer</h3>
+          </div>
+        </div>
+        <div class="bar-chart">
+          <div class="bar-row"><span class="bar-label">VectorCut Precision</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:linear-gradient(90deg,#6366f1,#818cf8);"><span class="bar-fill-text">7</span></div></div><span class="bar-val">7</span></div>
+          <div class="bar-row"><span class="bar-label">Fortis Components</span><div class="bar-track"><div class="bar-fill" style="width:86%;background:linear-gradient(90deg,#6366f1,#818cf8);"><span class="bar-fill-text">6</span></div></div><span class="bar-val">6</span></div>
+          <div class="bar-row"><span class="bar-label">MasterCraft Parts</span><div class="bar-track"><div class="bar-fill" style="width:71%;background:linear-gradient(90deg,#8b5cf6,#a78bfa);"><span class="bar-fill-text">5</span></div></div><span class="bar-val">5</span></div>
+          <div class="bar-row"><span class="bar-label">BlueStar Mfg</span><div class="bar-track"><div class="bar-fill" style="width:57%;background:linear-gradient(90deg,#8b5cf6,#a78bfa);"><span class="bar-fill-text">4</span></div></div><span class="bar-val">4</span></div>
+          <div class="bar-row"><span class="bar-label">Cascade Fabricators</span><div class="bar-track"><div class="bar-fill" style="width:57%;background:linear-gradient(90deg,#a855f7,#c084fc);"><span class="bar-fill-text">4</span></div></div><span class="bar-val">4</span></div>
+          <div class="bar-row"><span class="bar-label">EagleParts LLC</span><div class="bar-track"><div class="bar-fill" style="width:57%;background:linear-gradient(90deg,#a855f7,#c084fc);"><span class="bar-fill-text">4</span></div></div><span class="bar-val">4</span></div>
+          <div class="bar-row"><span class="bar-label">NexGen Fabricators</span><div class="bar-track"><div class="bar-fill" style="width:57%;background:linear-gradient(90deg,#ec4899,#f472b6);"><span class="bar-fill-text">4</span></div></div><span class="bar-val">4</span></div>
+          <div class="bar-row"><span class="bar-label">Quantum Steel LLC</span><div class="bar-track"><div class="bar-fill" style="width:57%;background:linear-gradient(90deg,#ec4899,#f472b6);"><span class="bar-fill-text">4</span></div></div><span class="bar-val">4</span></div>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-card-header">
+          <div>
+            <h3 class="chart-card-title"><i class="fa-solid fa-cube" style="color:#14b8a6;"></i> Most Quoted Products</h3>
+          </div>
+        </div>
+        <div class="bar-chart">
+          <div class="bar-row"><span class="bar-label">Aluminum Extrusion 6061</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:linear-gradient(90deg,#14b8a6,#2dd4bf);"><span class="bar-fill-text">4</span></div></div><span class="bar-val">4</span></div>
+          <div class="bar-row"><span class="bar-label">Electric Motor 1HP</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:linear-gradient(90deg,#14b8a6,#2dd4bf);"><span class="bar-fill-text">4</span></div></div><span class="bar-val">4</span></div>
+          <div class="bar-row"><span class="bar-label">Fab Labor - Overtime</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:linear-gradient(90deg,#0ea5e9,#38bdf8);"><span class="bar-fill-text">4</span></div></div><span class="bar-val">4</span></div>
+          <div class="bar-row"><span class="bar-label">Precision Shaft 4140</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:linear-gradient(90deg,#0ea5e9,#38bdf8);"><span class="bar-fill-text">4</span></div></div><span class="bar-val">4</span></div>
+          <div class="bar-row"><span class="bar-label">Aluminum Angle Stock</span><div class="bar-track"><div class="bar-fill" style="width:75%;background:linear-gradient(90deg,#6366f1,#818cf8);"><span class="bar-fill-text">3</span></div></div><span class="bar-val">3</span></div>
+          <div class="bar-row"><span class="bar-label">Angle Iron Weldment</span><div class="bar-track"><div class="bar-fill" style="width:75%;background:linear-gradient(90deg,#6366f1,#818cf8);"><span class="bar-fill-text">3</span></div></div><span class="bar-val">3</span></div>
+          <div class="bar-row"><span class="bar-label">Flat Bar Steel</span><div class="bar-track"><div class="bar-fill" style="width:75%;background:linear-gradient(90deg,#8b5cf6,#a78bfa);"><span class="bar-fill-text">3</span></div></div><span class="bar-val">3</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================= -->
+  <!-- TAB 5: CHART OF ACCOUNTS                -->
+  <!-- ======================================= -->
+  <div class="tab-panel" id="tab-coa">
+    <div class="chart-card" style="margin-bottom:1.5rem;">
+      <div class="chart-card-header">
+        <div>
+          <h3 class="chart-card-title"><i class="fa-solid fa-sitemap" style="color:#a855f7;"></i> Balance Sheet Snapshot — Opening Balances</h3>
+          <p class="chart-card-subtitle">39 GL accounts • Interactive treemap by account type</p>
+        </div>
+      </div>
+      <div class="treemap-grid" style="margin-top:0.5rem;">
+        <div class="treemap-cell" style="background:linear-gradient(135deg,#6366f1,#4f46e5);grid-column:span 2;"><div class="treemap-cell-name">Building</div><div class="treemap-cell-val">$900,000</div></div>
+        <div class="treemap-cell" style="background:linear-gradient(135deg,#7c3aed,#6d28d9);grid-column:span 2;"><div class="treemap-cell-name">Machinery &amp; Equipment</div><div class="treemap-cell-val">$680,000</div></div>
+        <div class="treemap-cell" style="background:linear-gradient(135deg,#2563eb,#1d4ed8);grid-column:span 2;"><div class="treemap-cell-name">Common Stock</div><div class="treemap-cell-val">$500,000</div></div>
+        <div class="treemap-cell" style="background:linear-gradient(135deg,#0891b2,#0e7490);grid-column:span 2;"><div class="treemap-cell-name">Equipment Loan</div><div class="treemap-cell-val">$320,000</div></div>
+        <div class="treemap-cell" style="background:linear-gradient(135deg,#059669,#047857);"><div class="treemap-cell-name">Retained Earnings</div><div class="treemap-cell-val">$279,000</div></div>
+        <div class="treemap-cell" style="background:linear-gradient(135deg,#16a34a,#15803d);"><div class="treemap-cell-name">Checking</div><div class="treemap-cell-val">$250,000</div></div>
+        <div class="treemap-cell" style="background:linear-gradient(135deg,#ca8a04,#a16207);"><div class="treemap-cell-name">Land</div><div class="treemap-cell-val">$175,000</div></div>
+        <div class="treemap-cell" style="background:linear-gradient(135deg,#dc2626,#b91c1c);"><div class="treemap-cell-name">Finished Goods</div><div class="treemap-cell-val">$130,000</div></div>
+        <div class="treemap-cell" style="background:linear-gradient(135deg,#9333ea,#7e22ce);"><div class="treemap-cell-name">Raw Materials</div><div class="treemap-cell-val">$95,000</div></div>
+        <div class="treemap-cell" style="background:linear-gradient(135deg,#e11d48,#be123c);"><div class="treemap-cell-name">Vehicles</div><div class="treemap-cell-val">$95,000</div></div>
+        <div class="treemap-cell" style="background:linear-gradient(135deg,#0284c7,#0369a1);"><div class="treemap-cell-name">Savings</div><div class="treemap-cell-val">$80,000</div></div>
+        <div class="treemap-cell" style="background:linear-gradient(135deg,#d97706,#b45309);"><div class="treemap-cell-name">Short-Term Loan</div><div class="treemap-cell-val">$50,000</div></div>
+        <div class="treemap-cell" style="background:linear-gradient(135deg,#ea580c,#c2410c);"><div class="treemap-cell-name">WIP Inventory</div><div class="treemap-cell-val">$42,000</div></div>
+        <div class="treemap-cell" style="background:linear-gradient(135deg,#475569,#334155);"><div class="treemap-cell-name">Accrued Wages</div><div class="treemap-cell-val">$18,000</div></div>
+        <div class="treemap-cell" style="background:linear-gradient(135deg,#64748b,#475569);"><div class="treemap-cell-name">Prepaid Insurance</div><div class="treemap-cell-val">$12,000</div></div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div>
+          <h3 class="chart-card-title"><i class="fa-solid fa-list-check" style="color:#38bdf8;"></i> Full Chart of Accounts</h3>
+        </div>
+      </div>
+      <div class="table-wrap" style="max-height:400px;overflow-y:auto;">
+        <table>
+          <thead><tr><th>Acct #</th><th>Account Name</th><th>Type</th><th>Detail Type</th><th>Opening Balance</th></tr></thead>
+          <tbody>
+            <tr><td>1010</td><td>Checking Account</td><td><span class="status paid">Bank</span></td><td>Checking</td><td style="text-align:right;font-weight:600;">$250,000</td></tr>
+            <tr><td>1020</td><td>Savings Account</td><td><span class="status paid">Bank</span></td><td>Savings</td><td style="text-align:right;font-weight:600;">$80,000</td></tr>
+            <tr><td>1200</td><td>Accounts Receivable</td><td><span class="status open">AR</span></td><td>A/R</td><td style="text-align:right;font-weight:600;">$0</td></tr>
+            <tr><td>1310</td><td>Raw Materials Inventory</td><td><span class="status partial">Current Asset</span></td><td>Inventory</td><td style="text-align:right;font-weight:600;">$95,000</td></tr>
+            <tr><td>1320</td><td>WIP Inventory</td><td><span class="status partial">Current Asset</span></td><td>Inventory</td><td style="text-align:right;font-weight:600;">$42,000</td></tr>
+            <tr><td>1330</td><td>Finished Goods Inventory</td><td><span class="status partial">Current Asset</span></td><td>Inventory</td><td style="text-align:right;font-weight:600;">$130,000</td></tr>
+            <tr><td>1510</td><td>Machinery &amp; Equipment</td><td><span class="status pending">Fixed Asset</span></td><td>Machinery</td><td style="text-align:right;font-weight:600;">$680,000</td></tr>
+            <tr><td>1520</td><td>Accumulated Depreciation</td><td><span class="status pending">Fixed Asset</span></td><td>Contra-Asset</td><td style="text-align:right;font-weight:600;">($210,000)</td></tr>
+            <tr><td>1530</td><td>Vehicles</td><td><span class="status pending">Fixed Asset</span></td><td>Vehicles</td><td style="text-align:right;font-weight:600;">$95,000</td></tr>
+            <tr><td>1540</td><td>Building</td><td><span class="status pending">Fixed Asset</span></td><td>Buildings</td><td style="text-align:right;font-weight:600;">$900,000</td></tr>
+            <tr><td>1550</td><td>Land</td><td><span class="status pending">Fixed Asset</span></td><td>Land</td><td style="text-align:right;font-weight:600;">$175,000</td></tr>
+            <tr><td>2010</td><td>Accounts Payable</td><td><span class="status overdue">AP</span></td><td>A/P</td><td style="text-align:right;font-weight:600;">$0</td></tr>
+            <tr><td>2510</td><td>Equipment Loan</td><td><span class="status overdue">LT Liability</span></td><td>Notes Payable</td><td style="text-align:right;font-weight:600;">$320,000</td></tr>
+            <tr><td>3010</td><td>Common Stock</td><td><span class="status accepted">Equity</span></td><td>Common Stock</td><td style="text-align:right;font-weight:600;">$500,000</td></tr>
+            <tr><td>3020</td><td>Retained Earnings</td><td><span class="status accepted">Equity</span></td><td>Retained Earnings</td><td style="text-align:right;font-weight:600;">$279,000</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================= -->
+  <!-- TAB 6: AI INSIGHTS                      -->
+  <!-- ======================================= -->
+  <div class="tab-panel" id="tab-ai">
+    <div class="ai-section">
+      <div class="ai-header">
+        <i class="fa-solid fa-brain" style="color:#a5b4fc;font-size:1.2rem;"></i>
+        <h3>AI-Generated Financial Insights</h3>
+      </div>
+      <div class="ai-insight">
+        <div class="ai-insight-icon" style="background:rgba(248,113,113,0.15);"><i class="fa-solid fa-circle-exclamation" style="color:#f87171;"></i></div>
+        <div><strong style="color:#f87171;">CRITICAL — Collection Risk:</strong> 38 invoice lines remain unpaid + 42 partial. IronClad Industries (20 lines) and Yellowstone Industrial (18 lines) show ZERO payments in the payments dataset. Immediate follow-up recommended.</div>
+      </div>
+      <div class="ai-insight">
+        <div class="ai-insight-icon" style="background:rgba(251,191,36,0.15);"><i class="fa-solid fa-triangle-exclamation" style="color:#fbbf24;"></i></div>
+        <div><strong style="color:#fbbf24;">WATCH — AP Exposure:</strong> 85 vendor bills are "Open" + 45 "Partial". With $330K cash on hand and $370K in equipment loans, manage payment timing carefully to avoid cash crunch.</div>
+      </div>
+      <div class="ai-insight">
+        <div class="ai-insight-icon" style="background:rgba(34,197,94,0.15);"><i class="fa-solid fa-lightbulb" style="color:#4ade80;"></i></div>
+        <div><strong style="color:#4ade80;">OPPORTUNITY — Top Customer Expansion:</strong> CoreTech Manufacturing leads with 34 invoice lines and 9 payments — they are your most loyal customer. Consider volume pricing or exclusive supply agreement to deepen this relationship.</div>
+      </div>
+      <div class="ai-insight">
+        <div class="ai-insight-icon" style="background:rgba(99,102,241,0.15);"><i class="fa-solid fa-chart-line" style="color:#a5b4fc;"></i></div>
+        <div><strong style="color:#a5b4fc;">INSIGHT — Product Mix:</strong> Plastic Injection Trays (20 lines), Aluminum Angle Stock (17), and Linear Rail Systems (17) are your top 3 SKUs. These likely represent your core manufacturing capability — consider margin analysis to ensure pricing is optimized.</div>
+      </div>
+      <div class="ai-insight">
+        <div class="ai-insight-icon" style="background:rgba(236,72,153,0.15);"><i class="fa-solid fa-funnel-dollar" style="color:#f472b6;"></i></div>
+        <div><strong style="color:#f472b6;">PIPELINE RISK — Low Conversion:</strong> Only 4 out of 80 estimate lines are "Accepted" (5%), while 11 are "Declined" (13.8%). The win rate needs improvement. Review pricing competitiveness and proposal turnaround time.</div>
+      </div>
+      <div class="ai-insight">
+        <div class="ai-insight-icon" style="background:rgba(14,165,233,0.15);"><i class="fa-solid fa-truck" style="color:#38bdf8;"></i></div>
+        <div><strong style="color:#38bdf8;">COST — Vendor Concentration:</strong> QuikShip Freight (28 lines) +
+            </div>
+         </div></div></div></div></div>
+</body>
+</html>
