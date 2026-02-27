@@ -75,9 +75,9 @@ function deriveReportDate({ invoices, bills, payments }) {
   return max || new Date();
 }
 
-function buildInvoiceFacts({ invoices, itemsByName }) {
-  // Group invoice lines into an invoice-ish header.
-  const map = new Map();
+function buildInvoiceLines({ invoices, itemsByName }) {
+  // Line-level facts = better margin truth + better anomaly detection.
+  const out = [];
   for (const line of invoices) {
     const customer = line['Customer'] || 'Unknown';
     const invDate = parseDate(line['Invoice Date']);
@@ -85,21 +85,38 @@ function buildInvoiceFacts({ invoices, itemsByName }) {
     const terms = line['Terms'] || '';
     if (!invDate) continue;
 
-    const key = `${customer}||${invDate.toISOString()}||${(dueDate ? dueDate.toISOString() : '')}||${terms}`;
-    const row = map.get(key) || { customer, invDate, dueDate, terms, revenue: 0, estCogs: 0, lines: 0 };
-
+    const itemName = line['Item'] || '';
     const qty = safeNum(line['Qty']);
-    const lineTotal = safeNum(line['Line Total']);
-    const itemName = line['Item'];
+    const revenue = safeNum(line['Line Total']);
     const item = itemsByName.get(itemName);
+    const unitCost = item ? safeNum(item['Purchase Cost']) : NaN;
+    const estCogs = Number.isFinite(unitCost) ? (unitCost * qty) : 0;
 
-    row.revenue += lineTotal;
+    out.push({
+      customer,
+      invDate,
+      dueDate,
+      terms,
+      itemName,
+      qty,
+      revenue,
+      unitCost,
+      estCogs,
+      hasItemMap: Boolean(item)
+    });
+  }
+  return out;
+}
+
+function buildInvoiceFacts({ invoiceLines }) {
+  // Group invoice lines into an invoice-ish header.
+  const map = new Map();
+  for (const line of invoiceLines) {
+    const key = `${line.customer}||${line.invDate.toISOString()}||${(line.dueDate ? line.dueDate.toISOString() : '')}||${line.terms}`;
+    const row = map.get(key) || { customer: line.customer, invDate: line.invDate, dueDate: line.dueDate, terms: line.terms, revenue: 0, estCogs: 0, lines: 0 };
+    row.revenue += line.revenue;
+    row.estCogs += line.estCogs;
     row.lines += 1;
-    if (item) {
-      const unitCost = safeNum(item['Purchase Cost']);
-      row.estCogs += unitCost * qty;
-    }
-
     map.set(key, row);
   }
   return Array.from(map.values());
@@ -132,7 +149,7 @@ function plotMonthlyTrend({ invoiceFacts, from, to, customer }) {
   const rev = months.map(m => revByMonth.get(m) || 0);
   const cogs = months.map(m => cogsByMonth.get(m) || 0);
 
-  Plotly.newPlot('revCogs', [
+  Plotly.react('revCogs', [
     { x: months, y: rev, type: 'scatter', mode: 'lines+markers', name: 'Revenue', line: { color: '#22d3ee', width: 3 } },
     { x: months, y: cogs, type: 'scatter', mode: 'lines+markers', name: 'COGS (proxy)', line: { color: '#f472b6', width: 2, dash: 'dot' } }
   ], {
@@ -149,7 +166,7 @@ function plotMonthlyTrend({ invoiceFacts, from, to, customer }) {
 function plotIndicator({ invTotal, ar90p, ap90p }) {
   const risk = (ar90p > 0 ? 1 : 0) + (ap90p > 0 ? 1 : 0) + (invTotal > 0 ? 1 : 0);
   const labels = ['Working capital flags'];
-  Plotly.newPlot('ccc', [{
+  Plotly.react('ccc', [{
     type: 'indicator',
     mode: 'number',
     value: risk,
@@ -176,7 +193,7 @@ function plotAging({ elId, facts, asOf, amountField, dueField, onBarClick }) {
   const x = Array.from(buckets.keys());
   const y = x.map(k => buckets.get(k) || 0);
 
-  Plotly.newPlot(elId, [{
+  Plotly.react(elId, [{
     x, y,
     type: 'bar',
     marker: { color: ['#334155','#22d3ee','#8b5cf6','#f59e0b','#ef4444'] },
@@ -213,7 +230,7 @@ function plotTopCustomers({ invoiceFacts, from, to, customer, onCustomerClick })
     return { cust, rev, gm, gmPct: rev ? gm / rev : NaN };
   }).sort((a,b) => b.rev - a.rev).slice(0, 12);
 
-  Plotly.newPlot('topCustomers', [{
+  Plotly.react('topCustomers', [{
     x: pairs.map(p => p.cust),
     y: pairs.map(p => p.rev),
     type: 'bar',
@@ -257,7 +274,7 @@ function plotInventory({ coa }) {
     .map(a => ({ name: a['Account Name'], amt: safeNum(a['Opening Balance']) }))
     .filter(a => a.amt > 0);
 
-  Plotly.newPlot('inv', [{
+  Plotly.react('inv', [{
     labels: inv.map(i => i.name),
     values: inv.map(i => i.amt),
     type: 'pie',
@@ -408,6 +425,14 @@ function closeDrawer() {
   document.querySelector('#scrim')?.classList.remove('open');
 }
 
+function toast(msg) {
+  const el = document.querySelector('#toast');
+  if (!el) return;
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2200);
+}
+
 function downloadText(filename, text, mime='text/plain') {
   const blob = new Blob([text], { type: mime });
   const url = URL.createObjectURL(blob);
@@ -424,9 +449,10 @@ function wireDrawer() {
   document.querySelector('#drawerClose')?.addEventListener('click', closeDrawer);
   document.querySelector('#scrim')?.addEventListener('click', closeDrawer);
   document.querySelector('#drawerDownload')?.addEventListener('click', () => {
-    if (!__drawerCsv) return;
+    if (!__drawerCsv) { toast('No CSV available for this view'); return; }
     const ts = new Date().toISOString().slice(0,19).replace(/[:T]/g,'-');
     downloadText(`drilldown-${ts}.csv`, __drawerCsv, 'text/csv');
+    toast('Downloaded CSV');
   });
 }
 
@@ -444,15 +470,19 @@ function renderFocusList({ elId, rows, kind }) {
   }
 
   const header = kind === 'AR'
-    ? '<tr><th>Customer</th><th>Invoice date</th><th>Due</th><th style="text-align:right">Amount</th></tr>'
-    : '<tr><th>Vendor</th><th>Bill date</th><th>Due</th><th style="text-align:right">Amount</th></tr>';
+    ? '<tr><th>Customer</th><th>Invoice date</th><th>Due</th><th>Bucket</th><th style="text-align:right">Amount</th></tr>'
+    : '<tr><th>Vendor</th><th>Bill date</th><th>Due</th><th>Bucket</th><th style="text-align:right">Amount</th></tr>';
+
+  const now = new Date();
 
   const body = rows.slice(0, 12).map(r => {
     const a = kind === 'AR' ? r.customer : r.vendor;
     const d1 = kind === 'AR' ? r.invDate : r.billDate;
     const d2 = r.dueDate;
     const amt = kind === 'AR' ? r.revenue : r.amount;
-    return `<tr><td>${a}</td><td>${d1 ? d1.toISOString().slice(0,10) : ''}</td><td>${d2 ? d2.toISOString().slice(0,10) : ''}</td>${moneyCell(amt)}</tr>`;
+    const daysPast = d2 ? Math.floor((now - d2)/(24*3600*1000)) : 0;
+    const bucket = bucketAge(daysPast);
+    return `<tr><td>${a}</td><td>${d1 ? d1.toISOString().slice(0,10) : ''}</td><td>${d2 ? d2.toISOString().slice(0,10) : ''}</td><td>${bucket}</td>${moneyCell(amt)}</tr>`;
   }).join('');
 
   el.innerHTML = `
@@ -461,6 +491,66 @@ function renderFocusList({ elId, rows, kind }) {
       <tbody>${body}</tbody>
     </table>
     <div style="color:#94a3b8;font-size:12px;margin-top:8px">Showing top ${Math.min(12, rows.length)} items by amount.</div>
+  `;
+}
+
+function renderCollectionsByCustomer({ invoiceLines, asOf, elId }) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+
+  const rows = invoiceLines
+    .filter(l => l.dueDate)
+    .map(l => {
+      const daysPast = Math.floor((asOf - l.dueDate)/(24*3600*1000));
+      return { ...l, daysPast, bucket: bucketAge(daysPast) };
+    })
+    .filter(l => l.daysPast > 0);
+
+  const map = new Map();
+  for (const l of rows) {
+    const r = map.get(l.customer) || { customer: l.customer, totalPastDue: 0, b90: 0, b61: 0, b31: 0, b1: 0, count: 0 };
+    r.totalPastDue += l.revenue;
+    r.count += 1;
+    if (l.bucket === '90+') r.b90 += l.revenue;
+    else if (l.bucket === '61-90') r.b61 += l.revenue;
+    else if (l.bucket === '31-60') r.b31 += l.revenue;
+    else if (l.bucket === '1-30') r.b1 += l.revenue;
+    map.set(l.customer, r);
+  }
+
+  const out = Array.from(map.values()).sort((a,b) => b.totalPastDue - a.totalPastDue).slice(0, 15);
+
+  const action = (r) => {
+    if (r.b90 > 0) return 'Escalate: stop-ship / exec outreach';
+    if (r.b61 > 0) return 'Dispute triage + payment plan';
+    if (r.b31 > 0) return 'Collections cadence + confirm receipt';
+    return 'Reminder + tighten ship/invoice timing';
+  };
+
+  el.innerHTML = `
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Customer</th>
+          <th style="text-align:right">Past due</th>
+          <th style="text-align:right">90+</th>
+          <th style="text-align:right">31–90</th>
+          <th>Recommended action</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${out.map(r => `
+          <tr>
+            <td>${r.customer}</td>
+            <td style="text-align:right">${fmtMoney(r.totalPastDue)}</td>
+            <td style="text-align:right">${fmtMoney(r.b90)}</td>
+            <td style="text-align:right">${fmtMoney(r.b31 + r.b61)}</td>
+            <td>${action(r)}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+    <div style="color:#94a3b8;font-size:12px;margin-top:8px">Top 15 past-due customers. This is your weekly collections meeting agenda.</div>
   `;
 }
 
@@ -496,7 +586,9 @@ async function main() {
   }
 
   // Load repo JSON (GitHub Pages friendly)
-  const [coa, invoices, bills, items, payments] = await Promise.all([
+  const loading = document.querySelector('#loading');
+  try {
+    const [coa, invoices, bills, items, payments] = await Promise.all([
     loadJSON('./data/chart_of_accounts.json'),
     loadJSON('./data/customer_invoices.json'),
     loadJSON('./data/vendor_bills.json'),
@@ -509,7 +601,8 @@ async function main() {
   if (asOfPill) asOfPill.textContent = '…';
 
   const itemsByName = new Map(items.map(i => [i['Item Name'], i]));
-  const invoiceFactsAll = buildInvoiceFacts({ invoices, itemsByName });
+  const invoiceLinesAll = buildInvoiceLines({ invoices, itemsByName });
+  const invoiceFactsAll = buildInvoiceFacts({ invoiceLines: invoiceLinesAll });
   const billFactsAll = buildBillFacts({ bills });
   const asOf = deriveReportDate({ invoices, bills, payments });
   const asOfPill2 = document.querySelector('#asOfPill');
@@ -530,7 +623,7 @@ async function main() {
 
   // Customer list
   const customerSel = document.querySelector('#customer');
-  for (const c of Array.from(new Set(invoiceFactsAll.map(r => r.customer))).sort()) {
+  for (const c of Array.from(new Set(invoiceLinesAll.map(r => r.customer))).sort()) {
     const opt = document.createElement('option');
     opt.value = c;
     opt.textContent = c;
@@ -554,11 +647,12 @@ async function main() {
       sub.textContent = `Period: ${fromStr || '—'} → ${toStr || '—'}${custText}`;
     }
 
-    const invoiceFacts = invoiceFactsAll.filter(r => within(r.invDate, from, to) && (!customer || r.customer === customer));
+    const invoiceLines = invoiceLinesAll.filter(r => within(r.invDate, from, to) && (!customer || r.customer === customer));
+    const invoiceFacts = buildInvoiceFacts({ invoiceLines });
     const billFacts = billFactsAll.filter(r => within(r.billDate, from, to));
 
-    const revenue = sum(invoiceFacts.map(r => r.revenue));
-    const cogs = sum(invoiceFacts.map(r => r.estCogs));
+    const revenue = sum(invoiceLines.map(r => r.revenue));
+    const cogs = sum(invoiceLines.map(r => r.estCogs));
     const gm = revenue - cogs;
     const gmPct = revenue ? gm / revenue : NaN;
 
@@ -569,11 +663,11 @@ async function main() {
       prevTo = new Date(from.getTime() - 1);
       prevFrom = new Date(prevTo.getTime() - windowMs);
     }
-    const prevFacts = prevFrom && prevTo
-      ? invoiceFactsAll.filter(r => within(r.invDate, prevFrom, prevTo) && (!customer || r.customer === customer))
+    const prevLines = prevFrom && prevTo
+      ? invoiceLinesAll.filter(r => within(r.invDate, prevFrom, prevTo) && (!customer || r.customer === customer))
       : [];
-    const prevRevenue = sum(prevFacts.map(r => r.revenue));
-    const prevCogs = sum(prevFacts.map(r => r.estCogs));
+    const prevRevenue = sum(prevLines.map(r => r.revenue));
+    const prevCogs = sum(prevLines.map(r => r.estCogs));
     const prevGmPct = prevRevenue ? (prevRevenue - prevCogs) / prevRevenue : NaN;
 
     document.querySelector('#kpiRevenue').textContent = fmtMoney(revenue);
@@ -764,7 +858,7 @@ async function main() {
     }
     const tx = Array.from(termsBuckets.keys());
     const ty = tx.map(k => termsBuckets.get(k) || 0);
-    Plotly.newPlot('termsMix', [{
+    Plotly.react('termsMix', [{
       x: tx,
       y: ty,
       type: 'bar',
@@ -802,6 +896,9 @@ async function main() {
     renderNotes({ revenue, gmPct, ar90p: ar.ninetyPlus, ap90p: ap.ninetyPlus, asOf, top1Share, top5Share, avgTermDays });
     renderAnoms({ invoiceFacts, billFacts, itemsMissingMap });
 
+    // Collections workflow
+    renderCollectionsByCustomer({ invoiceLines, asOf, elId: 'collections' });
+
     // Focus lists (largest past-due)
     const pastDueAR = invoiceFacts.filter(r => r.dueDate && (asOf - r.dueDate) > 0)
       .sort((a,b) => b.revenue - a.revenue);
@@ -813,10 +910,17 @@ async function main() {
 
   document.querySelector('#refresh').addEventListener('click', refresh);
   refresh();
+  toast('Ready');
+  } catch (err) {
+    console.error(err);
+    const status = document.querySelector('#dataStatus');
+    if (status) status.textContent = `Failed to load repo JSON: ${String(err.message || err)}`;
+    toast('Failed to load data');
+  } finally {
+    if (loading) loading.style.display = 'none';
+  }
 }
 
 main().catch(err => {
   console.error(err);
-  const status = document.querySelector('#dataStatus');
-  if (status) status.textContent = `Failed to load repo JSON: ${String(err.message || err)}`;
 });

@@ -228,9 +228,36 @@
       .row2{grid-template-columns:1fr}
       .split{grid-template-columns:1fr}
     }
+  /* Loading + toast */
+    .loading{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(7,11,20,.65);backdrop-filter:blur(8px);z-index:60}
+    .loading .box{width:min(560px,92vw);border-radius:18px;border:1px solid rgba(148,163,184,.18);background:rgba(17,27,46,.78);box-shadow:0 30px 80px rgba(0,0,0,.55);padding:14px}
+    .loading .t{font-weight:900;letter-spacing:-.3px}
+    .loading .s{color:#94a3b8;margin-top:6px;font-size:12px}
+    .shimmer{height:10px;border-radius:999px;background:linear-gradient(90deg, rgba(148,163,184,.08), rgba(148,163,184,.22), rgba(148,163,184,.08));background-size:200% 100%;animation:sh 1.2s infinite}
+    @keyframes sh{0%{background-position:0% 0}100%{background-position:200% 0}}
+    .sh-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+    .sh-card{padding:12px;border-radius:14px;border:1px solid rgba(148,163,184,.14);background:rgba(15,23,42,.55)}
+    .sh-card .shimmer{height:12px}
+    .sh-card .sh2{margin-top:10px}
+    .sh-card .sh2 .shimmer{height:22px}
+    .toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:rgba(15,23,42,.85);border:1px solid rgba(148,163,184,.18);padding:10px 12px;border-radius:999px;color:#cbd5e1;font-size:12px;z-index:61;opacity:0;pointer-events:none;transition:opacity .18s ease}
+    .toast.show{opacity:1}
   </style>
 </head>
 <body>
+  <div class="loading" id="loading">
+    <div class="box">
+      <div class="t">Loading Command Center…</div>
+      <div class="s">Parsing JSON + building CFO views</div>
+      <div style="margin-top:12px" class="shimmer"></div>
+      <div class="sh-grid">
+        <div class="sh-card"><div class="shimmer"></div><div class="sh2"><div class="shimmer"></div></div></div>
+        <div class="sh-card"><div class="shimmer"></div><div class="sh2"><div class="shimmer"></div></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
+
   <div class="scrim" id="scrim"></div>
   <div class="drawer" id="drawer">
     <div class="dhead">
@@ -383,13 +410,19 @@
 
           <div class="split">
             <div class="card">
-              <h2 class="h2">AR Focus List (largest past due)</h2>
-              <div id="arFocus"></div>
+              <h2 class="h2">Collections cockpit (past due by customer)</h2>
+              <p class="p">Operator workflow: use this list to run a weekly collections meeting. Start with 90+.</p>
+              <div id="collections"></div>
             </div>
             <div class="card">
               <h2 class="h2">AP Focus List (largest past due)</h2>
               <div id="apFocus"></div>
             </div>
+          </div>
+
+          <div class="card" style="margin-top:10px">
+            <h2 class="h2">AR Focus List (largest past due invoices)</h2>
+            <div id="arFocus"></div>
           </div>
         </section>
 
