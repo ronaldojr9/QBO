@@ -279,7 +279,7 @@ function setPill(el, text, cls) {
   if (cls) el.classList.add(cls);
 }
 
-function renderNotes({ revenue, gmPct, ar90p, ap90p, asOf }) {
+function renderNotes({ revenue, gmPct, ar90p, ap90p, asOf, top1Share, top5Share, avgTermDays }) {
   const el = document.querySelector('#notes');
   const parts = [];
 
@@ -296,20 +296,38 @@ function renderNotes({ revenue, gmPct, ar90p, ap90p, asOf }) {
   if (ar90p > 0) parts.push(`<div class="warn"><strong>AR 90+:</strong> ${fmtMoney(ar90p)}. Cash action: dispute triage, enforce terms, stop shipping on chronic offenders, tighten ship/invoice timing.</div>`);
   if (ap90p > 0) parts.push(`<div class="warn"><strong>AP 90+:</strong> ${fmtMoney(ap90p)}. Operational risk: credit holds + price creep + shortened terms.</div>`);
 
+  if (Number.isFinite(top1Share) && Number.isFinite(top5Share)) {
+    parts.push(`<div class="note"><strong>Concentration:</strong> Top 1 = ${(top1Share*100).toFixed(1)}% of revenue; Top 5 = ${(top5Share*100).toFixed(1)}%. If terms are long, concentration will amplify cash volatility.</div>`);
+  }
+  if (Number.isFinite(avgTermDays)) {
+    parts.push(`<div class="note"><strong>Terms mix:</strong> weighted average terms ≈ ${avgTermDays.toFixed(0)} days (invoice terms). If this drifts up without price increases, you’re financing customers.</div>`);
+  }
+
   parts.push(`<div style="color:#94a3b8;font-size:12px;margin-top:8px">Aging as-of: <span class="pill">${asOf.toISOString().slice(0,10)}</span>. Revenue basis: invoices. COGS basis: item purchase cost proxy.</div>`);
 
   el.innerHTML = parts.join('\n');
 }
 
-function renderAnoms({ invoiceFacts, billFacts }) {
+function renderAnoms({ invoiceFacts, billFacts, itemsMissingMap }) {
   const el = document.querySelector('#anoms');
 
   const issues = [];
+
   const missingCogs = invoiceFacts.filter(r => r.revenue > 0 && r.estCogs === 0).length;
   if (missingCogs > 0) {
     issues.push({
       title: 'COGS proxy missing on invoices',
-      body: `${missingCogs} invoice(s) have revenue but no item purchase-cost match. Likely item master mismatch or non-inventory/service lines. Fix: normalize item names/SKUs, map BOM components, or reconcile to GL COGS.`
+      body: `${missingCogs} invoice(s) have revenue but no item purchase-cost match. This is usually item master mismatch (naming/SKU drift) or service lines mixed into product invoices.`
+    });
+  }
+
+  if (itemsMissingMap?.length) {
+    const top = itemsMissingMap.slice(0, 8)
+      .map(x => `<div style="display:flex;justify-content:space-between;gap:10px"><span>${x.item}</span><span>${fmtMoney(x.revenue)}</span></div>`)
+      .join('');
+    issues.push({
+      title: 'Top item mapping gaps (fix these first)',
+      body: `These item names appear on invoices but do not match the Items master (so COGS proxy = 0).<div style="margin-top:8px">${top}</div>`
     });
   }
 
@@ -317,7 +335,15 @@ function renderAnoms({ invoiceFacts, billFacts }) {
   if (noDue > 0) {
     issues.push({
       title: 'Invoices missing due dates',
-      body: `${noDue} invoice(s) missing due date. That breaks AR aging and cash forecasting. Fix: enforce terms and due dates in QBO.`
+      body: `${noDue} invoice(s) missing due date. That breaks AR aging and cash forecasting. Fix: enforce terms + due dates in QBO.`
+    });
+  }
+
+  const lateAP = billFacts.filter(r => r.dueDate && (new Date() - r.dueDate) > 90*24*3600*1000).length;
+  if (lateAP > 0) {
+    issues.push({
+      title: 'AP risk: very old bills detected',
+      body: `${lateAP} bill(s) are >90 days past due (based on today). That can trigger credit holds and weaken purchasing leverage.`
     });
   }
 
@@ -605,13 +631,15 @@ async function main() {
       }).sort((a,b) => safeNum(b[amountField]) - safeNum(a[amountField]));
 
       const csv = [
-        [kind === 'AR' ? 'Customer' : 'Vendor', kind === 'AR' ? 'InvoiceDate' : 'BillDate', 'DueDate', 'Amount'].join(','),
+        [kind === 'AR' ? 'Customer' : 'Vendor', kind === 'AR' ? 'InvoiceDate' : 'BillDate', 'DueDate', 'Terms', 'Lines', 'Amount'].join(','),
         ...filtered.map(r => {
           const a = String(r[nameField] ?? '').replace(/"/g,'""');
           const d1 = r[dateField] ? r[dateField].toISOString().slice(0,10) : '';
           const d2 = r.dueDate ? r.dueDate.toISOString().slice(0,10) : '';
+          const terms = String(r.terms ?? '').replace(/"/g,'""');
+          const lines = safeNum(r.lines);
           const amt = safeNum(r[amountField]);
-          return `"${a}",${d1},${d2},${amt}`;
+          return `"${a}",${d1},${d2},"${terms}",${lines},${amt}`;
         })
       ].join('\n');
 
@@ -622,6 +650,8 @@ async function main() {
               <th>${kind === 'AR' ? 'Customer' : 'Vendor'}</th>
               <th>${kind === 'AR' ? 'Invoice date' : 'Bill date'}</th>
               <th>Due</th>
+              <th>Terms</th>
+              <th style="text-align:right">Lines</th>
               <th style="text-align:right">Amount</th>
             </tr>
           </thead>
@@ -631,6 +661,8 @@ async function main() {
                 <td>${r[nameField]}</td>
                 <td>${r[dateField] ? r[dateField].toISOString().slice(0,10) : ''}</td>
                 <td>${r.dueDate ? r.dueDate.toISOString().slice(0,10) : ''}</td>
+                <td>${r.terms || ''}</td>
+                <td style="text-align:right">${safeNum(r.lines)}</td>
                 <td style="text-align:right">${fmtMoney(safeNum(r[amountField]))}</td>
               </tr>
             `).join('')}
@@ -689,8 +721,86 @@ async function main() {
       frictionHint.style.color = (flagsCount ? '#fde68a' : '#bbf7d0');
     }
 
-    renderNotes({ revenue, gmPct, ar90p: ar.ninetyPlus, ap90p: ap.ninetyPlus, asOf });
-    renderAnoms({ invoiceFacts, billFacts });
+    // Concentration + terms mix
+    const revByCust = groupSum(invoiceFacts, r => r.customer, r => r.revenue);
+    const revPairs = Array.from(revByCust.entries()).map(([cust, rev]) => ({ cust, rev })).sort((a,b) => b.rev - a.rev);
+    const totalRev = sum(revPairs.map(x => x.rev));
+    const top1Share = totalRev ? (revPairs[0]?.rev || 0) / totalRev : NaN;
+    const top5Share = totalRev ? sum(revPairs.slice(0,5).map(x => x.rev)) / totalRev : NaN;
+
+    // Weighted avg term days (from Terms string if it contains a number)
+    const termDays = (t) => {
+      const m = String(t || '').match(/(\d+)/);
+      return m ? Number(m[1]) : NaN;
+    };
+    const termWeighted = invoiceFacts.map(r => {
+      const d = termDays(r.terms);
+      return Number.isFinite(d) ? { days: d, w: r.revenue } : null;
+    }).filter(Boolean);
+    const avgTermDays = termWeighted.length ? (sum(termWeighted.map(x => x.days * x.w)) / sum(termWeighted.map(x => x.w))) : NaN;
+
+    // Render concentration block
+    const conc = document.querySelector('#concentration');
+    if (conc) {
+      const top1 = revPairs[0];
+      const top5 = revPairs.slice(0,5);
+      conc.innerHTML = `
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div class="pill">Top 1 share: ${Number.isFinite(top1Share) ? (top1Share*100).toFixed(1)+'%' : '—'}</div>
+          <div class="pill">Top 5 share: ${Number.isFinite(top5Share) ? (top5Share*100).toFixed(1)+'%' : '—'}</div>
+        </div>
+        <div style="margin-top:10px;color:#94a3b8;font-size:12px">Top customer: <span style="color:#e5e7eb">${top1 ? top1.cust : '—'}</span> (${top1 ? fmtMoney(top1.rev) : '—'})</div>
+        <div style="margin-top:8px">
+          ${(top5.length ? top5.map(x => `<div style="display:flex;justify-content:space-between;gap:10px;color:#cbd5e1"><span>${x.cust}</span><span>${fmtMoney(x.rev)}</span></div>`).join('') : '<div style="color:#94a3b8">No data</div>')}
+        </div>
+      `;
+    }
+
+    // Terms mix chart
+    const termsBuckets = new Map();
+    for (const r of invoiceFacts) {
+      const t = r.terms || 'Unknown';
+      termsBuckets.set(t, (termsBuckets.get(t) || 0) + r.revenue);
+    }
+    const tx = Array.from(termsBuckets.keys());
+    const ty = tx.map(k => termsBuckets.get(k) || 0);
+    Plotly.newPlot('termsMix', [{
+      x: tx,
+      y: ty,
+      type: 'bar',
+      marker: { color: '#8b5cf6' },
+      hovertemplate: '%{x}<br>$%{y:,.0f}<extra></extra>'
+    }], {
+      margin: { l: 50, r: 10, t: 10, b: 80 },
+      paper_bgcolor: 'rgba(0,0,0,0)',
+      plot_bgcolor: 'rgba(0,0,0,0)',
+      font: { color: '#e5e7eb' },
+      yaxis: { gridcolor: 'rgba(148,163,184,.12)', tickprefix: '$' },
+      xaxis: { gridcolor: 'rgba(148,163,184,.12)', tickangle: 30 }
+    }, { displayModeBar: false, responsive: true });
+
+    // Item mapping gaps (group)
+    const itemsMissingMap = (() => {
+      // Estimate by looking at invoiceFacts with estCogs=0; we don't have per-line items here, so this is a proxy list.
+      // Better: wire invoice lines; next iteration.
+      const m = new Map();
+      for (const invLine of invoices) {
+        // In scope window + customer filter
+        const d = parseDate(invLine['Invoice Date']);
+        if (!within(d, from, to)) continue;
+        if (customer && invLine['Customer'] !== customer) continue;
+        const item = invLine['Item'] || 'Unknown item';
+        const lineTotal = safeNum(invLine['Line Total']);
+        // If item not in item master, count as mapping gap
+        if (!itemsByName.has(item)) {
+          m.set(item, (m.get(item) || 0) + lineTotal);
+        }
+      }
+      return Array.from(m.entries()).map(([item, revenue]) => ({ item, revenue })).sort((a,b)=>b.revenue-a.revenue);
+    })();
+
+    renderNotes({ revenue, gmPct, ar90p: ar.ninetyPlus, ap90p: ap.ninetyPlus, asOf, top1Share, top5Share, avgTermDays });
+    renderAnoms({ invoiceFacts, billFacts, itemsMissingMap });
 
     // Focus lists (largest past-due)
     const pastDueAR = invoiceFacts.filter(r => r.dueDate && (asOf - r.dueDate) > 0)
