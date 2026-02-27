@@ -4,6 +4,11 @@ const fmtMoney = (n) => Number.isFinite(n)
   ? n.toLocaleString(undefined, { style: 'currency', currency: 'USD', maximumFractionDigits: 0 })
   : '—';
 const fmtPct = (n) => Number.isFinite(n) ? (n * 100).toFixed(1) + '%' : '—';
+const fmtDeltaPct = (n) => {
+  if (!Number.isFinite(n)) return '—';
+  const s = (n >= 0 ? '+' : '') + (n * 100).toFixed(1) + '%';
+  return s;
+};
 
 function safeNum(x) {
   const n = Number(x);
@@ -417,6 +422,14 @@ async function main() {
   wireNav();
   wireDrawer();
 
+  const resetBtn = document.querySelector('#reset');
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      localStorage.removeItem('qbo_dash_filters');
+      location.reload();
+    });
+  }
+
   // Load repo JSON (GitHub Pages friendly)
   const [coa, invoices, bills, items, payments] = await Promise.all([
     loadJSON('./data/chart_of_accounts.json'),
@@ -437,13 +450,18 @@ async function main() {
   const asOfPill2 = document.querySelector('#asOfPill');
   if (asOfPill2) asOfPill2.textContent = asOf.toISOString().slice(0,10);
 
-  // Defaults: last 12 months
+  // Defaults: last 12 months (with persistence)
   const invDates = invoiceFactsAll.map(r => r.invDate).filter(Boolean).sort((a,b)=>a-b);
   const maxD = invDates[invDates.length - 1] || asOf;
   const fromD = new Date(maxD.getTime() - 365*24*3600*1000);
   const iso = d => d.toISOString().slice(0,10);
-  document.querySelector('#from').value = iso(fromD);
-  document.querySelector('#to').value = iso(maxD);
+
+  const saved = (() => {
+    try { return JSON.parse(localStorage.getItem('qbo_dash_filters') || 'null'); } catch { return null; }
+  })();
+
+  document.querySelector('#from').value = saved?.from || iso(fromD);
+  document.querySelector('#to').value = saved?.to || iso(maxD);
 
   // Customer list
   const customerSel = document.querySelector('#customer');
@@ -453,11 +471,17 @@ async function main() {
     opt.textContent = c;
     customerSel.appendChild(opt);
   }
+  if (saved?.customer) customerSel.value = saved.customer;
 
   function refresh() {
-    const from = document.querySelector('#from').value ? new Date(document.querySelector('#from').value + 'T00:00:00Z') : null;
-    const to = document.querySelector('#to').value ? new Date(document.querySelector('#to').value + 'T23:59:59Z') : null;
+    const fromStr = document.querySelector('#from').value;
+    const toStr = document.querySelector('#to').value;
+    const from = fromStr ? new Date(fromStr + 'T00:00:00Z') : null;
+    const to = toStr ? new Date(toStr + 'T23:59:59Z') : null;
     const customer = customerSel.value || '';
+
+    // Persist filters
+    localStorage.setItem('qbo_dash_filters', JSON.stringify({ from: fromStr, to: toStr, customer }));
 
     const invoiceFacts = invoiceFactsAll.filter(r => within(r.invDate, from, to) && (!customer || r.customer === customer));
     const billFacts = billFactsAll.filter(r => within(r.billDate, from, to));
@@ -467,11 +491,44 @@ async function main() {
     const gm = revenue - cogs;
     const gmPct = revenue ? gm / revenue : NaN;
 
+    // Prior period deltas (same length window immediately prior)
+    const windowMs = (from && to) ? (to - from) : null;
+    let prevFrom = null, prevTo = null;
+    if (windowMs && windowMs > 0) {
+      prevTo = new Date(from.getTime() - 1);
+      prevFrom = new Date(prevTo.getTime() - windowMs);
+    }
+    const prevFacts = prevFrom && prevTo
+      ? invoiceFactsAll.filter(r => within(r.invDate, prevFrom, prevTo) && (!customer || r.customer === customer))
+      : [];
+    const prevRevenue = sum(prevFacts.map(r => r.revenue));
+    const prevCogs = sum(prevFacts.map(r => r.estCogs));
+    const prevGmPct = prevRevenue ? (prevRevenue - prevCogs) / prevRevenue : NaN;
+
     document.querySelector('#kpiRevenue').textContent = fmtMoney(revenue);
     document.querySelector('#kpiRevenueHint').textContent = `${invoiceFacts.length.toLocaleString()} invoices (grouped)`;
     document.querySelector('#kpiCogs').textContent = fmtMoney(cogs);
     document.querySelector('#kpiGm').textContent = fmtPct(gmPct);
     document.querySelector('#kpiGmHint').textContent = `GM $: ${fmtMoney(gm)}`;
+
+    const revDeltaEl = document.querySelector('#kpiRevenueDelta');
+    const cogsDeltaEl = document.querySelector('#kpiCogsDelta');
+    const gmDeltaEl = document.querySelector('#kpiGmDelta');
+    if (revDeltaEl) {
+      const d = (prevRevenue && revenue) ? (revenue - prevRevenue) / prevRevenue : NaN;
+      revDeltaEl.textContent = prevFrom ? `vs prior period: ${fmtDeltaPct(d)} (${fmtMoney(revenue - prevRevenue)})` : 'vs prior period: —';
+      revDeltaEl.style.color = (Number.isFinite(d) && d < 0) ? '#fecaca' : '#bbf7d0';
+    }
+    if (cogsDeltaEl) {
+      const d = (prevCogs && cogs) ? (cogs - prevCogs) / prevCogs : NaN;
+      cogsDeltaEl.textContent = prevFrom ? `vs prior period: ${fmtDeltaPct(d)} (${fmtMoney(cogs - prevCogs)})` : 'vs prior period: —';
+      cogsDeltaEl.style.color = (Number.isFinite(d) && d > 0) ? '#fde68a' : '#bbf7d0';
+    }
+    if (gmDeltaEl) {
+      const d = (Number.isFinite(prevGmPct) && Number.isFinite(gmPct)) ? (gmPct - prevGmPct) : NaN;
+      gmDeltaEl.textContent = prevFrom ? `vs prior period: ${(Number.isFinite(d) ? ((d>=0?'+':'') + (d*100).toFixed(1) + ' pts') : '—')}` : 'vs prior period: —';
+      gmDeltaEl.style.color = (Number.isFinite(d) && d < 0) ? '#fecaca' : '#bbf7d0';
+    }
 
     // Pills
     const pillRev = document.querySelector('#pillRev');
@@ -568,6 +625,12 @@ async function main() {
     const flagsCount = (ar.ninetyPlus > 0 ? 1 : 0) + (ap.ninetyPlus > 0 ? 1 : 0) + (invTotal > 0 ? 1 : 0);
     document.querySelector('#kpiFlags').textContent = String(flagsCount);
     setPill(document.querySelector('#pillFlags'), flagsCount ? 'Review' : 'OK', flagsCount ? 'warn' : 'good');
+
+    const frictionHint = document.querySelector('#kpiFrictionHint');
+    if (frictionHint) {
+      frictionHint.textContent = `AR 90+: ${fmtMoney(ar.ninetyPlus)} · AP 90+: ${fmtMoney(ap.ninetyPlus)} · Inv: ${fmtMoney(invTotal)}`;
+      frictionHint.style.color = (flagsCount ? '#fde68a' : '#bbf7d0');
+    }
 
     renderNotes({ revenue, gmPct, ar90p: ar.ninetyPlus, ap90p: ap.ninetyPlus, asOf });
     renderAnoms({ invoiceFacts, billFacts });

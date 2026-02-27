@@ -295,6 +295,7 @@
             <select id="customer"><option value="">All</option></select>
           </div>
           <button class="btn" id="refresh"><i class="fa-solid fa-rotate"></i> Refresh</button>
+          <button class="btn" id="reset" style="background:rgba(148,163,184,.10);border-color:rgba(148,163,184,.18)"><i class="fa-solid fa-sliders"></i> Reset</button>
         </div>
       </div>
 
@@ -307,21 +308,25 @@
               <div class="row1"><div class="lbl"><i class="fa-solid fa-arrow-trend-up" style="color:var(--cyan)"></i> Revenue</div><div class="pill" id="pillRev">—</div></div>
               <div class="val" id="kpiRevenue">—</div>
               <div class="hint" id="kpiRevenueHint">—</div>
+              <div class="hint" id="kpiRevenueDelta">—</div>
             </div>
             <div class="card kpi">
               <div class="row1"><div class="lbl"><i class="fa-solid fa-file-invoice-dollar" style="color:var(--pink)"></i> COGS (proxy)</div><div class="pill" id="pillCogs">—</div></div>
               <div class="val" id="kpiCogs">—</div>
               <div class="hint">Item purchase cost × qty (upgrade with ERP actuals)</div>
+              <div class="hint" id="kpiCogsDelta">—</div>
             </div>
             <div class="card kpi">
               <div class="row1"><div class="lbl"><i class="fa-solid fa-percent" style="color:var(--violet)"></i> Gross Margin % (proxy)</div><div class="pill" id="pillGm">—</div></div>
               <div class="val" id="kpiGm">—</div>
               <div class="hint" id="kpiGmHint">—</div>
+              <div class="hint" id="kpiGmDelta">—</div>
             </div>
             <div class="card kpi">
-              <div class="row1"><div class="lbl"><i class="fa-solid fa-bolt" style="color:var(--amber)"></i> Working Capital Flags</div><div class="pill" id="pillFlags">—</div></div>
+              <div class="row1"><div class="lbl"><i class="fa-solid fa-bolt" style="color:var(--amber)"></i> Cash Friction</div><div class="pill" id="pillFlags">—</div></div>
               <div class="val" id="kpiFlags">—</div>
-              <div class="hint">Click aging bars to drill into detail</div>
+              <div class="hint">AR 90+ · AP 90+ · inventory weight</div>
+              <div class="hint" id="kpiFrictionHint">—</div>
             </div>
           </div>
 
