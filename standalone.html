@@ -1,0 +1,588 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Manufacturing CFO Command Center — Standalone</title>
+  <!-- No install, no server. Open this file in a browser. -->
+  <!-- Charting via CDN (no local install). If you need fully-offline, we can embed Plotly (large file). -->
+  <script src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
+  <style>
+    :root{
+      --bg:#0b1220; --panel:#111b2e; --text:#e5e7eb; --muted:#94a3b8;
+      --cyan:#22d3ee; --pink:#f472b6; --violet:#8b5cf6; --amber:#f59e0b; --green:#22c55e; --red:#ef4444;
+      --border: rgba(148,163,184,.14);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Arial;background:linear-gradient(135deg,var(--bg),#0f172a 55%,#0b1220);color:var(--text)}
+    header{padding:18px 18px 12px;border-bottom:1px solid var(--border);background:linear-gradient(135deg,#111b2e,#0b1220 70%)}
+    header h1{margin:0 0 4px;font-size:18px;letter-spacing:-.2px}
+    header .sub{color:var(--muted);font-size:12px}
+
+    .wrap{padding:14px;max-width:1280px;margin:0 auto}
+
+    .bar{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin:12px 0 12px}
+    .box{background:rgba(17,27,46,.75);border:1px solid var(--border);padding:10px 10px;border-radius:12px}
+    .box label{display:block;color:var(--muted);font-size:11px;margin-bottom:6px}
+    .box input,.box select{background:#0b1220;border:1px solid rgba(148,163,184,.25);color:var(--text);border-radius:10px;padding:8px 10px;min-width:160px}
+    .btn{padding:9px 12px;border-radius:10px;border:1px solid rgba(148,163,184,.25);background:#0b1220;color:var(--text);cursor:pointer}
+
+    .kpis{display:grid;grid-template-columns:repeat(4, minmax(160px,1fr));gap:10px}
+    .kpi{background:rgba(17,27,46,.75);border:1px solid var(--border);border-radius:14px;padding:12px}
+    .kpi .lbl{color:var(--muted);font-size:11px;margin-bottom:6px}
+    .kpi .val{font-size:20px;font-weight:700}
+    .kpi .hint{color:var(--muted);font-size:11px;margin-top:6px}
+
+    .grid{display:grid;grid-template-columns:1.2fr .8fr;gap:10px;margin-top:10px}
+    .card{background:rgba(17,27,46,.6);border:1px solid var(--border);border-radius:14px;padding:12px}
+    .card h2{margin:0 0 8px;font-size:13px;color:#f8fafc}
+    .card p{margin:0 0 8px;color:var(--muted);font-size:12px}
+
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+
+    .table{width:100%;border-collapse:collapse;margin-top:8px}
+    .table th,.table td{padding:8px;border-bottom:1px solid rgba(148,163,184,.12);text-align:left;font-size:12px}
+    .table th{color:#cbd5e1;font-weight:600}
+    .badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;border:1px solid rgba(148,163,184,.25);color:#cbd5e1}
+
+    .warn{border-left:3px solid var(--amber);padding-left:10px;margin:10px 0;color:#fde68a}
+    .ok{border-left:3px solid var(--green);padding-left:10px;margin:10px 0;color:#bbf7d0}
+
+    .small{color:var(--muted);font-size:11px}
+    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace}
+
+    @media (max-width: 980px){
+      .kpis{grid-template-columns:repeat(2, minmax(160px,1fr))}
+      .grid{grid-template-columns:1fr}
+      .row{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap" style="padding:0 14px">
+      <h1>Manufacturing CFO Command Center — Standalone</h1>
+      <div class="sub">No install. Download this single HTML file and open it. Bring your own QBO + ERP exports via file upload.</div>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="card">
+      <h2>1) Load data files (local)</h2>
+      <p>This version is designed for <strong>Path B</strong>: QBO + ERP/MRP exports. For now it understands the sample QBO JSON format in this repo. Next: add ERP/WIP/variance datasets when you provide them.</p>
+      <div class="bar">
+        <div class="box">
+          <label>Upload JSON files</label>
+          <input id="files" type="file" multiple accept="application/json,.json" />
+          <div class="small" style="margin-top:6px">Tip: select all exported JSON files at once (COA, invoices, bills, items, payments, etc.).</div>
+        </div>
+        <div class="box">
+          <label>Data status</label>
+          <div id="status" class="mono small">No files loaded yet.</div>
+        </div>
+        <div class="box">
+          <label>&nbsp;</label>
+          <button id="loadSample" class="btn">Load built-in demo sample</button>
+        </div>
+      </div>
+      <div class="small">Privacy: all parsing happens in your browser. Nothing is uploaded anywhere.</div>
+    </div>
+
+    <div class="bar">
+      <div class="box">
+        <label>From</label>
+        <input id="from" type="date" />
+      </div>
+      <div class="box">
+        <label>To</label>
+        <input id="to" type="date" />
+      </div>
+      <div class="box">
+        <label>Customer</label>
+        <select id="customer"><option value="">All customers</option></select>
+      </div>
+      <div class="box">
+        <label>View</label>
+        <select id="view">
+          <option value="accrual">Accrual-ish (invoice date)</option>
+          <option value="cash">Cash-ish (payment date)</option>
+        </select>
+      </div>
+      <div class="box">
+        <label>&nbsp;</label>
+        <button id="refresh" class="btn" disabled>Refresh</button>
+      </div>
+    </div>
+
+    <div class="kpis">
+      <div class="kpi"><div class="lbl">Revenue</div><div class="val" id="kpiRevenue">—</div><div class="hint" id="kpiRevenueHint"></div></div>
+      <div class="kpi"><div class="lbl">Estimated COGS (proxy)</div><div class="val" id="kpiCogs">—</div><div class="hint">Item purchase cost × qty where available</div></div>
+      <div class="kpi"><div class="lbl">Gross Margin % (proxy)</div><div class="val" id="kpiGm">—</div><div class="hint" id="kpiGmHint"></div></div>
+      <div class="kpi"><div class="lbl">Working Capital Flags</div><div class="val" id="kpiFlags">—</div><div class="hint">AR/AP aging + inventory checks</div></div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Revenue vs COGS (monthly trend)</h2>
+        <p>Manufacturing read: revenue up + GM% down usually means pricing discipline, PPV, labor efficiency, scrap/rework, or absorption noise.</p>
+        <div id="revCogs" style="height:340px"></div>
+      </div>
+      <div class="card">
+        <h2>Cash Conversion Lens (proxy)</h2>
+        <p>In real Path B we’ll replace this with 13-week cash + CCC components (DSO/DPO/DOH) tied to actual balances.</p>
+        <div id="ccc" style="height:340px"></div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="card">
+        <h2>AR Aging (invoice due date)</h2>
+        <div id="arAging" style="height:280px"></div>
+      </div>
+      <div class="card">
+        <h2>AP Aging (bill due date)</h2>
+        <div id="apAging" style="height:280px"></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:10px">
+      <h2>Margin + Cash Drivers (diagnostic notes)</h2>
+      <div id="notes"></div>
+    </div>
+
+    <div class="card" style="margin-top:10px">
+      <h2>Top Customers by Revenue</h2>
+      <div id="topCustomers" style="height:320px"></div>
+      <table class="table" id="customerTable">
+        <thead><tr><th>Customer</th><th style="text-align:right">Revenue</th><th style="text-align:right">GM $ (proxy)</th><th style="text-align:right">GM % (proxy)</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="card" style="margin-top:10px">
+      <h2>Inventory Snapshot (COA opening balances)</h2>
+      <div id="inv" style="height:240px"></div>
+      <div class="small">Note: for a real manufacturer, we’ll use ERP on-hand + WIP snapshots + slow-mover logic (turns &gt; dollars).</div>
+    </div>
+
+    <div class="card" style="margin-top:10px">
+      <h2>2) What’s missing for Path B (so we don’t produce pretty fiction)</h2>
+      <ul class="small" style="margin:0;padding-left:18px">
+        <li><strong>WIP snapshots</strong> (by job/order/work center)</li>
+        <li><strong>Routing / labor tickets</strong> (earned hours vs actual hours)</li>
+        <li><strong>Material issues</strong> (standard vs actual, scrap/rework)</li>
+        <li><strong>Standard costs</strong> + <strong>variance buckets</strong> (PPV, labor efficiency, OH volume/spend)</li>
+      </ul>
+      <div class="small" style="margin-top:8px">Once you give me the ERP export format (CSV/JSON sample), I’ll wire those into this same standalone file (still no install).</div>
+    </div>
+
+  </div>
+
+  <script>
+    // ---------- small utilities ----------
+    const fmtMoney = (n) => (Number.isFinite(n) ? n.toLocaleString(undefined, { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }) : '—');
+    const fmtPct = (n) => (Number.isFinite(n) ? (n * 100).toFixed(1) + '%' : '—');
+    const safeNum = (x) => { const n = Number(x); return Number.isFinite(n) ? n : 0; };
+    const sum = (arr) => arr.reduce((a,b)=>a+b,0);
+
+    function parseDate(s) {
+      if (!s) return null;
+      const [mm, dd, yyyy] = String(s).split('/').map(x => parseInt(x, 10));
+      if (!yyyy || !mm || !dd) return null;
+      return new Date(Date.UTC(yyyy, mm - 1, dd));
+    }
+    function monthKey(d) {
+      const y = d.getUTCFullYear();
+      const m = String(d.getUTCMonth() + 1).padStart(2, '0');
+      return `${y}-${m}`;
+    }
+    function within(d, from, to) {
+      if (!d) return false;
+      if (from && d < from) return false;
+      if (to && d > to) return false;
+      return true;
+    }
+    function groupSum(rows, keyFn, valFn) {
+      const map = new Map();
+      for (const r of rows) {
+        const k = keyFn(r);
+        const v = valFn(r);
+        if (k == null || !Number.isFinite(v)) continue;
+        map.set(k, (map.get(k) || 0) + v);
+      }
+      return map;
+    }
+    function bucketAge(days) {
+      if (days <= 0) return 'Not due';
+      if (days <= 30) return '1-30';
+      if (days <= 60) return '31-60';
+      if (days <= 90) return '61-90';
+      return '90+';
+    }
+
+    // ---------- parsers (QBO sample format) ----------
+    function deriveReportDate({ invoices, bills, payments }) {
+      let max = null;
+      const all = [];
+      for (const inv of invoices) all.push(parseDate(inv['Invoice Date']), parseDate(inv['Due Date']));
+      for (const b of bills) all.push(parseDate(b['Bill Date']), parseDate(b['Due Date']));
+      for (const p of payments) all.push(parseDate(p['Payment Date']));
+      for (const d of all) {
+        if (!d) continue;
+        if (!max || d > max) max = d;
+      }
+      return max || new Date();
+    }
+
+    function buildInvoiceFacts({ invoices, itemsByName }) {
+      const map = new Map();
+      for (const line of invoices) {
+        const customer = line['Customer'] || 'Unknown';
+        const invDate = parseDate(line['Invoice Date']);
+        const dueDate = parseDate(line['Due Date']);
+        const terms = line['Terms'] || '';
+        if (!invDate) continue;
+
+        const key = `${customer}||${invDate.toISOString()}||${(dueDate ? dueDate.toISOString() : '')}||${terms}`;
+        const row = map.get(key) || { customer, invDate, dueDate, terms, revenue: 0, estCogs: 0, lines: 0 };
+
+        const qty = safeNum(line['Qty']);
+        const lineTotal = safeNum(line['Line Total']);
+        const itemName = line['Item'];
+        const item = itemsByName.get(itemName);
+
+        row.revenue += lineTotal;
+        row.lines += 1;
+        if (item) {
+          const unitCost = safeNum(item['Purchase Cost']);
+          row.estCogs += unitCost * qty;
+        }
+
+        map.set(key, row);
+      }
+      return Array.from(map.values());
+    }
+
+    function buildBillFacts({ bills }) {
+      const map = new Map();
+      for (const line of bills) {
+        const vendor = line['Vendor'] || 'Unknown';
+        const billDate = parseDate(line['Bill Date']);
+        const dueDate = parseDate(line['Due Date']);
+        const terms = line['Terms'] || '';
+        if (!billDate) continue;
+
+        const key = `${vendor}||${billDate.toISOString()}||${(dueDate ? dueDate.toISOString() : '')}||${terms}`;
+        const row = map.get(key) || { vendor, billDate, dueDate, terms, amount: 0, lines: 0 };
+
+        row.amount += safeNum(line['Line Total']);
+        row.lines += 1;
+        map.set(key, row);
+      }
+      return Array.from(map.values());
+    }
+
+    // ---------- visualizations ----------
+    function plotMonthlyTrend({ invoiceFacts, from, to, customer }) {
+      const rows = invoiceFacts.filter(r => within(r.invDate, from, to) && (!customer || r.customer === customer));
+      const revByMonth = groupSum(rows, r => monthKey(r.invDate), r => r.revenue);
+      const cogsByMonth = groupSum(rows, r => monthKey(r.invDate), r => r.estCogs);
+      const months = Array.from(new Set([...revByMonth.keys(), ...cogsByMonth.keys()])).sort();
+      const rev = months.map(m => revByMonth.get(m) || 0);
+      const cogs = months.map(m => cogsByMonth.get(m) || 0);
+
+      Plotly.newPlot('revCogs', [
+        { x: months, y: rev, type: 'scatter', mode: 'lines+markers', name: 'Revenue', line: { color: '#22d3ee', width: 3 } },
+        { x: months, y: cogs, type: 'scatter', mode: 'lines+markers', name: 'COGS (proxy)', line: { color: '#f472b6', width: 2, dash: 'dot' } }
+      ], {
+        margin: { l: 50, r: 15, t: 10, b: 40 },
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        font: { color: '#e5e7eb' },
+        xaxis: { gridcolor: 'rgba(148,163,184,.12)' },
+        yaxis: { gridcolor: 'rgba(148,163,184,.12)', tickprefix: '$' },
+        legend: { orientation: 'h', y: -0.2 }
+      }, { displayModeBar: false, responsive: true });
+    }
+
+    function plotAging({ elId, facts, asOf, amountField, dueField }) {
+      const buckets = new Map([['Not due',0],['1-30',0],['31-60',0],['61-90',0],['90+',0]]);
+      for (const r of facts) {
+        const due = r[dueField];
+        if (!due) continue;
+        const daysPastDue = Math.floor((asOf - due) / (24*3600*1000));
+        const b = bucketAge(daysPastDue);
+        buckets.set(b, (buckets.get(b) || 0) + safeNum(r[amountField]));
+      }
+      const x = Array.from(buckets.keys());
+      const y = x.map(k => buckets.get(k) || 0);
+      Plotly.newPlot(elId, [{ x, y, type: 'bar', marker: { color: ['#334155','#22d3ee','#8b5cf6','#f59e0b','#ef4444'] } }], {
+        margin: { l: 50, r: 10, t: 10, b: 40 },
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        font: { color: '#e5e7eb' },
+        yaxis: { gridcolor: 'rgba(148,163,184,.12)', tickprefix: '$' },
+        xaxis: { gridcolor: 'rgba(148,163,184,.12)' }
+      }, { displayModeBar: false, responsive: true });
+      return { ninetyPlus: buckets.get('90+') || 0 };
+    }
+
+    function plotTopCustomers({ invoiceFacts, from, to, customer }) {
+      const rows = invoiceFacts.filter(r => within(r.invDate, from, to) && (!customer || r.customer === customer));
+      const revByCust = groupSum(rows, r => r.customer, r => r.revenue);
+      const cogsByCust = groupSum(rows, r => r.customer, r => r.estCogs);
+      const pairs = Array.from(revByCust.entries()).map(([cust, rev]) => {
+        const cogs = cogsByCust.get(cust) || 0;
+        const gm = rev - cogs;
+        return { cust, rev, gm, gmPct: rev ? gm / rev : NaN };
+      }).sort((a,b) => b.rev - a.rev).slice(0, 12);
+
+      Plotly.newPlot('topCustomers', [{ x: pairs.map(p => p.cust), y: pairs.map(p => p.rev), type: 'bar', marker: { color: '#22d3ee' } }], {
+        margin: { l: 50, r: 10, t: 10, b: 120 },
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        font: { color: '#e5e7eb' },
+        yaxis: { gridcolor: 'rgba(148,163,184,.12)', tickprefix: '$' },
+        xaxis: { gridcolor: 'rgba(148,163,184,.12)', tickangle: 35 }
+      }, { displayModeBar: false, responsive: true });
+
+      const tbody = document.querySelector('#customerTable tbody');
+      tbody.innerHTML = '';
+      for (const p of pairs) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${p.cust}</td>
+          <td style="text-align:right">${fmtMoney(p.rev)}</td>
+          <td style="text-align:right">${fmtMoney(p.gm)}</td>
+          <td style="text-align:right">${fmtPct(p.gmPct)}</td>
+        `;
+        tbody.appendChild(tr);
+      }
+    }
+
+    function plotInventory({ coa }) {
+      const inv = (coa || [])
+        .filter(a => String(a['Detail Type'] || '').toLowerCase().includes('inventory') || String(a['Account Name']||'').toLowerCase().includes('inventory'))
+        .map(a => ({ name: a['Account Name'], amt: safeNum(a['Opening Balance']) }))
+        .filter(a => a.amt > 0);
+
+      Plotly.newPlot('inv', [{
+        labels: inv.map(i => i.name),
+        values: inv.map(i => i.amt),
+        type: 'pie',
+        hole: 0.45,
+        marker: { colors: ['#22d3ee','#8b5cf6','#f59e0b','#f472b6','#94a3b8'] }
+      }], {
+        margin: { l: 10, r: 10, t: 10, b: 10 },
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        font: { color: '#e5e7eb' },
+        legend: { orientation: 'h' }
+      }, { displayModeBar: false, responsive: true });
+
+      return sum(inv.map(i => i.amt));
+    }
+
+    function plotCCC({ invoiceFacts, billFacts, from, to, customer, view }) {
+      const invRows = invoiceFacts.filter(r => within(r.invDate, from, to) && (!customer || r.customer === customer));
+      const billed = billFacts.filter(r => within(r.billDate, from, to));
+      const invTotal = sum(invRows.map(r => r.revenue));
+      const billTotal = sum(billed.map(r => r.amount));
+
+      Plotly.newPlot('ccc', [{
+        type: 'indicator',
+        mode: 'number+delta',
+        value: invTotal - billTotal,
+        delta: { reference: 0, increasing: { color: '#22c55e' }, decreasing: { color: '#ef4444' } },
+        number: { prefix: '$', valueformat: ',.0f' },
+        title: { text: `Net in-period inflow (invoice - bills) <br><span style="font-size:11px;color:#94a3b8">(${view} view; proxy)</span>` },
+        domain: { x: [0, 1], y: [0, 1] }
+      }], {
+        margin: { l: 20, r: 20, t: 20, b: 20 },
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        font: { color: '#e5e7eb' }
+      }, { displayModeBar: false, responsive: true });
+    }
+
+    function renderNotes({ kpis, flags, context }) {
+      const el = document.querySelector('#notes');
+      const parts = [];
+      if (Number.isFinite(kpis.gmPct) && kpis.gmPct < 0.35) {
+        parts.push(`<div class="warn"><strong>GM% proxy below 35%.</strong> Likely culprits: price/mix, PPV, labor efficiency, scrap/rework, or overhead absorption noise. Next step is reconciling to ERP/standard cost variances.</div>`);
+      } else {
+        parts.push(`<div class="ok"><strong>GM% proxy looks stable.</strong> Next: separate real economics from accounting artifacts (inventory accuracy, absorption) and then attack the biggest driver.</div>`);
+      }
+      if (flags.ar90p > 0) parts.push(`<div class="warn"><strong>AR 90+:</strong> ${fmtMoney(flags.ar90p)} past due. Cash fix is usually disputes + ship/invoice timing + term enforcement.</div>`);
+      if (flags.ap90p > 0) parts.push(`<div class="warn"><strong>AP 90+:</strong> ${fmtMoney(flags.ap90p)} past due. That’s supply risk (credit holds) and pricing leverage loss.</div>`);
+      parts.push(`<p class="small">As-of date for aging: <span class="badge">${context.asOf.toISOString().slice(0,10)}</span>. This file runs entirely locally in your browser.</p>`);
+      el.innerHTML = parts.join('\n');
+    }
+
+    // ---------- state + loader ----------
+    let DATA = null;
+
+    function setStatus(s) {
+      document.querySelector('#status').textContent = s;
+    }
+
+    function setRefreshEnabled(ok) {
+      document.querySelector('#refresh').disabled = !ok;
+    }
+
+    function normalizeFileName(name) {
+      return name.toLowerCase().replace(/\s+/g,' ').trim();
+    }
+
+    async function loadFromFiles(fileList) {
+      const files = Array.from(fileList || []);
+      const blobs = await Promise.all(files.map(f => f.text().then(t => ({ name: f.name, text: t }))));
+      const parsed = [];
+      for (const b of blobs) {
+        try {
+          parsed.push({ name: b.name, json: JSON.parse(b.text) });
+        } catch (e) {
+          // ignore
+        }
+      }
+
+      // Heuristic assignment based on filename
+      const pick = (rx) => parsed.find(p => rx.test(normalizeFileName(p.name)))?.json || null;
+      const coa = pick(/chart of accounts|coa/);
+      const invoices = pick(/customer invoices|invoices/);
+      const bills = pick(/vendor bills|bills/);
+      const items = pick(/items/);
+      const payments = pick(/customer payments|payments/);
+
+      const missing = [];
+      if (!coa) missing.push('Chart of Accounts');
+      if (!invoices) missing.push('Customer Invoices');
+      if (!bills) missing.push('Vendor Bills');
+      if (!items) missing.push('Items');
+
+      if (missing.length) {
+        setStatus(`Loaded ${parsed.length} file(s). Missing: ${missing.join(', ')}.`);
+      } else {
+        setStatus(`Loaded ${parsed.length} file(s). Ready.`);
+      }
+
+      return { coa: coa || [], invoices: invoices || [], bills: bills || [], items: items || [], payments: payments || [] };
+    }
+
+    function loadBuiltInSample() {
+      // Minimal embedded demo so the HTML works with zero extra files.
+      // (Real sample files are large; we keep this small.)
+      return {
+        coa: [
+          { 'Account Name': 'Raw Materials Inventory', 'Detail Type': 'Inventory', 'Opening Balance': '95000' },
+          { 'Account Name': 'WIP Inventory', 'Detail Type': 'Inventory', 'Opening Balance': '42000' },
+          { 'Account Name': 'Finished Goods Inventory', 'Detail Type': 'Inventory', 'Opening Balance': '130000' }
+        ],
+        items: [
+          { 'Item Name': 'Welded Frame Assembly', 'Purchase Cost': '300' },
+          { 'Item Name': 'Linear Rail System', 'Purchase Cost': '120' },
+          { 'Item Name': 'Aluminum Extrusion 6061', 'Purchase Cost': '62' }
+        ],
+        invoices: [
+          { 'Customer': 'DeltaForge Inc.', 'Invoice Date': '12/10/2024', 'Due Date': '01/24/2025', 'Terms': 'Net 45', 'Item': 'Welded Frame Assembly', 'Qty': '44', 'Line Total': '23760' },
+          { 'Customer': 'DeltaForge Inc.', 'Invoice Date': '12/10/2024', 'Due Date': '01/24/2025', 'Terms': 'Net 45', 'Item': 'Linear Rail System', 'Qty': '31', 'Line Total': '7595' },
+          { 'Customer': 'CoreTech Manufacturing', 'Invoice Date': '11/05/2024', 'Due Date': '12/05/2024', 'Terms': 'Net 30', 'Item': 'Aluminum Extrusion 6061', 'Qty': '40', 'Line Total': '5800' },
+          { 'Customer': 'CoreTech Manufacturing', 'Invoice Date': '10/05/2024', 'Due Date': '11/04/2024', 'Terms': 'Net 30', 'Item': 'Welded Frame Assembly', 'Qty': '10', 'Line Total': '5400' }
+        ],
+        bills: [
+          { 'Vendor': 'JointTech Fasteners', 'Bill Date': '12/12/2024', 'Due Date': '01/11/2025', 'Terms': 'Net 30', 'Line Total': '244.34' },
+          { 'Vendor': 'FastenerPro LLC', 'Bill Date': '11/08/2024', 'Due Date': '12/08/2024', 'Terms': 'Net 30', 'Line Total': '1891.92' }
+        ],
+        payments: [
+          { 'Customer': 'DeltaForge Inc.', 'Payment Date': '12/21/2024', 'Amount': '19364.94' }
+        ]
+      };
+    }
+
+    function refresh() {
+      if (!DATA) return;
+      const itemsByName = new Map((DATA.items || []).map(i => [i['Item Name'], i]));
+      const invoiceFacts = buildInvoiceFacts({ invoices: DATA.invoices || [], itemsByName });
+      const billFacts = buildBillFacts({ bills: DATA.bills || [] });
+      const asOf = deriveReportDate({ invoices: DATA.invoices || [], bills: DATA.bills || [], payments: DATA.payments || [] });
+
+      // customer dropdown
+      const customerSel = document.querySelector('#customer');
+      const prev = customerSel.value;
+      customerSel.innerHTML = '<option value="">All customers</option>';
+      for (const c of Array.from(new Set(invoiceFacts.map(r => r.customer))).sort()) {
+        const opt = document.createElement('option');
+        opt.value = c;
+        opt.textContent = c;
+        customerSel.appendChild(opt);
+      }
+      customerSel.value = prev;
+
+      const from = document.querySelector('#from').value ? new Date(document.querySelector('#from').value + 'T00:00:00Z') : null;
+      const to = document.querySelector('#to').value ? new Date(document.querySelector('#to').value + 'T23:59:59Z') : null;
+      const customer = customerSel.value || '';
+      const view = document.querySelector('#view').value;
+
+      const invRows = invoiceFacts.filter(r => within(r.invDate, from, to) && (!customer || r.customer === customer));
+      const revenue = sum(invRows.map(r => r.revenue));
+      const cogs = sum(invRows.map(r => r.estCogs));
+      const gmPct = revenue ? (revenue - cogs) / revenue : NaN;
+
+      document.querySelector('#kpiRevenue').textContent = fmtMoney(revenue);
+      document.querySelector('#kpiRevenueHint').textContent = `${invRows.length.toLocaleString()} invoices (grouped)`;
+      document.querySelector('#kpiCogs').textContent = fmtMoney(cogs);
+      document.querySelector('#kpiGm').textContent = fmtPct(gmPct);
+      document.querySelector('#kpiGmHint').textContent = `GM $: ${fmtMoney(revenue - cogs)}`;
+
+      plotMonthlyTrend({ invoiceFacts, from, to, customer });
+
+      const ar = plotAging({ elId: 'arAging', facts: invRows, asOf, amountField: 'revenue', dueField: 'dueDate' });
+      const apRows = billFacts.filter(r => within(r.billDate, from, to));
+      const ap = plotAging({ elId: 'apAging', facts: apRows, asOf, amountField: 'amount', dueField: 'dueDate' });
+
+      plotTopCustomers({ invoiceFacts, from, to, customer });
+      const invTotal = plotInventory({ coa: DATA.coa || [] });
+      plotCCC({ invoiceFacts, billFacts, from, to, customer, view });
+
+      const flags = { ar90p: ar.ninetyPlus, ap90p: ap.ninetyPlus, invTotal };
+      const flagCount = [flags.ar90p > 0, flags.ap90p > 0, flags.invTotal > 0].filter(Boolean).length;
+      document.querySelector('#kpiFlags').textContent = String(flagCount);
+
+      renderNotes({ kpis: { revenue, cogs, gmPct }, flags, context: { asOf } });
+    }
+
+    function initDatesFromData(invoices) {
+      const facts = (invoices || []).map(r => parseDate(r['Invoice Date'])).filter(Boolean).sort((a,b)=>a-b);
+      const asOf = facts.length ? facts[facts.length - 1] : new Date();
+      const from = new Date(asOf.getTime() - 365*24*3600*1000);
+      const iso = d => d.toISOString().slice(0,10);
+      document.querySelector('#from').value = iso(from);
+      document.querySelector('#to').value = iso(asOf);
+    }
+
+    // ---------- wire UI ----------
+    document.querySelector('#files').addEventListener('change', async (e) => {
+      DATA = await loadFromFiles(e.target.files);
+      initDatesFromData(DATA.invoices);
+      setRefreshEnabled(true);
+      document.querySelector('#refresh').disabled = false;
+      refresh();
+    });
+
+    document.querySelector('#loadSample').addEventListener('click', () => {
+      DATA = loadBuiltInSample();
+      setStatus('Loaded built-in demo sample (minimal).');
+      initDatesFromData(DATA.invoices);
+      setRefreshEnabled(true);
+      refresh();
+    });
+
+    document.querySelector('#refresh').addEventListener('click', refresh);
+
+    // Start with demo sample so the file “just works” on open.
+    DATA = loadBuiltInSample();
+    setStatus('Loaded built-in demo sample (minimal). Upload your JSON files to use real data.');
+    initDatesFromData(DATA.invoices);
+    setRefreshEnabled(true);
+    refresh();
+  </script>
+</body>
+</html>
