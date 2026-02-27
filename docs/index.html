@@ -296,6 +296,11 @@
         <div class="lbl">Data</div>
         <div class="mono" id="dataStatus">Loading…</div>
         <div class="mono" style="margin-top:8px">As-of: <span class="pill" id="asOfPill">—</span></div>
+        <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn" id="loadLocal" style="background:rgba(148,163,184,.10);border-color:rgba(148,163,184,.18)"><i class="fa-solid fa-folder-open"></i> Load local JSON</button>
+          <input id="localFiles" type="file" multiple accept="application/json,.json" style="display:none" />
+        </div>
+        <div style="margin-top:8px;color:#94a3b8;font-size:12px">If you downloaded the repo and opened this file directly, use “Load local JSON”.</div>
       </div>
 
       <div class="mini">

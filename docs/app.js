@@ -62,6 +62,36 @@ async function loadJSON(path) {
   return r.json();
 }
 
+async function loadFromFileList(fileList) {
+  const files = Array.from(fileList || []);
+  const parsed = [];
+  for (const f of files) {
+    try {
+      const txt = await f.text();
+      parsed.push({ name: f.name, json: JSON.parse(txt) });
+    } catch {
+      // ignore
+    }
+  }
+
+  const norm = (s) => String(s || '').toLowerCase();
+  const pick = (rx) => parsed.find(p => rx.test(norm(p.name)))?.json || null;
+
+  const coa = pick(/chart.*accounts|coa/);
+  const invoices = pick(/customer.*invoices|invoices/);
+  const bills = pick(/vendor.*bills|bills/);
+  const items = pick(/items/);
+  const payments = pick(/customer.*payments|payments/);
+
+  return {
+    coa: coa || [],
+    invoices: invoices || [],
+    bills: bills || [],
+    items: items || [],
+    payments: payments || []
+  };
+}
+
 function deriveReportDate({ invoices, bills, payments }) {
   let max = null;
   const all = [];
@@ -554,62 +584,20 @@ function renderCollectionsByCustomer({ invoiceLines, asOf, elId }) {
   `;
 }
 
-async function main() {
-  wireNav();
-  wireDrawer();
-
-  const resetBtn = document.querySelector('#reset');
-  if (resetBtn) {
-    resetBtn.addEventListener('click', () => {
-      localStorage.removeItem('qbo_dash_filters');
-      location.reload();
-    });
-  }
-
-  const helpBtn = document.querySelector('#help');
-  if (helpBtn) {
-    helpBtn.addEventListener('click', () => {
-      openDrawer({
-        title: 'How to use this dashboard',
-        sub: 'Operator-first workflow (Cash → Margin → Working Capital)',
-        html: `
-          <div style="color:#e5e7eb">
-            <div style="color:#94a3b8">This dashboard is intentionally built for manufacturing CFO decisions, not generic BI.</div>
-            <div style="margin-top:12px" class="note"><strong>1) Start with Cash tab</strong><br/>Click AR/AP aging bars to drill into the underlying invoices/bills. Use the focus lists to drive weekly collections + vendor risk calls.</div>
-            <div class="note"><strong>2) Executive tab</strong><br/>Use KPI deltas to spot directionally wrong trends fast (revenue up, GM% down → pricing/PPV/labor/absorption).</div>
-            <div class="note"><strong>3) Customers tab</strong><br/>Click a customer bar to filter the entire dashboard. Concentration + terms drive cash volatility.</div>
-            <div class="warn"><strong>Important:</strong> COGS/GM are proxies until we connect ERP/WIP/standard cost + variances. We label this clearly so you don’t make decisions off accounting artifacts.</div>
-          </div>
-        `
-      });
-    });
-  }
-
-  // Load repo JSON (GitHub Pages friendly)
-  const loading = document.querySelector('#loading');
-  try {
-    const [coa, invoices, bills, items, payments] = await Promise.all([
-    loadJSON('./data/chart_of_accounts.json'),
-    loadJSON('./data/customer_invoices.json'),
-    loadJSON('./data/vendor_bills.json'),
-    loadJSON('./data/items.json'),
-    loadJSON('./data/customer_payments.json').catch(() => [])
-  ]);
+function startApp(data) {
+  const { coa, invoices, bills, items, payments } = data;
 
   document.querySelector('#dataStatus').textContent = `Loaded: COA (${coa.length}), invoices (${invoices.length}), bills (${bills.length}), items (${items.length})`;
-  const asOfPill = document.querySelector('#asOfPill');
-  if (asOfPill) asOfPill.textContent = '…';
 
   const itemsByName = new Map(items.map(i => [i['Item Name'], i]));
   const invoiceLinesAll = buildInvoiceLines({ invoices, itemsByName });
-  const invoiceFactsAll = buildInvoiceFacts({ invoiceLines: invoiceLinesAll });
   const billFactsAll = buildBillFacts({ bills });
   const asOf = deriveReportDate({ invoices, bills, payments });
-  const asOfPill2 = document.querySelector('#asOfPill');
-  if (asOfPill2) asOfPill2.textContent = asOf.toISOString().slice(0,10);
+  const asOfPill = document.querySelector('#asOfPill');
+  if (asOfPill) asOfPill.textContent = asOf.toISOString().slice(0,10);
 
   // Defaults: last 12 months (with persistence)
-  const invDates = invoiceFactsAll.map(r => r.invDate).filter(Boolean).sort((a,b)=>a-b);
+  const invDates = invoiceLinesAll.map(r => r.invDate).filter(Boolean).sort((a,b)=>a-b);
   const maxD = invDates[invDates.length - 1] || asOf;
   const fromD = new Date(maxD.getTime() - 365*24*3600*1000);
   const iso = d => d.toISOString().slice(0,10);
@@ -623,6 +611,7 @@ async function main() {
 
   // Customer list
   const customerSel = document.querySelector('#customer');
+  customerSel.innerHTML = '<option value="">All</option>';
   for (const c of Array.from(new Set(invoiceLinesAll.map(r => r.customer))).sort()) {
     const opt = document.createElement('option');
     opt.value = c;
@@ -638,7 +627,6 @@ async function main() {
     const to = toStr ? new Date(toStr + 'T23:59:59Z') : null;
     const customer = customerSel.value || '';
 
-    // Persist filters
     localStorage.setItem('qbo_dash_filters', JSON.stringify({ from: fromStr, to: toStr, customer }));
 
     const sub = document.querySelector('#subTitle');
@@ -656,7 +644,6 @@ async function main() {
     const gm = revenue - cogs;
     const gmPct = revenue ? gm / revenue : NaN;
 
-    // Prior period deltas (same length window immediately prior)
     const windowMs = (from && to) ? (to - from) : null;
     let prevFrom = null, prevTo = null;
     if (windowMs && windowMs > 0) {
@@ -695,33 +682,23 @@ async function main() {
       gmDeltaEl.style.color = (Number.isFinite(d) && d < 0) ? '#fecaca' : '#bbf7d0';
     }
 
-    // Pills
-    const pillRev = document.querySelector('#pillRev');
-    setPill(pillRev, revenue > 0 ? 'Active' : 'No data', revenue > 0 ? 'good' : 'warn');
-
-    const pillCogs = document.querySelector('#pillCogs');
-    setPill(pillCogs, cogs > 0 ? 'Mapped' : 'Missing', cogs > 0 ? 'good' : 'warn');
-
-    const pillGm = document.querySelector('#pillGm');
+    setPill(document.querySelector('#pillRev'), revenue > 0 ? 'Active' : 'No data', revenue > 0 ? 'good' : 'warn');
+    setPill(document.querySelector('#pillCogs'), cogs > 0 ? 'Mapped' : 'Missing', cogs > 0 ? 'good' : 'warn');
     const gmCls = !Number.isFinite(gmPct) ? 'warn' : (gmPct < 0.30 ? 'bad' : (gmPct < 0.40 ? 'warn' : 'good'));
-    setPill(pillGm, Number.isFinite(gmPct) ? 'Signal' : '—', gmCls);
+    setPill(document.querySelector('#pillGm'), Number.isFinite(gmPct) ? 'Signal' : '—', gmCls);
 
-    // Plots
     plotMonthlyTrend({ invoiceFacts, from, to, customer });
 
     const drillRows = (kind, bucket) => {
       const rows = kind === 'AR' ? invoiceFacts : billFacts;
-      const dueField = 'dueDate';
       const amountField = kind === 'AR' ? 'revenue' : 'amount';
       const nameField = kind === 'AR' ? 'customer' : 'vendor';
       const dateField = kind === 'AR' ? 'invDate' : 'billDate';
 
       const filtered = rows.filter(r => {
-        const due = r[dueField];
-        if (!due) return false;
-        const daysPastDue = Math.floor((asOf - due) / (24*3600*1000));
-        const b = bucketAge(daysPastDue);
-        return b === bucket;
+        if (!r.dueDate) return false;
+        const daysPastDue = Math.floor((asOf - r.dueDate) / (24*3600*1000));
+        return bucketAge(daysPastDue) === bucket;
       }).sort((a,b) => safeNum(b[amountField]) - safeNum(a[amountField]));
 
       const csv = [
@@ -739,16 +716,14 @@ async function main() {
 
       const html = `
         <table class="table">
-          <thead>
-            <tr>
-              <th>${kind === 'AR' ? 'Customer' : 'Vendor'}</th>
-              <th>${kind === 'AR' ? 'Invoice date' : 'Bill date'}</th>
-              <th>Due</th>
-              <th>Terms</th>
-              <th style="text-align:right">Lines</th>
-              <th style="text-align:right">Amount</th>
-            </tr>
-          </thead>
+          <thead><tr>
+            <th>${kind === 'AR' ? 'Customer' : 'Vendor'}</th>
+            <th>${kind === 'AR' ? 'Invoice date' : 'Bill date'}</th>
+            <th>Due</th>
+            <th>Terms</th>
+            <th style="text-align:right">Lines</th>
+            <th style="text-align:right">Amount</th>
+          </tr></thead>
           <tbody>
             ${filtered.slice(0, 200).map(r => `
               <tr>
@@ -765,42 +740,13 @@ async function main() {
         <div style="color:#94a3b8;font-size:12px;margin-top:8px">Showing up to 200 rows. Sort: largest first. Use download for full CSV.</div>
       `;
 
-      openDrawer({
-        title: `${kind} detail — ${bucket}`,
-        sub: `As-of ${asOf.toISOString().slice(0,10)} · Rows: ${filtered.length}`,
-        html,
-        csv
-      });
+      openDrawer({ title: `${kind} detail — ${bucket}`, sub: `As-of ${asOf.toISOString().slice(0,10)} · Rows: ${filtered.length}`, html, csv });
     };
 
-    const ar = plotAging({
-      elId: 'arAging',
-      facts: invoiceFacts,
-      asOf,
-      amountField: 'revenue',
-      dueField: 'dueDate',
-      onBarClick: (bucket) => drillRows('AR', bucket)
-    });
+    const ar = plotAging({ elId: 'arAging', facts: invoiceFacts, asOf, amountField: 'revenue', dueField: 'dueDate', onBarClick: (bucket) => drillRows('AR', bucket) });
+    const ap = plotAging({ elId: 'apAging', facts: billFacts, asOf, amountField: 'amount', dueField: 'dueDate', onBarClick: (bucket) => drillRows('AP', bucket) });
 
-    const ap = plotAging({
-      elId: 'apAging',
-      facts: billFacts,
-      asOf,
-      amountField: 'amount',
-      dueField: 'dueDate',
-      onBarClick: (bucket) => drillRows('AP', bucket)
-    });
-
-    plotTopCustomers({
-      invoiceFacts,
-      from,
-      to,
-      customer,
-      onCustomerClick: (cust) => {
-        customerSel.value = cust;
-        refresh();
-      }
-    });
+    plotTopCustomers({ invoiceFacts, from, to, customer, onCustomerClick: (cust) => { customerSel.value = cust; refresh(); } });
     const invTotal = plotInventory({ coa });
 
     plotIndicator({ invTotal, ar90p: ar.ninetyPlus, ap90p: ap.ninetyPlus });
@@ -822,18 +768,10 @@ async function main() {
     const top1Share = totalRev ? (revPairs[0]?.rev || 0) / totalRev : NaN;
     const top5Share = totalRev ? sum(revPairs.slice(0,5).map(x => x.rev)) / totalRev : NaN;
 
-    // Weighted avg term days (from Terms string if it contains a number)
-    const termDays = (t) => {
-      const m = String(t || '').match(/(\d+)/);
-      return m ? Number(m[1]) : NaN;
-    };
-    const termWeighted = invoiceFacts.map(r => {
-      const d = termDays(r.terms);
-      return Number.isFinite(d) ? { days: d, w: r.revenue } : null;
-    }).filter(Boolean);
+    const termDays = (t) => { const m = String(t || '').match(/(\d+)/); return m ? Number(m[1]) : NaN; };
+    const termWeighted = invoiceFacts.map(r => { const d = termDays(r.terms); return Number.isFinite(d) ? { days: d, w: r.revenue } : null; }).filter(Boolean);
     const avgTermDays = termWeighted.length ? (sum(termWeighted.map(x => x.days * x.w)) / sum(termWeighted.map(x => x.w))) : NaN;
 
-    // Render concentration block
     const conc = document.querySelector('#concentration');
     if (conc) {
       const top1 = revPairs[0];
@@ -850,7 +788,6 @@ async function main() {
       `;
     }
 
-    // Terms mix chart
     const termsBuckets = new Map();
     for (const r of invoiceFacts) {
       const t = r.terms || 'Unknown';
@@ -858,13 +795,7 @@ async function main() {
     }
     const tx = Array.from(termsBuckets.keys());
     const ty = tx.map(k => termsBuckets.get(k) || 0);
-    Plotly.react('termsMix', [{
-      x: tx,
-      y: ty,
-      type: 'bar',
-      marker: { color: '#8b5cf6' },
-      hovertemplate: '%{x}<br>$%{y:,.0f}<extra></extra>'
-    }], {
+    Plotly.react('termsMix', [{ x: tx, y: ty, type: 'bar', marker: { color: '#8b5cf6' }, hovertemplate: '%{x}<br>$%{y:,.0f}<extra></extra>' }], {
       margin: { l: 50, r: 10, t: 10, b: 80 },
       paper_bgcolor: 'rgba(0,0,0,0)',
       plot_bgcolor: 'rgba(0,0,0,0)',
@@ -873,22 +804,10 @@ async function main() {
       xaxis: { gridcolor: 'rgba(148,163,184,.12)', tickangle: 30 }
     }, { displayModeBar: false, responsive: true });
 
-    // Item mapping gaps (group)
     const itemsMissingMap = (() => {
-      // Estimate by looking at invoiceFacts with estCogs=0; we don't have per-line items here, so this is a proxy list.
-      // Better: wire invoice lines; next iteration.
       const m = new Map();
-      for (const invLine of invoices) {
-        // In scope window + customer filter
-        const d = parseDate(invLine['Invoice Date']);
-        if (!within(d, from, to)) continue;
-        if (customer && invLine['Customer'] !== customer) continue;
-        const item = invLine['Item'] || 'Unknown item';
-        const lineTotal = safeNum(invLine['Line Total']);
-        // If item not in item master, count as mapping gap
-        if (!itemsByName.has(item)) {
-          m.set(item, (m.get(item) || 0) + lineTotal);
-        }
+      for (const l of invoiceLines) {
+        if (!l.hasItemMap) m.set(l.itemName || 'Unknown item', (m.get(l.itemName || 'Unknown item') || 0) + l.revenue);
       }
       return Array.from(m.entries()).map(([item, revenue]) => ({ item, revenue })).sort((a,b)=>b.revenue-a.revenue);
     })();
@@ -896,28 +815,74 @@ async function main() {
     renderNotes({ revenue, gmPct, ar90p: ar.ninetyPlus, ap90p: ap.ninetyPlus, asOf, top1Share, top5Share, avgTermDays });
     renderAnoms({ invoiceFacts, billFacts, itemsMissingMap });
 
-    // Collections workflow
     renderCollectionsByCustomer({ invoiceLines, asOf, elId: 'collections' });
 
-    // Focus lists (largest past-due)
-    const pastDueAR = invoiceFacts.filter(r => r.dueDate && (asOf - r.dueDate) > 0)
-      .sort((a,b) => b.revenue - a.revenue);
-    const pastDueAP = billFacts.filter(r => r.dueDate && (asOf - r.dueDate) > 0)
-      .sort((a,b) => b.amount - a.amount);
+    const pastDueAR = invoiceFacts.filter(r => r.dueDate && (asOf - r.dueDate) > 0).sort((a,b) => b.revenue - a.revenue);
+    const pastDueAP = billFacts.filter(r => r.dueDate && (asOf - r.dueDate) > 0).sort((a,b) => b.amount - a.amount);
     renderFocusList({ elId: 'arFocus', rows: pastDueAR, kind: 'AR' });
     renderFocusList({ elId: 'apFocus', rows: pastDueAP, kind: 'AP' });
   }
 
-  document.querySelector('#refresh').addEventListener('click', refresh);
+  document.querySelector('#refresh').onclick = refresh;
   refresh();
   toast('Ready');
+}
+
+async function main() {
+  wireNav();
+  wireDrawer();
+
+  document.querySelector('#reset')?.addEventListener('click', () => {
+    localStorage.removeItem('qbo_dash_filters');
+    location.reload();
+  });
+
+  document.querySelector('#help')?.addEventListener('click', () => {
+    openDrawer({
+      title: 'How to use this dashboard',
+      sub: 'Operator-first workflow (Cash → Margin → Working Capital)',
+      html: `
+        <div style="color:#e5e7eb">
+          <div style="color:#94a3b8">This dashboard is intentionally built for manufacturing CFO decisions, not generic BI.</div>
+          <div style="margin-top:12px" class="note"><strong>1) Start with Cash tab</strong><br/>Click AR/AP aging bars to drill into the underlying invoices/bills. Use the focus lists to drive weekly collections + vendor risk calls.</div>
+          <div class="note"><strong>2) Executive tab</strong><br/>Use KPI deltas to spot directionally wrong trends fast (revenue up, GM% down → pricing/PPV/labor/absorption).</div>
+          <div class="note"><strong>3) Customers tab</strong><br/>Click a customer bar to filter the entire dashboard. Concentration + terms drive cash volatility.</div>
+          <div class="warn"><strong>Important:</strong> COGS/GM are proxies until we connect ERP/WIP/standard cost + variances.</div>
+        </div>
+      `
+    });
+  });
+
+  const loading = document.querySelector('#loading');
+
+  // Local-file loader (for downloaded zip opened via file://)
+  const loadBtn = document.querySelector('#loadLocal');
+  const fileInput = document.querySelector('#localFiles');
+  if (loadBtn && fileInput) {
+    loadBtn.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', async (e) => {
+      const data = await loadFromFileList(e.target.files);
+      if (loading) loading.style.display = 'none';
+      startApp(data);
+    });
+  }
+
+  try {
+    const [coa, invoices, bills, items, payments] = await Promise.all([
+      loadJSON('./data/chart_of_accounts.json'),
+      loadJSON('./data/customer_invoices.json'),
+      loadJSON('./data/vendor_bills.json'),
+      loadJSON('./data/items.json'),
+      loadJSON('./data/customer_payments.json').catch(() => [])
+    ]);
+    if (loading) loading.style.display = 'none';
+    startApp({ coa, invoices, bills, items, payments });
   } catch (err) {
     console.error(err);
     const status = document.querySelector('#dataStatus');
-    if (status) status.textContent = `Failed to load repo JSON: ${String(err.message || err)}`;
-    toast('Failed to load data');
-  } finally {
+    if (status) status.textContent = `Could not fetch repo JSON (likely opened via file://). Use “Load local JSON”.`;
     if (loading) loading.style.display = 'none';
+    toast('Load local JSON to continue');
   }
 }
 
