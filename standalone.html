@@ -429,7 +429,20 @@
     }
 
     function normalizeFileName(name) {
-      return name.toLowerCase().replace(/\s+/g,' ').trim();
+      return name
+        .toLowerCase()
+        .replace(/[._-]+/g, ' ')
+        .replace(/\s+/g,' ')
+        .trim();
+    }
+
+    function summarizeMissing(data) {
+      const missing = [];
+      if (!data.coa?.length) missing.push('Chart of Accounts');
+      if (!data.invoices?.length) missing.push('Customer Invoices');
+      if (!data.bills?.length) missing.push('Vendor Bills');
+      if (!data.items?.length) missing.push('Items');
+      return missing;
     }
 
     async function loadFromFiles(fileList) {
@@ -452,11 +465,8 @@
       const items = pick(/items/);
       const payments = pick(/customer payments|payments/);
 
-      const missing = [];
-      if (!coa) missing.push('Chart of Accounts');
-      if (!invoices) missing.push('Customer Invoices');
-      if (!bills) missing.push('Vendor Bills');
-      if (!items) missing.push('Items');
+      const data = { coa: coa || [], invoices: invoices || [], bills: bills || [], items: items || [], payments: payments || [] };
+      const missing = summarizeMissing(data);
 
       if (missing.length) {
         setStatus(`Loaded ${parsed.length} file(s). Missing: ${missing.join(', ')}.`);
@@ -464,7 +474,38 @@
         setStatus(`Loaded ${parsed.length} file(s). Ready.`);
       }
 
-      return { coa: coa || [], invoices: invoices || [], bills: bills || [], items: items || [], payments: payments || [] };
+      return data;
+    }
+
+    async function tryLoadRepoData() {
+      const roots = ['./public/data', './docs/data', './data'];
+      const fileNames = {
+        coa: 'chart_of_accounts.json',
+        invoices: 'customer_invoices.json',
+        bills: 'vendor_bills.json',
+        items: 'items.json',
+        payments: 'customer_payments.json'
+      };
+
+      for (const root of roots) {
+        try {
+          const entries = await Promise.all(Object.entries(fileNames).map(async ([key, name]) => {
+            const r = await fetch(`${root}/${name}`, { cache: 'no-store' });
+            if (!r.ok) throw new Error(`${r.status} ${name}`);
+            return [key, await r.json()];
+          }));
+
+          const data = Object.fromEntries(entries);
+          const missing = summarizeMissing(data);
+          if (!missing.length) {
+            return { data, root };
+          }
+        } catch (_err) {
+          // Ignore and try next root.
+        }
+      }
+
+      return null;
     }
 
     function loadBuiltInSample() {
@@ -577,12 +618,20 @@
 
     document.querySelector('#refresh').addEventListener('click', refresh);
 
-    // Start with demo sample so the file “just works” on open.
-    DATA = loadBuiltInSample();
-    setStatus('Loaded built-in demo sample (minimal). Upload your JSON files to use real data.');
-    initDatesFromData(DATA.invoices);
-    setRefreshEnabled(true);
-    refresh();
+    // Start with repo data when available, otherwise use demo sample.
+    (async () => {
+      const repoData = await tryLoadRepoData();
+      if (repoData) {
+        DATA = repoData.data;
+        setStatus(`Loaded repo data from ${repoData.root}.`);
+      } else {
+        DATA = loadBuiltInSample();
+        setStatus('Loaded built-in demo sample (minimal). Upload JSON files or serve this repo to use full dataset.');
+      }
+      initDatesFromData(DATA.invoices);
+      setRefreshEnabled(true);
+      refresh();
+    })();
   </script>
 </body>
 </html>
