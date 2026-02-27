@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Manufacturing CFO Command Center (QBO Demo)</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <script src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
+  <style>
+    :root{
+      --bg:#0b1220; --panel:#111b2e; --panel2:#0f172a; --text:#e5e7eb; --muted:#94a3b8;
+      --cyan:#22d3ee; --pink:#f472b6; --violet:#8b5cf6; --amber:#f59e0b; --green:#22c55e; --red:#ef4444;
+      --border: rgba(148,163,184,.14);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Arial;background:linear-gradient(135deg,var(--bg),#0f172a 55%,#0b1220);color:var(--text)}
+    header{padding:18px 18px 12px;border-bottom:1px solid var(--border);background:linear-gradient(135deg,#111b2e,#0b1220 70%)}
+    header h1{margin:0 0 4px;font-size:18px;letter-spacing:-.2px}
+    header .sub{color:var(--muted);font-size:12px}
+
+    .wrap{padding:14px;max-width:1280px;margin:0 auto}
+
+    .filters{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin:12px 0 12px}
+    .f{background:rgba(17,27,46,.75);border:1px solid var(--border);padding:10px 10px;border-radius:12px}
+    .f label{display:block;color:var(--muted);font-size:11px;margin-bottom:6px}
+    .f input,.f select{background:#0b1220;border:1px solid rgba(148,163,184,.25);color:var(--text);border-radius:10px;padding:8px 10px;min-width:160px}
+
+    .kpis{display:grid;grid-template-columns:repeat(4, minmax(160px,1fr));gap:10px}
+    .kpi{background:rgba(17,27,46,.75);border:1px solid var(--border);border-radius:14px;padding:12px}
+    .kpi .lbl{color:var(--muted);font-size:11px;margin-bottom:6px}
+    .kpi .val{font-size:20px;font-weight:700}
+    .kpi .hint{color:var(--muted);font-size:11px;margin-top:6px}
+
+    .grid{display:grid;grid-template-columns:1.2fr .8fr;gap:10px;margin-top:10px}
+    .card{background:rgba(17,27,46,.6);border:1px solid var(--border);border-radius:14px;padding:12px}
+    .card h2{margin:0 0 8px;font-size:13px;color:#f8fafc}
+    .card p{margin:0 0 8px;color:var(--muted);font-size:12px}
+
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+
+    .table{width:100%;border-collapse:collapse;margin-top:8px}
+    .table th,.table td{padding:8px;border-bottom:1px solid rgba(148,163,184,.12);text-align:left;font-size:12px}
+    .table th{color:#cbd5e1;font-weight:600}
+    .badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;border:1px solid rgba(148,163,184,.25);color:#cbd5e1}
+
+    .warn{border-left:3px solid var(--amber);padding-left:10px;margin:10px 0;color:#fde68a}
+    .ok{border-left:3px solid var(--green);padding-left:10px;margin:10px 0;color:#bbf7d0}
+
+    footer{padding:14px;color:var(--muted);font-size:11px;max-width:1280px;margin:0 auto 18px}
+    @media (max-width: 980px){
+      .kpis{grid-template-columns:repeat(2, minmax(160px,1fr))}
+      .grid{grid-template-columns:1fr}
+      .row{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap" style="padding:0 14px">
+      <h1>Manufacturing CFO Command Center</h1>
+      <div class="sub">Demo built off the QBO sample JSON in this repo. Focus: cash → gross margin → working capital → EBITDA quality.</div>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="filters">
+      <div class="f">
+        <label>From</label>
+        <input id="from" type="date" />
+      </div>
+      <div class="f">
+        <label>To</label>
+        <input id="to" type="date" />
+      </div>
+      <div class="f">
+        <label>Customer</label>
+        <select id="customer"><option value="">All customers</option></select>
+      </div>
+      <div class="f">
+        <label>View</label>
+        <select id="view">
+          <option value="accrual">Accrual-ish (invoice date)</option>
+          <option value="cash">Cash-ish (payment date)</option>
+        </select>
+      </div>
+      <div class="f">
+        <label>&nbsp;</label>
+        <button id="refresh" style="padding:9px 12px;border-radius:10px;border:1px solid rgba(148,163,184,.25);background:#0b1220;color:var(--text);cursor:pointer">Refresh</button>
+      </div>
+    </div>
+
+    <div class="kpis">
+      <div class="kpi"><div class="lbl">Revenue</div><div class="val" id="kpiRevenue">—</div><div class="hint" id="kpiRevenueHint"></div></div>
+      <div class="kpi"><div class="lbl">Estimated COGS (proxy)</div><div class="val" id="kpiCogs">—</div><div class="hint">Uses item purchase cost × qty where available</div></div>
+      <div class="kpi"><div class="lbl">Gross Margin % (proxy)</div><div class="val" id="kpiGm">—</div><div class="hint" id="kpiGmHint"></div></div>
+      <div class="kpi"><div class="lbl">Working Capital Flags</div><div class="val" id="kpiFlags">—</div><div class="hint">AR/AP aging + inventory concentration checks</div></div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Revenue vs COGS (monthly trend)</h2>
+        <p>Operational read: if revenue rises while GM% falls, check pricing discipline, PPV, labor efficiency, and absorption (volume vs overhead rate).</p>
+        <div id="revCogs" style="height:340px"></div>
+      </div>
+      <div class="card">
+        <h2>Cash Conversion Lens</h2>
+        <p>What matters: how fast you turn invoices into cash and how much inventory is tying up liquidity.</p>
+        <div id="ccc" style="height:340px"></div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="card">
+        <h2>AR Aging (invoice due date)</h2>
+        <p>Manufacturing CFO rule: DSO &gt; 60 days is a cash leak unless the customer base/industry justifies it.</p>
+        <div id="arAging" style="height:280px"></div>
+      </div>
+      <div class="card">
+        <h2>AP Aging (bill due date)</h2>
+        <p>Watch the trade terms: if you’re paying faster than you collect, cash conversion will fight you.</p>
+        <div id="apAging" style="height:280px"></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:10px">
+      <h2>Margin + Cash Drivers (diagnostic notes)</h2>
+      <div id="notes"></div>
+    </div>
+
+    <div class="card" style="margin-top:10px">
+      <h2>Top Customers by Revenue</h2>
+      <div id="topCustomers" style="height:320px"></div>
+      <table class="table" id="customerTable">
+        <thead><tr><th>Customer</th><th style="text-align:right">Revenue</th><th style="text-align:right">GM $ (proxy)</th><th style="text-align:right">GM % (proxy)</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="card" style="margin-top:10px">
+      <h2>Inventory Snapshot (from Chart of Accounts opening balances)</h2>
+      <p>This is not a full perpetual inventory report; it’s a liquidity indicator. Red flag when inventory is outsized vs sales velocity.</p>
+      <div id="inv" style="height:240px"></div>
+    </div>
+
+  </div>
+
+  <footer>
+    Built for manufacturing operators: cash first, margin second. This demo uses sample data; for a real client build we’d connect QBO + ERP/MRP and add absorption/variance views.
+  </footer>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
