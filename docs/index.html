@@ -238,7 +238,10 @@
         <div class="dtitle" id="drawerTitle">Details</div>
         <div class="dsub" id="drawerSub">—</div>
       </div>
-      <button class="x" id="drawerClose"><i class="fa-solid fa-xmark"></i></button>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button class="x" id="drawerDownload" title="Download CSV"><i class="fa-solid fa-download"></i></button>
+        <button class="x" id="drawerClose" title="Close"><i class="fa-solid fa-xmark"></i></button>
+      </div>
     </div>
     <div id="drawerBody"></div>
   </div>
@@ -278,7 +281,7 @@
       <div class="topbar">
         <div class="title">
           <div class="h" id="pageTitle">Executive</div>
-          <div class="p">Interactive dashboard using the JSON data files in this repo.</div>
+          <div class="p" id="subTitle">Interactive dashboard using the JSON data files in this repo.</div>
         </div>
 
         <div class="controls">
@@ -296,6 +299,7 @@
           </div>
           <button class="btn" id="refresh"><i class="fa-solid fa-rotate"></i> Refresh</button>
           <button class="btn" id="reset" style="background:rgba(148,163,184,.10);border-color:rgba(148,163,184,.18)"><i class="fa-solid fa-sliders"></i> Reset</button>
+          <button class="btn" id="help" style="background:rgba(139,92,246,.10);border-color:rgba(139,92,246,.20)"><i class="fa-solid fa-circle-info"></i> How to use</button>
         </div>
       </div>
 

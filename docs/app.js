@@ -364,12 +364,15 @@ function wireNav() {
   });
 }
 
-function openDrawer({ title, sub, html }) {
+let __drawerCsv = null;
+
+function openDrawer({ title, sub, html, csv }) {
   const drawer = document.querySelector('#drawer');
   const scrim = document.querySelector('#scrim');
   document.querySelector('#drawerTitle').textContent = title || 'Details';
   document.querySelector('#drawerSub').textContent = sub || '';
   document.querySelector('#drawerBody').innerHTML = html || '';
+  __drawerCsv = csv || null;
   drawer.classList.add('open');
   scrim.classList.add('open');
 }
@@ -379,9 +382,26 @@ function closeDrawer() {
   document.querySelector('#scrim')?.classList.remove('open');
 }
 
+function downloadText(filename, text, mime='text/plain') {
+  const blob = new Blob([text], { type: mime });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
 function wireDrawer() {
   document.querySelector('#drawerClose')?.addEventListener('click', closeDrawer);
   document.querySelector('#scrim')?.addEventListener('click', closeDrawer);
+  document.querySelector('#drawerDownload')?.addEventListener('click', () => {
+    if (!__drawerCsv) return;
+    const ts = new Date().toISOString().slice(0,19).replace(/[:T]/g,'-');
+    downloadText(`drilldown-${ts}.csv`, __drawerCsv, 'text/csv');
+  });
 }
 
 function moneyCell(n) {
@@ -427,6 +447,25 @@ async function main() {
     resetBtn.addEventListener('click', () => {
       localStorage.removeItem('qbo_dash_filters');
       location.reload();
+    });
+  }
+
+  const helpBtn = document.querySelector('#help');
+  if (helpBtn) {
+    helpBtn.addEventListener('click', () => {
+      openDrawer({
+        title: 'How to use this dashboard',
+        sub: 'Operator-first workflow (Cash → Margin → Working Capital)',
+        html: `
+          <div style="color:#e5e7eb">
+            <div style="color:#94a3b8">This dashboard is intentionally built for manufacturing CFO decisions, not generic BI.</div>
+            <div style="margin-top:12px" class="note"><strong>1) Start with Cash tab</strong><br/>Click AR/AP aging bars to drill into the underlying invoices/bills. Use the focus lists to drive weekly collections + vendor risk calls.</div>
+            <div class="note"><strong>2) Executive tab</strong><br/>Use KPI deltas to spot directionally wrong trends fast (revenue up, GM% down → pricing/PPV/labor/absorption).</div>
+            <div class="note"><strong>3) Customers tab</strong><br/>Click a customer bar to filter the entire dashboard. Concentration + terms drive cash volatility.</div>
+            <div class="warn"><strong>Important:</strong> COGS/GM are proxies until we connect ERP/WIP/standard cost + variances. We label this clearly so you don’t make decisions off accounting artifacts.</div>
+          </div>
+        `
+      });
     });
   }
 
@@ -482,6 +521,12 @@ async function main() {
 
     // Persist filters
     localStorage.setItem('qbo_dash_filters', JSON.stringify({ from: fromStr, to: toStr, customer }));
+
+    const sub = document.querySelector('#subTitle');
+    if (sub) {
+      const custText = customer ? ` · Customer: ${customer}` : '';
+      sub.textContent = `Period: ${fromStr || '—'} → ${toStr || '—'}${custText}`;
+    }
 
     const invoiceFacts = invoiceFactsAll.filter(r => within(r.invDate, from, to) && (!customer || r.customer === customer));
     const billFacts = billFactsAll.filter(r => within(r.billDate, from, to));
@@ -559,6 +604,17 @@ async function main() {
         return b === bucket;
       }).sort((a,b) => safeNum(b[amountField]) - safeNum(a[amountField]));
 
+      const csv = [
+        [kind === 'AR' ? 'Customer' : 'Vendor', kind === 'AR' ? 'InvoiceDate' : 'BillDate', 'DueDate', 'Amount'].join(','),
+        ...filtered.map(r => {
+          const a = String(r[nameField] ?? '').replace(/"/g,'""');
+          const d1 = r[dateField] ? r[dateField].toISOString().slice(0,10) : '';
+          const d2 = r.dueDate ? r.dueDate.toISOString().slice(0,10) : '';
+          const amt = safeNum(r[amountField]);
+          return `"${a}",${d1},${d2},${amt}`;
+        })
+      ].join('\n');
+
       const html = `
         <table class="table">
           <thead>
@@ -580,13 +636,14 @@ async function main() {
             `).join('')}
           </tbody>
         </table>
-        <div style="color:#94a3b8;font-size:12px;margin-top:8px">Showing up to 200 rows. Sort: largest first.</div>
+        <div style="color:#94a3b8;font-size:12px;margin-top:8px">Showing up to 200 rows. Sort: largest first. Use download for full CSV.</div>
       `;
 
       openDrawer({
         title: `${kind} detail — ${bucket}`,
         sub: `As-of ${asOf.toISOString().slice(0,10)} · Rows: ${filtered.length}`,
-        html
+        html,
+        csv
       });
     };
 
