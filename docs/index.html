@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>QuickBooks Manufacturing Command Center</title>
+
+  <!-- World-class feel, zero build: CDN assets -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
+
+  <style>
+    :root{
+      --bg0:#070b14;
+      --bg1:#0b1220;
+      --panel: rgba(17,27,46,.78);
+      --panel2: rgba(15,23,42,.70);
+      --border: rgba(148,163,184,.14);
+      --text:#e5e7eb;
+      --muted:#94a3b8;
+      --muted2:#64748b;
+      --cyan:#22d3ee;
+      --violet:#8b5cf6;
+      --pink:#f472b6;
+      --amber:#f59e0b;
+      --green:#22c55e;
+      --red:#ef4444;
+      --shadow: 0 20px 60px rgba(0,0,0,.55);
+      --radius: 16px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      color:var(--text);
+      background:
+        radial-gradient(900px 500px at 15% 10%, rgba(34,211,238,.12), transparent 60%),
+        radial-gradient(800px 500px at 80% 15%, rgba(139,92,246,.12), transparent 65%),
+        radial-gradient(900px 500px at 50% 85%, rgba(245,158,11,.10), transparent 60%),
+        linear-gradient(135deg,var(--bg0),var(--bg1) 55%,var(--bg0));
+      overflow:hidden;
+    }
+
+    a{color:inherit}
+
+    .app{display:grid;grid-template-columns: 280px 1fr; height:100%}
+
+    /* Sidebar */
+    .side{
+      border-right:1px solid var(--border);
+      background: linear-gradient(180deg, rgba(17,27,46,.82), rgba(7,11,20,.78));
+      padding:16px;
+      overflow:auto;
+    }
+    .brand{
+      display:flex;align-items:center;gap:10px;
+      padding:10px 10px 14px;
+      border-bottom:1px solid rgba(148,163,184,.12);
+      margin-bottom:14px;
+    }
+    .logo{
+      width:42px;height:42px;border-radius:14px;
+      background: linear-gradient(135deg, var(--cyan), var(--violet));
+      display:flex;align-items:center;justify-content:center;
+      font-weight:900;color:white;
+      box-shadow: 0 12px 30px rgba(34,211,238,.18);
+    }
+    .brand h1{margin:0;font-size:14px;letter-spacing:-.2px}
+    .brand .sub{margin-top:2px;color:var(--muted);font-size:11px}
+
+    .nav{display:flex;flex-direction:column;gap:6px;margin:10px 0 14px}
+    .nav button{
+      all:unset;
+      display:flex;align-items:center;gap:10px;
+      padding:10px 10px;
+      border-radius:12px;
+      border:1px solid transparent;
+      cursor:pointer;
+      color:#dbeafe;
+      transition: .18s ease;
+    }
+    .nav button .ic{width:18px;text-align:center;color:rgba(226,232,240,.9)}
+    .nav button:hover{background:rgba(148,163,184,.08);border-color:rgba(148,163,184,.14)}
+    .nav button.active{background:rgba(34,211,238,.12);border-color:rgba(34,211,238,.22)}
+
+    .mini{
+      margin-top:14px;
+      padding:12px;
+      border-radius:14px;
+      background:rgba(15,23,42,.55);
+      border:1px solid rgba(148,163,184,.12);
+    }
+    .mini .lbl{color:var(--muted);font-size:11px;margin-bottom:6px}
+    .mini .mono{font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;color:#cbd5e1;font-size:11px}
+
+    /* Main */
+    .main{display:flex;flex-direction:column; min-width:0; height:100%}
+    .topbar{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      padding:14px 16px;
+      border-bottom:1px solid var(--border);
+      background: linear-gradient(180deg, rgba(17,27,46,.65), rgba(7,11,20,.35));
+      backdrop-filter: blur(10px);
+    }
+    .topbar .title{display:flex;flex-direction:column;gap:2px}
+    .topbar .title .h{font-weight:800;letter-spacing:-.3px}
+    .topbar .title .p{color:var(--muted);font-size:12px}
+
+    .controls{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+    .ctl{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:14px;background:rgba(15,23,42,.60);border:1px solid rgba(148,163,184,.14)}
+    .ctl label{color:var(--muted);font-size:11px}
+    .ctl input,.ctl select{
+      background:rgba(7,11,20,.55);
+      border:1px solid rgba(148,163,184,.20);
+      color:var(--text);
+      border-radius:12px;
+      padding:8px 10px;
+      min-width:160px;
+      outline:none;
+    }
+    .btn{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:9px 12px;border-radius:14px;
+      background:rgba(34,211,238,.14);
+      border:1px solid rgba(34,211,238,.25);
+      color:#e6fbff;
+      cursor:pointer;
+      transition:.18s ease;
+    }
+    .btn:hover{transform:translateY(-1px); box-shadow: 0 18px 40px rgba(34,211,238,.10)}
+
+    .content{padding:14px 16px; overflow:auto; min-height:0}
+
+    /* Cards */
+    .kpis{display:grid;grid-template-columns:repeat(4, minmax(190px,1fr));gap:10px}
+    .card{
+      background: var(--panel);
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:12px;
+      min-width:0;
+    }
+    .kpi{
+      background: linear-gradient(180deg, rgba(17,27,46,.85), rgba(15,23,42,.55));
+      position:relative;
+      overflow:hidden;
+    }
+    .kpi:before{
+      content:'';
+      position:absolute;inset:-2px;
+      background: radial-gradient(600px 200px at 30% 10%, rgba(34,211,238,.10), transparent 70%),
+                  radial-gradient(600px 200px at 70% 0%, rgba(139,92,246,.10), transparent 75%);
+      pointer-events:none;
+    }
+    .kpi > *{position:relative}
+    .kpi .row1{display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .kpi .lbl{color:var(--muted);font-size:11px}
+    .kpi .val{font-size:22px;font-weight:900;letter-spacing:-.4px;margin-top:8px}
+    .kpi .hint{color:var(--muted);font-size:11px;margin-top:6px}
+    .pill{display:inline-flex;align-items:center;gap:6px;padding:2px 10px;border-radius:999px;font-size:11px;border:1px solid rgba(148,163,184,.20);color:#cbd5e1;background:rgba(7,11,20,.35)}
+    .pill.good{border-color:rgba(34,197,94,.35);color:#bbf7d0;background:rgba(34,197,94,.08)}
+    .pill.warn{border-color:rgba(245,158,11,.35);color:#fde68a;background:rgba(245,158,11,.10)}
+    .pill.bad{border-color:rgba(239,68,68,.35);color:#fecaca;background:rgba(239,68,68,.10)}
+
+    .grid2{display:grid;grid-template-columns: 1.25fr .75fr;gap:10px;margin-top:10px}
+    .grid2 .card{padding:12px}
+
+    .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+
+    .h2{margin:0 0 6px;font-size:13px;letter-spacing:-.2px}
+    .p{margin:0 0 10px;color:var(--muted);font-size:12px}
+
+    .table{width:100%;border-collapse:collapse;margin-top:8px}
+    .table th,.table td{padding:8px;border-bottom:1px solid rgba(148,163,184,.12);text-align:left;font-size:12px}
+    .table th{color:#cbd5e1;font-weight:700}
+
+    .note{
+      border-left:3px solid rgba(34,211,238,.45);
+      padding-left:10px;
+      color:#dbeafe;
+      margin:10px 0;
+    }
+    .warn{
+      border-left:3px solid rgba(245,158,11,.55);
+      padding-left:10px;
+      color:#fde68a;
+      margin:10px 0;
+    }
+
+    .section{display:none}
+    .section.active{display:block}
+
+    @media (max-width: 980px){
+      body{overflow:auto}
+      .app{grid-template-columns:1fr}
+      .side{position:sticky;top:0;z-index:5}
+      .kpis{grid-template-columns:repeat(2, minmax(170px,1fr))}
+      .grid2{grid-template-columns:1fr}
+      .row2{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="side">
+      <div class="brand">
+        <div class="logo">QB</div>
+        <div>
+          <h1>Manufacturing Command Center</h1>
+          <div class="sub">Cash → Margin → Working Capital → Risk</div>
+        </div>
+      </div>
+
+      <div class="nav" id="nav">
+        <button class="active" data-tab="exec"><span class="ic"><i class="fa-solid fa-gauge-high"></i></span>Executive</button>
+        <button data-tab="cash"><span class="ic"><i class="fa-solid fa-money-bill-wave"></i></span>Cash + AR/AP</button>
+        <button data-tab="margin"><span class="ic"><i class="fa-solid fa-percent"></i></span>Gross Margin</button>
+        <button data-tab="inventory"><span class="ic"><i class="fa-solid fa-boxes-stacked"></i></span>Inventory + WIP</button>
+        <button data-tab="customers"><span class="ic"><i class="fa-solid fa-industry"></i></span>Customers</button>
+        <button data-tab="anoms"><span class="ic"><i class="fa-solid fa-triangle-exclamation"></i></span>Anomalies</button>
+      </div>
+
+      <div class="mini">
+        <div class="lbl">Data</div>
+        <div class="mono" id="dataStatus">Loading…</div>
+        <div class="mono" style="margin-top:8px">Source: <span class="pill">repo JSON</span></div>
+      </div>
+
+      <div class="mini">
+        <div class="lbl">Positioning</div>
+        <div class="mono">Manufacturing CFO lens.<br/>No generic BI fluff.</div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <div class="title">
+          <div class="h" id="pageTitle">Executive</div>
+          <div class="p">Interactive dashboard using the JSON data files in this repo.</div>
+        </div>
+
+        <div class="controls">
+          <div class="ctl">
+            <label>From</label>
+            <input id="from" type="date" />
+          </div>
+          <div class="ctl">
+            <label>To</label>
+            <input id="to" type="date" />
+          </div>
+          <div class="ctl">
+            <label>Customer</label>
+            <select id="customer"><option value="">All</option></select>
+          </div>
+          <button class="btn" id="refresh"><i class="fa-solid fa-rotate"></i> Refresh</button>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <!-- EXEC -->
+        <section class="section active" id="tab-exec">
+          <div class="kpis">
+            <div class="card kpi">
+              <div class="row1"><div class="lbl"><i class="fa-solid fa-arrow-trend-up" style="color:var(--cyan)"></i> Revenue</div><div class="pill" id="pillRev">—</div></div>
+              <div class="val" id="kpiRevenue">—</div>
+              <div class="hint" id="kpiRevenueHint">—</div>
+            </div>
+            <div class="card kpi">
+              <div class="row1"><div class="lbl"><i class="fa-solid fa-file-invoice-dollar" style="color:var(--pink)"></i> COGS (proxy)</div><div class="pill" id="pillCogs">—</div></div>
+              <div class="val" id="kpiCogs">—</div>
+              <div class="hint">Item purchase cost × qty (upgrade with ERP actuals)</div>
+            </div>
+            <div class="card kpi">
+              <div class="row1"><div class="lbl"><i class="fa-solid fa-percent" style="color:var(--violet)"></i> Gross Margin % (proxy)</div><div class="pill" id="pillGm">—</div></div>
+              <div class="val" id="kpiGm">—</div>
+              <div class="hint" id="kpiGmHint">—</div>
+            </div>
+            <div class="card kpi">
+              <div class="row1"><div class="lbl"><i class="fa-solid fa-bolt" style="color:var(--amber)"></i> Working Capital Flags</div><div class="pill" id="pillFlags">—</div></div>
+              <div class="val" id="kpiFlags">—</div>
+              <div class="hint">AR 90+ / AP 90+ / inventory weight</div>
+            </div>
+          </div>
+
+          <div class="grid2">
+            <div class="card">
+              <h2 class="h2">Revenue vs COGS — monthly trend</h2>
+              <p class="p">If revenue climbs while GM% compresses, assume pricing discipline / PPV / labor efficiency / scrap/rework / absorption noise until proven otherwise.</p>
+              <div id="revCogs" style="height:360px"></div>
+            </div>
+            <div class="card">
+              <h2 class="h2">Cash conversion lens (proxy)</h2>
+              <p class="p">This becomes a real 13-week cash forecast once ERP/WIP + AR/AP cadence are wired.</p>
+              <div id="ccc" style="height:360px"></div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:10px">
+            <h2 class="h2">CFO diagnostic notes</h2>
+            <div id="notes"></div>
+          </div>
+        </section>
+
+        <!-- CASH -->
+        <section class="section" id="tab-cash">
+          <div class="row2">
+            <div class="card">
+              <h2 class="h2">AR Aging (due date)</h2>
+              <p class="p">Cash-first: attack 90+ past due with dispute triage + ship/invoice timing + term enforcement.</p>
+              <div id="arAging" style="height:320px"></div>
+            </div>
+            <div class="card">
+              <h2 class="h2">AP Aging (due date)</h2>
+              <p class="p">Operational risk: AP 90+ increases supply disruption and erodes purchasing leverage.</p>
+              <div id="apAging" style="height:320px"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- MARGIN -->
+        <section class="section" id="tab-margin">
+          <div class="card">
+            <h2 class="h2">Gross margin bridge (next)</h2>
+            <p class="p">This tab is where we become manufacturing-grade: standard vs actual, PPV, labor efficiency, OH spend/volume variance, and absorption signals.</p>
+            <div class="note">To unlock: provide ERP exports for WIP snapshots, labor tickets, and material issues. I’ll wire them in and build a true variance review workflow.</div>
+          </div>
+        </section>
+
+        <!-- INVENTORY -->
+        <section class="section" id="tab-inventory">
+          <div class="card">
+            <h2 class="h2">Inventory snapshot (COA opening balances)</h2>
+            <p class="p">Liquidity indicator. Real version uses ERP on-hand + WIP, highlights slow movers (dollars) and ties to turns.</p>
+            <div id="inv" style="height:280px"></div>
+          </div>
+        </section>
+
+        <!-- CUSTOMERS -->
+        <section class="section" id="tab-customers">
+          <div class="card">
+            <h2 class="h2">Top customers by revenue</h2>
+            <p class="p">Manufacturing reality: customer concentration drives pricing power, payment terms, and schedule volatility.</p>
+            <div id="topCustomers" style="height:340px"></div>
+            <table class="table" id="customerTable">
+              <thead><tr><th>Customer</th><th style="text-align:right">Revenue</th><th style="text-align:right">GM $ (proxy)</th><th style="text-align:right">GM % (proxy)</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ANOMS -->
+        <section class="section" id="tab-anoms">
+          <div class="card">
+            <h2 class="h2">Anomalies (signals)</h2>
+            <p class="p">Not “AI magic.” Practical flags you can route to accounting/ops weekly.</p>
+            <div id="anoms"></div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

@@ -1,0 +1,197 @@
+[{
+	"Date": "01/01/2024",
+	"Description": "Initial owner investment - Robert T. Callahan",
+	"Account": "Checking Account",
+	"Debit": "1500000.0",
+	"Credit": "",
+	"Memo": "Founder capital contribution to start Crestforge Industries LLC"
+},{
+	"Date": "01/01/2024",
+	"Description": "Initial owner investment - Robert T. Callahan",
+	"Account": "Common Stock",
+	"Debit": "",
+	"Credit": "1500000.0",
+	"Memo": ""
+},{
+	"Date": "01/15/2024",
+	"Description": "Equipment loan proceeds - 5-year note @ 6.5%",
+	"Account": "Checking Account",
+	"Debit": "650000.0",
+	"Credit": "",
+	"Memo": "Equipment financing, 5yr note"
+},{
+	"Date": "01/15/2024",
+	"Description": "Equipment loan proceeds - 5-year note @ 6.5%",
+	"Account": "Equipment Loan",
+	"Debit": "",
+	"Credit": "650000.0",
+	"Memo": ""
+},{
+	"Date": "01/20/2024",
+	"Description": "Purchase of manufacturing equipment",
+	"Account": "Machinery & Equipment",
+	"Debit": "680000.0",
+	"Credit": "",
+	"Memo": "CNC machines, presses, conveyors"
+},{
+	"Date": "01/20/2024",
+	"Description": "Purchase of manufacturing equipment",
+	"Account": "Checking Account",
+	"Debit": "",
+	"Credit": "680000.0",
+	"Memo": ""
+},{
+	"Date": "02/01/2024",
+	"Description": "Purchase of forklifts and delivery vehicles",
+	"Account": "Vehicles",
+	"Debit": "95000.0",
+	"Credit": "",
+	"Memo": "2 forklifts + 1 delivery truck"
+},{
+	"Date": "02/01/2024",
+	"Description": "Purchase of forklifts and delivery vehicles",
+	"Account": "Checking Account",
+	"Debit": "",
+	"Credit": "95000.0",
+	"Memo": ""
+},{
+	"Date": "01/25/2024",
+	"Description": "Initial raw materials inventory purchase",
+	"Account": "Raw Materials Inventory",
+	"Debit": "120000.0",
+	"Credit": "",
+	"Memo": "Steel, aluminum, plastics - startup inventory"
+},{
+	"Date": "01/25/2024",
+	"Description": "Initial raw materials inventory purchase",
+	"Account": "Checking Account",
+	"Debit": "",
+	"Credit": "120000.0",
+	"Memo": ""
+},{
+	"Date": "01/01/2024",
+	"Description": "Annual insurance premium paid in advance",
+	"Account": "Prepaid Insurance",
+	"Debit": "12000.0",
+	"Credit": "",
+	"Memo": "Factory liability and property insurance, full year"
+},{
+	"Date": "01/01/2024",
+	"Description": "Annual insurance premium paid in advance",
+	"Account": "Checking Account",
+	"Debit": "",
+	"Credit": "12000.0",
+	"Memo": ""
+},{
+	"Date": "12/31/2024",
+	"Description": "Year-end depreciation - machinery and equipment",
+	"Account": "Depreciation Expense",
+	"Debit": "68000.0",
+	"Credit": "",
+	"Memo": "Straight-line: $680K / 10 yr"
+},{
+	"Date": "12/31/2024",
+	"Description": "Year-end depreciation - machinery and equipment",
+	"Account": "Accumulated Depreciation",
+	"Debit": "",
+	"Credit": "68000.0",
+	"Memo": ""
+},{
+	"Date": "12/31/2024",
+	"Description": "Year-end depreciation - vehicles",
+	"Account": "Depreciation Expense",
+	"Debit": "19000.0",
+	"Credit": "",
+	"Memo": "Straight-line: $95K / 5 yr"
+},{
+	"Date": "12/31/2024",
+	"Description": "Year-end depreciation - vehicles",
+	"Account": "Accumulated Depreciation",
+	"Debit": "",
+	"Credit": "19000.0",
+	"Memo": ""
+},{
+	"Date": "12/31/2024",
+	"Description": "Prepaid insurance year-end adjustment",
+	"Account": "Insurance Expense",
+	"Debit": "8000.0",
+	"Credit": "",
+	"Memo": "8 months expensed (May-Dec)"
+},{
+	"Date": "12/31/2024",
+	"Description": "Prepaid insurance year-end adjustment",
+	"Account": "Prepaid Insurance",
+	"Debit": "",
+	"Credit": "8000.0",
+	"Memo": ""
+},{
+	"Date": "12/31/2024",
+	"Description": "Accrued wages - year-end payroll accrual",
+	"Account": "Salaries & Wages - Admin",
+	"Debit": "18000.0",
+	"Credit": "",
+	"Memo": "Wages earned Dec 28-31 not yet paid"
+},{
+	"Date": "12/31/2024",
+	"Description": "Accrued wages - year-end payroll accrual",
+	"Account": "Accrued Wages",
+	"Debit": "",
+	"Credit": "18000.0",
+	"Memo": ""
+},{
+	"Date": "12/31/2024",
+	"Description": "Bad debt expense - allowance for doubtful accounts",
+	"Account": "Professional Services",
+	"Debit": "11600.0",
+	"Credit": "",
+	"Memo": "~2% of A/R balance written off"
+},{
+	"Date": "12/31/2024",
+	"Description": "Bad debt expense - allowance for doubtful accounts",
+	"Account": "Accounts Receivable",
+	"Debit": "",
+	"Credit": "11600.0",
+	"Memo": ""
+},{
+	"Date": "12/31/2024",
+	"Description": "Inventory shrinkage - year-end physical count adjustment",
+	"Account": "Manufacturing Overhead",
+	"Debit": "4500.0",
+	"Credit": "",
+	"Memo": "Physical count variance - shrinkage and waste"
+},{
+	"Date": "12/31/2024",
+	"Description": "Inventory shrinkage - year-end physical count adjustment",
+	"Account": "Raw Materials Inventory",
+	"Debit": "",
+	"Credit": "4500.0",
+	"Memo": ""
+},{
+	"Date": "12/31/2024",
+	"Description": "Transfer WIP to Finished Goods Inventory",
+	"Account": "Finished Goods Inventory",
+	"Debit": "42000.0",
+	"Credit": "",
+	"Memo": "Year-end WIP completion transfer"
+},{
+	"Date": "12/31/2024",
+	"Description": "Transfer WIP to Finished Goods Inventory",
+	"Account": "WIP Inventory",
+	"Debit": "",
+	"Credit": "42000.0",
+	"Memo": ""
+},{
+	"Date": "12/31/2024",
+	"Description": "Accrued interest on equipment loan",
+	"Account": "Interest Expense",
+	"Debit": "42250.0",
+	"Credit": "",
+	"Memo": "$650K x 6.5% = $42,250 annual interest"
+},{
+	"Date": "12/31/2024",
+	"Description": "Accrued interest on equipment loan",
+	"Account": "Equipment Loan",
+	"Debit": "",
+	"Credit": "42250.0",
+	"Memo": ""
+}]
