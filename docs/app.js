@@ -158,7 +158,7 @@ function plotIndicator({ invTotal, ar90p, ap90p }) {
   }, { displayModeBar: false, responsive: true });
 }
 
-function plotAging({ elId, facts, asOf, amountField, dueField }) {
+function plotAging({ elId, facts, asOf, amountField, dueField, onBarClick }) {
   const buckets = new Map([['Not due',0],['1-30',0],['31-60',0],['61-90',0],['90+',0]]);
   for (const r of facts) {
     const due = r[dueField];
@@ -171,7 +171,12 @@ function plotAging({ elId, facts, asOf, amountField, dueField }) {
   const x = Array.from(buckets.keys());
   const y = x.map(k => buckets.get(k) || 0);
 
-  Plotly.newPlot(elId, [{ x, y, type: 'bar', marker: { color: ['#334155','#22d3ee','#8b5cf6','#f59e0b','#ef4444'] } }], {
+  Plotly.newPlot(elId, [{
+    x, y,
+    type: 'bar',
+    marker: { color: ['#334155','#22d3ee','#8b5cf6','#f59e0b','#ef4444'] },
+    hovertemplate: '%{x}<br>$%{y:,.0f}<extra></extra>'
+  }], {
     margin: { l: 50, r: 10, t: 10, b: 40 },
     paper_bgcolor: 'rgba(0,0,0,0)',
     plot_bgcolor: 'rgba(0,0,0,0)',
@@ -180,10 +185,19 @@ function plotAging({ elId, facts, asOf, amountField, dueField }) {
     xaxis: { gridcolor: 'rgba(148,163,184,.12)' }
   }, { displayModeBar: false, responsive: true });
 
-  return { ninetyPlus: buckets.get('90+') || 0 };
+  const el = document.getElementById(elId);
+  if (el && onBarClick) {
+    el.on('plotly_click', (evt) => {
+      const bucket = evt?.points?.[0]?.x;
+      if (!bucket) return;
+      onBarClick(bucket);
+    });
+  }
+
+  return { ninetyPlus: buckets.get('90+') || 0, buckets };
 }
 
-function plotTopCustomers({ invoiceFacts, from, to, customer }) {
+function plotTopCustomers({ invoiceFacts, from, to, customer, onCustomerClick }) {
   const rows = invoiceFacts.filter(r => within(r.invDate, from, to) && (!customer || r.customer === customer));
   const revByCust = groupSum(rows, r => r.customer, r => r.revenue);
   const cogsByCust = groupSum(rows, r => r.customer, r => r.estCogs);
@@ -194,7 +208,13 @@ function plotTopCustomers({ invoiceFacts, from, to, customer }) {
     return { cust, rev, gm, gmPct: rev ? gm / rev : NaN };
   }).sort((a,b) => b.rev - a.rev).slice(0, 12);
 
-  Plotly.newPlot('topCustomers', [{ x: pairs.map(p => p.cust), y: pairs.map(p => p.rev), type: 'bar', marker: { color: '#22d3ee' } }], {
+  Plotly.newPlot('topCustomers', [{
+    x: pairs.map(p => p.cust),
+    y: pairs.map(p => p.rev),
+    type: 'bar',
+    marker: { color: '#22d3ee' },
+    hovertemplate: '%{x}<br>$%{y:,.0f}<extra></extra>'
+  }], {
     margin: { l: 50, r: 10, t: 10, b: 120 },
     paper_bgcolor: 'rgba(0,0,0,0)',
     plot_bgcolor: 'rgba(0,0,0,0)',
@@ -202,6 +222,15 @@ function plotTopCustomers({ invoiceFacts, from, to, customer }) {
     yaxis: { gridcolor: 'rgba(148,163,184,.12)', tickprefix: '$' },
     xaxis: { gridcolor: 'rgba(148,163,184,.12)', tickangle: 35 }
   }, { displayModeBar: false, responsive: true });
+
+  const chart = document.getElementById('topCustomers');
+  if (chart && onCustomerClick) {
+    chart.on('plotly_click', (evt) => {
+      const cust = evt?.points?.[0]?.x;
+      if (!cust) return;
+      onCustomerClick(cust);
+    });
+  }
 
   const tbody = document.querySelector('#customerTable tbody');
   tbody.innerHTML = '';
@@ -319,6 +348,7 @@ function wireNav() {
     document.querySelector(`#tab-${tab}`).classList.add('active');
 
     title.textContent = titleMap[tab] || 'Dashboard';
+
     // Resize plots on tab change for crisp layout
     setTimeout(() => {
       for (const id of ['revCogs','ccc','arAging','apAging','topCustomers','inv']) {
@@ -329,8 +359,63 @@ function wireNav() {
   });
 }
 
+function openDrawer({ title, sub, html }) {
+  const drawer = document.querySelector('#drawer');
+  const scrim = document.querySelector('#scrim');
+  document.querySelector('#drawerTitle').textContent = title || 'Details';
+  document.querySelector('#drawerSub').textContent = sub || '';
+  document.querySelector('#drawerBody').innerHTML = html || '';
+  drawer.classList.add('open');
+  scrim.classList.add('open');
+}
+
+function closeDrawer() {
+  document.querySelector('#drawer')?.classList.remove('open');
+  document.querySelector('#scrim')?.classList.remove('open');
+}
+
+function wireDrawer() {
+  document.querySelector('#drawerClose')?.addEventListener('click', closeDrawer);
+  document.querySelector('#scrim')?.addEventListener('click', closeDrawer);
+}
+
+function moneyCell(n) {
+  return `<td style="text-align:right">${fmtMoney(n)}</td>`;
+}
+
+function renderFocusList({ elId, rows, kind }) {
+  // kind: 'AR' | 'AP'
+  const el = document.getElementById(elId);
+  if (!el) return;
+  if (!rows.length) {
+    el.innerHTML = `<div style="color:#94a3b8">No past-due items in the current filter window.</div>`;
+    return;
+  }
+
+  const header = kind === 'AR'
+    ? '<tr><th>Customer</th><th>Invoice date</th><th>Due</th><th style="text-align:right">Amount</th></tr>'
+    : '<tr><th>Vendor</th><th>Bill date</th><th>Due</th><th style="text-align:right">Amount</th></tr>';
+
+  const body = rows.slice(0, 12).map(r => {
+    const a = kind === 'AR' ? r.customer : r.vendor;
+    const d1 = kind === 'AR' ? r.invDate : r.billDate;
+    const d2 = r.dueDate;
+    const amt = kind === 'AR' ? r.revenue : r.amount;
+    return `<tr><td>${a}</td><td>${d1 ? d1.toISOString().slice(0,10) : ''}</td><td>${d2 ? d2.toISOString().slice(0,10) : ''}</td>${moneyCell(amt)}</tr>`;
+  }).join('');
+
+  el.innerHTML = `
+    <table class="table">
+      <thead>${header}</thead>
+      <tbody>${body}</tbody>
+    </table>
+    <div style="color:#94a3b8;font-size:12px;margin-top:8px">Showing top ${Math.min(12, rows.length)} items by amount.</div>
+  `;
+}
+
 async function main() {
   wireNav();
+  wireDrawer();
 
   // Load repo JSON (GitHub Pages friendly)
   const [coa, invoices, bills, items, payments] = await Promise.all([
@@ -342,11 +427,15 @@ async function main() {
   ]);
 
   document.querySelector('#dataStatus').textContent = `Loaded: COA (${coa.length}), invoices (${invoices.length}), bills (${bills.length}), items (${items.length})`;
+  const asOfPill = document.querySelector('#asOfPill');
+  if (asOfPill) asOfPill.textContent = '…';
 
   const itemsByName = new Map(items.map(i => [i['Item Name'], i]));
   const invoiceFactsAll = buildInvoiceFacts({ invoices, itemsByName });
   const billFactsAll = buildBillFacts({ bills });
   const asOf = deriveReportDate({ invoices, bills, payments });
+  const asOfPill2 = document.querySelector('#asOfPill');
+  if (asOfPill2) asOfPill2.textContent = asOf.toISOString().slice(0,10);
 
   // Defaults: last 12 months
   const invDates = invoiceFactsAll.map(r => r.invDate).filter(Boolean).sort((a,b)=>a-b);
@@ -397,10 +486,81 @@ async function main() {
 
     // Plots
     plotMonthlyTrend({ invoiceFacts, from, to, customer });
-    const ar = plotAging({ elId: 'arAging', facts: invoiceFacts, asOf, amountField: 'revenue', dueField: 'dueDate' });
-    const ap = plotAging({ elId: 'apAging', facts: billFacts, asOf, amountField: 'amount', dueField: 'dueDate' });
 
-    plotTopCustomers({ invoiceFacts, from, to, customer });
+    const drillRows = (kind, bucket) => {
+      const rows = kind === 'AR' ? invoiceFacts : billFacts;
+      const dueField = 'dueDate';
+      const amountField = kind === 'AR' ? 'revenue' : 'amount';
+      const nameField = kind === 'AR' ? 'customer' : 'vendor';
+      const dateField = kind === 'AR' ? 'invDate' : 'billDate';
+
+      const filtered = rows.filter(r => {
+        const due = r[dueField];
+        if (!due) return false;
+        const daysPastDue = Math.floor((asOf - due) / (24*3600*1000));
+        const b = bucketAge(daysPastDue);
+        return b === bucket;
+      }).sort((a,b) => safeNum(b[amountField]) - safeNum(a[amountField]));
+
+      const html = `
+        <table class="table">
+          <thead>
+            <tr>
+              <th>${kind === 'AR' ? 'Customer' : 'Vendor'}</th>
+              <th>${kind === 'AR' ? 'Invoice date' : 'Bill date'}</th>
+              <th>Due</th>
+              <th style="text-align:right">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${filtered.slice(0, 200).map(r => `
+              <tr>
+                <td>${r[nameField]}</td>
+                <td>${r[dateField] ? r[dateField].toISOString().slice(0,10) : ''}</td>
+                <td>${r.dueDate ? r.dueDate.toISOString().slice(0,10) : ''}</td>
+                <td style="text-align:right">${fmtMoney(safeNum(r[amountField]))}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+        <div style="color:#94a3b8;font-size:12px;margin-top:8px">Showing up to 200 rows. Sort: largest first.</div>
+      `;
+
+      openDrawer({
+        title: `${kind} detail — ${bucket}`,
+        sub: `As-of ${asOf.toISOString().slice(0,10)} · Rows: ${filtered.length}`,
+        html
+      });
+    };
+
+    const ar = plotAging({
+      elId: 'arAging',
+      facts: invoiceFacts,
+      asOf,
+      amountField: 'revenue',
+      dueField: 'dueDate',
+      onBarClick: (bucket) => drillRows('AR', bucket)
+    });
+
+    const ap = plotAging({
+      elId: 'apAging',
+      facts: billFacts,
+      asOf,
+      amountField: 'amount',
+      dueField: 'dueDate',
+      onBarClick: (bucket) => drillRows('AP', bucket)
+    });
+
+    plotTopCustomers({
+      invoiceFacts,
+      from,
+      to,
+      customer,
+      onCustomerClick: (cust) => {
+        customerSel.value = cust;
+        refresh();
+      }
+    });
     const invTotal = plotInventory({ coa });
 
     plotIndicator({ invTotal, ar90p: ar.ninetyPlus, ap90p: ap.ninetyPlus });
@@ -411,6 +571,14 @@ async function main() {
 
     renderNotes({ revenue, gmPct, ar90p: ar.ninetyPlus, ap90p: ap.ninetyPlus, asOf });
     renderAnoms({ invoiceFacts, billFacts });
+
+    // Focus lists (largest past-due)
+    const pastDueAR = invoiceFacts.filter(r => r.dueDate && (asOf - r.dueDate) > 0)
+      .sort((a,b) => b.revenue - a.revenue);
+    const pastDueAP = billFacts.filter(r => r.dueDate && (asOf - r.dueDate) > 0)
+      .sort((a,b) => b.amount - a.amount);
+    renderFocusList({ elId: 'arFocus', rows: pastDueAR, kind: 'AR' });
+    renderFocusList({ elId: 'apFocus', rows: pastDueAP, kind: 'AP' });
   }
 
   document.querySelector('#refresh').addEventListener('click', refresh);

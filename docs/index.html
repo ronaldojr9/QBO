@@ -194,6 +194,31 @@
     .section{display:none}
     .section.active{display:block}
 
+    .split{display:grid;grid-template-columns: 1.0fr 1.0fr; gap:10px; margin-top:10px}
+
+    .drawer{
+      position: fixed;
+      top: 0; right: 0;
+      height: 100%; width: min(560px, 92vw);
+      background: rgba(7,11,20,.92);
+      border-left:1px solid rgba(148,163,184,.14);
+      box-shadow: -20px 0 60px rgba(0,0,0,.55);
+      transform: translateX(110%);
+      transition: transform .22s ease;
+      z-index: 20;
+      padding: 14px;
+      overflow:auto;
+      backdrop-filter: blur(10px);
+    }
+    .drawer.open{transform: translateX(0%)}
+    .drawer .dhead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+    .drawer .dtitle{font-weight:900;letter-spacing:-.3px}
+    .drawer .dsub{color:var(--muted);font-size:12px;margin-top:2px}
+    .drawer .x{all:unset;cursor:pointer;padding:8px 10px;border-radius:12px;border:1px solid rgba(148,163,184,.18);background:rgba(15,23,42,.55)}
+
+    .scrim{position:fixed; inset:0; background:rgba(0,0,0,.45); z-index: 19; opacity:0; pointer-events:none; transition:opacity .18s ease}
+    .scrim.open{opacity:1; pointer-events:auto}
+
     @media (max-width: 980px){
       body{overflow:auto}
       .app{grid-template-columns:1fr}
@@ -201,10 +226,23 @@
       .kpis{grid-template-columns:repeat(2, minmax(170px,1fr))}
       .grid2{grid-template-columns:1fr}
       .row2{grid-template-columns:1fr}
+      .split{grid-template-columns:1fr}
     }
   </style>
 </head>
 <body>
+  <div class="scrim" id="scrim"></div>
+  <div class="drawer" id="drawer">
+    <div class="dhead">
+      <div>
+        <div class="dtitle" id="drawerTitle">Details</div>
+        <div class="dsub" id="drawerSub">—</div>
+      </div>
+      <button class="x" id="drawerClose"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div id="drawerBody"></div>
+  </div>
+
   <div class="app">
     <aside class="side">
       <div class="brand">
@@ -227,7 +265,7 @@
       <div class="mini">
         <div class="lbl">Data</div>
         <div class="mono" id="dataStatus">Loading…</div>
-        <div class="mono" style="margin-top:8px">Source: <span class="pill">repo JSON</span></div>
+        <div class="mono" style="margin-top:8px">As-of: <span class="pill" id="asOfPill">—</span></div>
       </div>
 
       <div class="mini">
@@ -283,7 +321,7 @@
             <div class="card kpi">
               <div class="row1"><div class="lbl"><i class="fa-solid fa-bolt" style="color:var(--amber)"></i> Working Capital Flags</div><div class="pill" id="pillFlags">—</div></div>
               <div class="val" id="kpiFlags">—</div>
-              <div class="hint">AR 90+ / AP 90+ / inventory weight</div>
+              <div class="hint">Click aging bars to drill into detail</div>
             </div>
           </div>
 
@@ -294,8 +332,8 @@
               <div id="revCogs" style="height:360px"></div>
             </div>
             <div class="card">
-              <h2 class="h2">Cash conversion lens (proxy)</h2>
-              <p class="p">This becomes a real 13-week cash forecast once ERP/WIP + AR/AP cadence are wired.</p>
+              <h2 class="h2">Working capital risk score</h2>
+              <p class="p">Composite signal to focus operator attention. Drill into AR/AP for the “why.”</p>
               <div id="ccc" style="height:360px"></div>
             </div>
           </div>
@@ -311,13 +349,24 @@
           <div class="row2">
             <div class="card">
               <h2 class="h2">AR Aging (due date)</h2>
-              <p class="p">Cash-first: attack 90+ past due with dispute triage + ship/invoice timing + term enforcement.</p>
+              <p class="p">Click a bar to see the underlying invoices. Cash-first: attack 90+ past due with dispute triage + ship/invoice timing + term enforcement.</p>
               <div id="arAging" style="height:320px"></div>
             </div>
             <div class="card">
               <h2 class="h2">AP Aging (due date)</h2>
-              <p class="p">Operational risk: AP 90+ increases supply disruption and erodes purchasing leverage.</p>
+              <p class="p">Click a bar to see underlying bills. Operational risk: AP 90+ increases supply disruption and erodes purchasing leverage.</p>
               <div id="apAging" style="height:320px"></div>
+            </div>
+          </div>
+
+          <div class="split">
+            <div class="card">
+              <h2 class="h2">AR Focus List (largest past due)</h2>
+              <div id="arFocus"></div>
+            </div>
+            <div class="card">
+              <h2 class="h2">AP Focus List (largest past due)</h2>
+              <div id="apFocus"></div>
             </div>
           </div>
         </section>
@@ -325,8 +374,8 @@
         <!-- MARGIN -->
         <section class="section" id="tab-margin">
           <div class="card">
-            <h2 class="h2">Gross margin bridge (next)</h2>
-            <p class="p">This tab is where we become manufacturing-grade: standard vs actual, PPV, labor efficiency, OH spend/volume variance, and absorption signals.</p>
+            <h2 class="h2">Gross margin bridge (manufacturing-grade next)</h2>
+            <p class="p">This is where we win vs generic QBO dashboards: standard vs actual, PPV, labor efficiency, OH spend/volume variance, and absorption signals.</p>
             <div class="note">To unlock: provide ERP exports for WIP snapshots, labor tickets, and material issues. I’ll wire them in and build a true variance review workflow.</div>
           </div>
         </section>
@@ -344,7 +393,7 @@
         <section class="section" id="tab-customers">
           <div class="card">
             <h2 class="h2">Top customers by revenue</h2>
-            <p class="p">Manufacturing reality: customer concentration drives pricing power, payment terms, and schedule volatility.</p>
+            <p class="p">Click a bar to filter to a customer. Concentration drives pricing power, payment terms, and schedule volatility.</p>
             <div id="topCustomers" style="height:340px"></div>
             <table class="table" id="customerTable">
               <thead><tr><th>Customer</th><th style="text-align:right">Revenue</th><th style="text-align:right">GM $ (proxy)</th><th style="text-align:right">GM % (proxy)</th></tr></thead>
@@ -356,7 +405,7 @@
         <!-- ANOMS -->
         <section class="section" id="tab-anoms">
           <div class="card">
-            <h2 class="h2">Anomalies (signals)</h2>
+            <h2 class="h2">Anomalies (operator signals)</h2>
             <p class="p">Not “AI magic.” Practical flags you can route to accounting/ops weekly.</p>
             <div id="anoms"></div>
           </div>
